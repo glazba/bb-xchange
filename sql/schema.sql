@@ -131,3 +131,19 @@ CREATE TABLE
         CONSTRAINT fk_message_offer FOREIGN KEY (offer_id) REFERENCES trade_offers (id) ON DELETE CASCADE,
         CONSTRAINT fk_message_sender FOREIGN KEY (sender_id) REFERENCES users (id) ON DELETE CASCADE
     );
+
+CREATE INDEX idx_items_title ON items (title);
+
+CREATE INDEX idx_items_type ON items (type);
+
+CREATE INDEX idx_items_condition ON items (item_condition);
+
+CREATE INDEX idx_book_author ON book_details (author);
+
+CREATE INDEX idx_book_genre ON book_details (genre);
+
+CREATE INDEX idx_boardgame_genre ON boardgame_details (genre);
+
+CREATE INDEX idx_trade_offers_status ON trade_offers (status);
+
+CREATE INDEX idx_messages_offer ON messages (offer_id);
