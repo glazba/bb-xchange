@@ -38,7 +38,7 @@ VALUES
         'balazs@test.hu',
         'seed_password_hash',
         'Debrecen',
-        'Sci-Fi gyűjtő.'
+        'Sci-Fi gyűjtő.'  
     );
 
 INSERT INTO
