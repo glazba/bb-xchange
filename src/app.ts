@@ -4,7 +4,11 @@ import { pool } from "./db/connections";
 
 const app = express();
 
+
+app.use(express.json());
+
 app.use("/users", userRoutes);
+
 
 app.get("/", (req, res) => {
     res.send("Hello BB-Xchange");

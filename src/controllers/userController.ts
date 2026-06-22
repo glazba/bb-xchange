@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllUsers, getUserById } from "../services/userService";
+import { getAllUsers, getUserById, createUser } from "../services/userService";
 
 export const getUsers = async (
     req: Request,
@@ -24,3 +24,28 @@ export const getUser = async (
 
     res.json(user);
 };
+
+export const registerUser = async (
+    req: Request,
+    res: Response
+) => {
+    const {
+        username,
+        email,
+        password,
+        city
+    } = req.body;
+
+    const userId = await createUser(
+        username,
+        email,
+        password,
+        city
+    );
+
+    res.status(201).json({
+        message: "User created",
+        userId
+    });
+};
+

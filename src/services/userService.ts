@@ -1,5 +1,6 @@
-import { RowDataPacket } from "mysql2";
 import { pool } from "../db/connections";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
+
 
 export const getAllUsers = async () => {
     const [rows] = await pool.query<RowDataPacket[]>(
@@ -27,4 +28,32 @@ export const getUserById = async (id: string) => {
     );
 
     return rows;
+};
+
+export const createUser = async (
+    username: string,
+    email: string,
+    password: string,
+    city: string
+) => {
+    const [result] = await pool.query<ResultSetHeader>(
+        `
+        
+        INSERT INTO users (
+            username, 
+            email,
+            password_hash,
+            city
+        )
+        VALUES (?,?,?,?)
+        `,
+        [
+            username,
+            email,
+            password,
+            city
+        ]
+    );
+
+    return result.insertId;
 };
