@@ -1,5 +1,6 @@
+import bcrypt from "bcryptjs";
 import { Request, Response } from "express";
-import { getAllUsers, getUserById, createUser } from "../services/userService";
+import { getAllUsers, getUserById, createUser, getUserByEmail } from "../services/userService";
 
 export const getUsers = async (
     req: Request,
@@ -49,3 +50,39 @@ export const registerUser = async (
     });
 };
 
+export const loginUser = async (
+    req: Request,
+    res: Response
+) => {
+
+    const {
+        email,
+        password
+    } = req.body;
+
+    const users = await getUserByEmail(
+        email
+    );
+
+    if (users.length === 0) {
+        return res.status(401).json({
+            message: "Invalid credentials"
+        });
+    }
+
+    const user = users[0];
+
+    const isPasswordValid = await bcrypt.compare(
+        password, user.password_hash
+    );
+
+    if (!isPasswordValid) {
+        return res.status(401).json({
+            message: "Invalid credentials"
+        });
+    }
+
+    res.json({
+        message: "Login successful"
+    });
+};

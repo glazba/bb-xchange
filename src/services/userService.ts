@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import { pool } from "../db/connections";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 
@@ -30,15 +31,23 @@ export const getUserById = async (id: string) => {
     return rows;
 };
 
+
+//! REGISTER
+
 export const createUser = async (
     username: string,
     email: string,
     password: string,
     city: string
 ) => {
+
+    const hashedPassword = await bcrypt.hash(
+        password,
+        10
+    );
+
     const [result] = await pool.query<ResultSetHeader>(
-        `
-        
+        `        
         INSERT INTO users (
             username, 
             email,
@@ -50,10 +59,29 @@ export const createUser = async (
         [
             username,
             email,
-            password,
+            hashedPassword,
             city
         ]
     );
 
     return result.insertId;
 };
+
+
+//! LOGIN
+
+export const getUserByEmail = async (
+    email: string
+) => {
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT *
+        FROM users
+        WHERE email = ?
+        `,
+        [email]
+    );
+
+    return rows;
+};
+
