@@ -99,3 +99,35 @@ CREATE TABLE
         CONSTRAINT chk_players CHECK (min_players <= max_players),
         CONSTRAINT fk_boardgame_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
     );
+
+CREATE TABLE
+    trade_offers (
+        id INT auto_increment PRIMARY KEY,
+        requester_id INT NOT NULL,
+        target_item_id INT NOT NULL,
+        status ENUM ('pending', 'accepted', 'rejected', 'cancelled') DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT current_timestamp,
+        updated_at TIMESTAMP DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+        CONSTRAINT fk_trade_offer_requester FOREIGN KEY (requester_id) REFERENCES users (id) ON DELETE CASCADE,
+        CONSTRAINT fk_trade_offer_target_item FOREIGN KEY (target_item_id) REFERENCES items (id) ON DELETE CASCADE
+    );
+
+CREATE TABLE
+    offer_items (
+        id INT auto_increment PRIMARY KEY,
+        offer_id INT NOT NULL,
+        item_id INT NOT NULL,
+        CONSTRAINT fk_offer_items_offer FOREIGN KEY (offer_id) REFERENCES trade_offers (id) ON DELETE CASCADE,
+        CONSTRAINT fk_offer_items_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
+    );
+
+CREATE TABLE
+    messages (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        offer_id INT NOT NULL,
+        sender_id INT NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT fk_message_offer FOREIGN KEY (offer_id) REFERENCES trade_offers (id) ON DELETE CASCADE,
+        CONSTRAINT fk_message_sender FOREIGN KEY (sender_id) REFERENCES users (id) ON DELETE CASCADE
+    );
