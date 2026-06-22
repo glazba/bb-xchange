@@ -76,3 +76,26 @@ CREATE TABLE
         created_at timestamp DEFAULT current_timestamp,
         constraint fk_item_images_item foreign key (item_id) REFERENCES items (id) ON DELETE CASCADE
     );
+
+CREATE TABLE
+    book_details (
+        item_id INT PRIMARY KEY,
+        author VARCHAR(255) NOT NULL,
+        genre VARCHAR(100) NOT NULL,
+        page_count INT,
+        published_year INT,
+        isbn VARCHAR(50),
+        constraint fk_book_item foreign key (item_id) REFERENCES items (id) ON DELETE CASCADE
+    );
+
+CREATE TABLE
+    boardgame_details (
+        item_id INT PRIMARY KEY,
+        genre VARCHAR(100) NOT NULL,
+        min_players INT NOT NULL,
+        max_players INT NOT NULL,
+        recommended_age INT NOT NULL,
+        playtime INT,
+        CONSTRAINT chk_players CHECK (min_players <= max_players),
+        CONSTRAINT fk_boardgame_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
+    );
