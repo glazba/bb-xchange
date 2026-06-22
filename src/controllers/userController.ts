@@ -10,11 +10,17 @@ export const getUsers = async (
     res.json(users);
 };
 
-export const getUser = (
+export const getUser = async (
     req: Request,
     res: Response
 ) => {
-    const user = getUserById(String(req.params.id));
+    const user = await getUserById(String(req.params.id));
+
+    if (user.length === 0) {
+        return res.status(404).json({
+            message: "User not found"
+        });
+    }
 
     res.json(user);
 };

@@ -1,7 +1,8 @@
+import { RowDataPacket } from "mysql2";
 import { pool } from "../db/connections";
 
 export const getAllUsers = async () => {
-    const [rows] = await pool.query(
+    const [rows] = await pool.query<RowDataPacket[]>(
         `
         SELECT id, username, city
         FROM users
@@ -11,10 +12,19 @@ export const getAllUsers = async () => {
     return rows
 };
 
-export const getUserById = (id: string) => {
-    return {
-        id,
-        username: "peter",
-        city: "Budapest"
-    };
+export const getUserById = async (id: string) => {
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            username,
+            city,
+            bio
+        FROM users
+        WHERE id = ?
+        `,
+        [id]
+    );
+
+    return rows;
 };
