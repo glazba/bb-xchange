@@ -66,3 +66,13 @@ CREATE TABLE
         updated_at TIMESTAMP DEFAULT current_timestamp ON UPDATE current_timestamp,
         CONSTRAINT fk_items_owner FOREIGN KEY (owner_id) REFERENCES users (id) ON DELETE CASCADE
     );
+
+CREATE TABLE
+    item_images (
+        id INT auto_increment PRIMARY KEY,
+        item_id INT NOT NULL,
+        image_url VARCHAR(255) NOT NULL,
+        is_cover BOOLEAN DEFAULT FALSE,
+        created_at timestamp DEFAULT current_timestamp,
+        constraint fk_item_images_item foreign key (item_id) REFERENCES items (id) ON DELETE CASCADE
+    );
