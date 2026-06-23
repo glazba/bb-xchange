@@ -17,6 +17,7 @@ export const getUser = async (
     req: Request,
     res: Response
 ) => {
+    
     const user = await getUserById(String(req.params.id));
 
     if (user.length === 0) {

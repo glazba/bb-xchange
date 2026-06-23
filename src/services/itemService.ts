@@ -1,5 +1,47 @@
 import { pool } from "../db/connections";
-import { ResultSetHeader } from "mysql2";
+import { ResultSetHeader, RowDataPacket } from "mysql2";
+
+export const getAllItems = async () => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            owner_id,
+            type,
+            title,
+            description,
+            item_condition,
+            status
+        FROM items
+        `
+    );
+
+    return rows;
+};
+
+
+export const getItemById = async (id: string) => {
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            owner_id,
+            type,
+            title,
+            description,
+            item_condition,
+            status
+        FROM items
+        WHERE id = ?
+        `,
+        [id]
+    );
+
+    return rows;
+};
+
+
 
 export const createItem = async (
     ownerId: number,

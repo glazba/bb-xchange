@@ -1,6 +1,36 @@
-import { Response } from "express";
+import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
-import { createItem } from "../services/itemService";
+import { getAllItems, getItemById, createItem } from "../services/itemService";
+
+
+export const getItems = async (
+    req: Request,
+    res: Response
+) => {
+
+    const items = await getAllItems();
+
+    res.json(items);
+};
+
+export const getItem = async (
+    req: Request,
+    res: Response
+) => {
+
+    const item = await getItemById(
+        String(req.params.id)
+    );
+
+    if (item.length === 0) {
+        return res.status(404).json({
+            message: "Item not found"
+        });
+    }
+
+    res.json(item[0]);
+};
+
 
 export const createNewitem = async (
     req: AuthRequest,
