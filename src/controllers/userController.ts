@@ -1,6 +1,8 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { getAllUsers, getUserById, createUser, getUserByEmail } from "../services/userService";
+
 
 export const getUsers = async (
     req: Request,
@@ -26,6 +28,9 @@ export const getUser = async (
     res.json(user);
 };
 
+
+//! REGISTER
+
 export const registerUser = async (
     req: Request,
     res: Response
@@ -49,6 +54,9 @@ export const registerUser = async (
         userId
     });
 };
+
+
+//! LOGIN
 
 export const loginUser = async (
     req: Request,
@@ -82,7 +90,19 @@ export const loginUser = async (
         });
     }
 
+    const token = jwt.sign(
+        {
+            userId: user.id,
+            email: user.email,
+        },
+        process.env.JWT_SECRET!,
+        {
+            expiresIn: "1d"
+        }
+    );
+    
     res.json({
-        message: "Login successful"
+        message: "Login successful",
+        token
     });
 };
