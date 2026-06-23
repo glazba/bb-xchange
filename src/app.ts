@@ -2,6 +2,8 @@ import express from "express";
 import userRoutes from "./routes/userRoutes";
 import { pool } from "./db/connections";
 
+import { authMiddleware } from "./middleware/authMiddleware";
+
 const app = express();
 
 
@@ -48,4 +50,10 @@ app.get("/profile/:id", (req, res) => {
 
 app.listen(3000, () => {
     console.log("Server running on port 3000");
+});
+
+app.get("/protected", authMiddleware, (req, res) => {
+    res.json({
+        message: "Protected route"
+    });
 });
