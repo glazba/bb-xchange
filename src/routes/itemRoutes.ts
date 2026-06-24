@@ -1,11 +1,13 @@
 import { Router } from "express";
-import { getItems, getItem, createNewitem } from "../controllers/itemController";
+import { getItems, getItem, getMyItems, createNewitem } from "../controllers/itemController";
 import { authMiddleware } from "../middleware/authMiddleware";
 
 const router = Router();
 
 
 router.get("/", getItems);
+
+router.get("/me", authMiddleware, getMyItems);
 
 router.get("/:id", getItem);
 

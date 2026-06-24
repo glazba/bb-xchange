@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
-import { getAllItems, getItemById, createItem } from "../services/itemService";
+import { getAllItems, getItemById, getItemsByOwnerId, createItem } from "../services/itemService";
 
 
 export const getItems = async (
@@ -29,6 +29,20 @@ export const getItem = async (
     }
 
     res.json(item[0]);
+};
+
+export const getMyItems = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    const ownerId = req.user!.userId;
+
+    const items = await getItemsByOwnerId(
+        ownerId
+    );
+
+    res.json(items);
 };
 
 
