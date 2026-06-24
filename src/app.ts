@@ -6,6 +6,8 @@ import { authMiddleware } from "./middleware/authMiddleware";
 
 import userRoutes from "./routes/userRoutes";
 import itemRoutes from "./routes/itemRoutes";
+import bookRoutes from "./routes/bookRoutes";
+import boardgameRoutes from "./routes/boardgameRoutes";
 
 
 const app = express();
@@ -16,6 +18,11 @@ app.use(express.json());
 app.use("/users", userRoutes);
 
 app.use("/items", itemRoutes);
+
+app.use("/books", bookRoutes);
+
+app.use("/boardgames", boardgameRoutes);
+
 
 app.get("/", (req, res) => {
     res.send("Hello BB-Xchange");

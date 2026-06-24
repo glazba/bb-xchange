@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
 import { getAllItems, getItemById, getItemsByOwnerId, createItem, deleteItemById, updateItemById } from "../services/itemService";
-
+import { getBookByItemId } from "../services/bookService";
+import { getBoardgameByItemId } from "../services/boardgameService";
 
 export const getItems = async (
     req: Request,
@@ -28,8 +29,33 @@ export const getItem = async (
         });
     }
 
+    if (item[0].type === "book") {
+
+        const book = await getBookByItemId(
+            String(req.params.id)
+        );
+
+        return res.json({
+            ...item[0],
+            ...book[0]
+        });
+    }
+
+    if (item[0].type === "boardgame") {
+
+        const boardgame = await getBoardgameByItemId(
+            String(req.params.id)
+        );
+
+        return res.json({
+            ...item[0],
+            ...boardgame[0]
+        });
+    }
+
     res.json(item[0]);
 };
+
 
 export const getMyItems = async (
     req: AuthRequest,
