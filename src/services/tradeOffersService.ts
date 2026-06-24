@@ -45,6 +45,7 @@ export const createOfferItem = async (
     );
 };
 
+
 export const getOffersByRequesterId = async (
     requesterId: number
 ) => {
@@ -67,6 +68,7 @@ export const getOffersByRequesterId = async (
 
     return rows;
 };
+
 
 export const getReceivedOffers = async (
     userId: number
@@ -93,3 +95,42 @@ export const getReceivedOffers = async (
     return rows;
 };
 
+
+export const getOfferById = async (
+    offerId: string //? Number?
+) => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            requester_id,
+            target_item_id,
+            status
+        FROM trade_offers
+        WHERE id = ?
+        `,
+        [offerId]
+    );
+
+    return rows;
+};
+
+
+export const updateOfferStatus = async (
+    offerId: string,
+    status: string
+) => {
+
+    await pool.query(
+        `
+        UPDATE trade_offers
+        SET status = ?
+        WHERE id = ?
+        `,
+        [
+            status,
+            offerId
+        ]
+    );
+};
