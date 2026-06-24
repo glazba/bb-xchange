@@ -96,3 +96,19 @@ export const createItem = async (
 
     return result.insertId;
 };
+
+export const deleteItemById = async (
+    id: string
+) => {
+
+    const [result] = await pool.query<ResultSetHeader>(
+        `
+        DELETE FROM items
+        WHERE id = ?
+        `,
+        [id]
+    );
+
+    return result;
+};
+
