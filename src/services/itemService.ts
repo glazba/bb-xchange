@@ -97,6 +97,38 @@ export const createItem = async (
     return result.insertId;
 };
 
+
+export const updateItemById = async (
+    id: string,
+    type: string,
+    title: string,
+    description: string,
+    itemCondition: string
+) => {
+
+    const [result] = await pool.query<ResultSetHeader>(
+        `
+        UPDATE items
+        SET
+            type = ?,
+            title = ?,
+            description = ?,
+            item_condition = ?
+        WHERE id = ?
+        `,
+        [
+            type,
+            title,
+            description,
+            itemCondition,
+            id
+        ]
+    );
+
+    return result;
+};
+
+
 export const deleteItemById = async (
     id: string
 ) => {

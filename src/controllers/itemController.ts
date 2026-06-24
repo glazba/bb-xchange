@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
-import { getAllItems, getItemById, getItemsByOwnerId, createItem, deleteItemById } from "../services/itemService";
+import { getAllItems, getItemById, getItemsByOwnerId, createItem, deleteItemById, updateItemById } from "../services/itemService";
 
 
 export const getItems = async (
@@ -103,3 +103,46 @@ export const deleteItem = async (
         message: "Item deleted"
     });
 };
+
+
+export const updateItem = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    const item = await getItemById(
+        String(req.params.id)
+    );
+
+    if (item.length === 0) {
+        return res.status(404).json({
+            message: "Item not found"
+        });
+    }
+
+    if (item[0].owner_id !== req.user!.userId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
+
+    const {
+        type,
+        title,
+        description,
+        itemCondition
+    } = req.body;
+
+    await updateItemById(
+        String(req.params.id),
+        type,
+        title,
+        description,
+        itemCondition
+    );
+
+    res.json({
+        message: "Item updated"
+    });
+};
+
