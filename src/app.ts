@@ -8,7 +8,7 @@ import userRoutes from "./routes/userRoutes";
 import itemRoutes from "./routes/itemRoutes";
 import bookRoutes from "./routes/bookRoutes";
 import boardgameRoutes from "./routes/boardgameRoutes";
-
+import tradeOfferRoutes from "./routes/tradeOfferRoutes";
 
 const app = express();
 
@@ -22,6 +22,8 @@ app.use("/items", itemRoutes);
 app.use("/books", bookRoutes);
 
 app.use("/boardgames", boardgameRoutes);
+
+app.use("/offers", tradeOfferRoutes);
 
 
 app.get("/", (req, res) => {
