@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
 
 import MainLayout from "../layouts/MainLayout";
 import HomePage from "../pages/HomePage";
@@ -18,11 +19,46 @@ function AppRoutes() {
           <Route path="/" element={<HomePage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/register" element={<RegisterPage />}></Route>
-          <Route path="/profile" element={<ProfilePage />}></Route>
-          <Route path="/items" element={<MyItemsPage />}></Route>
-          <Route path="/items/:id" element={<ItemDetailsPage />}></Route>
-          <Route path="/offers" element={<OffersPage />}></Route>
-          <Route path="/create-item" element={<CreateItemPage />}></Route>
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/items"
+            element={
+              <ProtectedRoute>
+                <MyItemsPage />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/items/:id"
+            element={
+              <ProtectedRoute>
+                <ItemDetailsPage />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/offers"
+            element={
+              <ProtectedRoute>
+                <OffersPage />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/create-item"
+            element={
+              <ProtectedRoute>
+                <CreateItemPage />
+              </ProtectedRoute>
+            }
+          ></Route>
         </Route>
       </Routes>
     </BrowserRouter>
