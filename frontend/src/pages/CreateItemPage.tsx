@@ -1,5 +1,7 @@
+import CreateItemForm from "../components/CreateItemForm/CreateItemForm";
+
 function CreateItemPage() {
-  return <h1>Create Item Page</h1>;
+  return <CreateItemForm />;
 }
 
 export default CreateItemPage;
