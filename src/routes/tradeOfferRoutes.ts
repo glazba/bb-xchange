@@ -4,14 +4,12 @@ import { createOffer, getMyOffers, getMyReceivedOffers, changeOfferStatus } from
 
 const router = Router();
 
+router.post("/", authMiddleware, createOffer);
 
 router.get("/me", authMiddleware, getMyOffers);
 
 router.get("/received", authMiddleware, getMyReceivedOffers);
 
 router.put("/:id", authMiddleware, changeOfferStatus);
-
-router.post("/", authMiddleware, createOffer);
-
 
 export default router;

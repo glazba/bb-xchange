@@ -1,71 +1,7 @@
 import { pool } from "../db/connections";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 
-export const getAllItems = async () => {
-
-    const [rows] = await pool.query<RowDataPacket[]>(
-        `
-        SELECT
-            id,
-            owner_id,
-            type,
-            title,
-            description,
-            item_condition,
-            status
-        FROM items
-        `
-    );
-
-    return rows;
-};
-
-
-export const getItemById = async (id: string) => {
-    const [rows] = await pool.query<RowDataPacket[]>(
-        `
-        SELECT
-            id,
-            owner_id,
-            type,
-            title,
-            description,
-            item_condition,
-            status
-        FROM items
-        WHERE id = ?
-        `,
-        [id]
-    );
-
-    return rows;
-};
-
-
-export const getItemsByOwnerId = async (
-    ownerId: number
-) => {
-
-    const [rows] = await pool.query<RowDataPacket[]>(
-        `
-        SELECT
-            id,
-            owner_id,
-            type,
-            title,
-            description,
-            item_condition,
-            status
-        FROM items
-        WHERE owner_id = ?
-        `,
-        [ownerId]
-    );
-
-    return rows;
-};
-
-
+//! Create new item
 export const createItem = async (
     ownerId: number,
     type: string,
@@ -97,7 +33,72 @@ export const createItem = async (
     return result.insertId;
 };
 
+//! Get all items
+export const getAllItems = async () => {
 
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            owner_id,
+            type,
+            title,
+            description,
+            item_condition,
+            status
+        FROM items
+        `
+    );
+
+    return rows;
+};
+
+//! Get item by ID
+export const getItemById = async (id: string) => {
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            owner_id,
+            type,
+            title,
+            description,
+            item_condition,
+            status
+        FROM items
+        WHERE id = ?
+        `,
+        [id]
+    );
+
+    return rows;
+};
+
+//! Get all items of owner 
+export const getItemsByOwnerId = async (
+    ownerId: number
+) => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            owner_id,
+            type,
+            title,
+            description,
+            item_condition,
+            status
+        FROM items
+        WHERE owner_id = ?
+        `,
+        [ownerId]
+    );
+
+    return rows;
+};
+
+//! Modify item
 export const updateItemById = async (
     id: string,
     type: string,
@@ -128,7 +129,7 @@ export const updateItemById = async (
     return result;
 };
 
-
+//! Delete item
 export const deleteItemById = async (
     id: string
 ) => {
@@ -143,4 +144,3 @@ export const deleteItemById = async (
 
     return result;
 };
-

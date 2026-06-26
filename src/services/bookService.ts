@@ -1,6 +1,7 @@
 import { pool } from "../db/connections";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 
+//! Create book details
 export const createBookDetails = async (
     itemId: number,
     author: string,
@@ -19,9 +20,9 @@ export const createBookDetails = async (
             page_count,
             published_year,
             isbn
-        )
-        VALUES (?,?,?,?,?,?)
-        `,
+            )
+            VALUES (?,?,?,?,?,?)
+            `,
         [
             itemId,
             author,
@@ -35,23 +36,23 @@ export const createBookDetails = async (
     return result;
 }
 
-
+//! Get book by ID
 export const getBookByItemId = async (
     itemId: string
 ) => {
 
     const [rows] = await pool.query<RowDataPacket[]>(
         `
-        SELECT
+            SELECT
             item_id,
             author,
             genre,
             page_count,
             published_year,
             isbn
-        FROM book_details
-        WHERE item_id = ?
-        `,
+            FROM book_details
+            WHERE item_id = ?
+            `,
         [itemId]
     );
 

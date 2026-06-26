@@ -1,9 +1,40 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
+
 import { getAllItems, getItemById, getItemsByOwnerId, createItem, deleteItemById, updateItemById } from "../services/itemService";
 import { getBookByItemId } from "../services/bookService";
 import { getBoardgameByItemId } from "../services/boardgameService";
 
+//! Create item
+export const createNewItem = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    const {
+        type,
+        title,
+        description,
+        itemCondition
+    } = req.body;
+
+    const ownerId = req.user!.userId;
+
+    const itemId = await createItem(
+        ownerId,
+        type,
+        title,
+        description,
+        itemCondition
+    );
+
+    res.status(201).json({
+        message: "Item created",
+        itemId
+    });
+};
+
+//! Get all items
 export const getItems = async (
     req: Request,
     res: Response
@@ -14,6 +45,7 @@ export const getItems = async (
     res.json(items);
 };
 
+//! Get item by ID
 export const getItem = async (
     req: Request,
     res: Response
@@ -56,7 +88,7 @@ export const getItem = async (
     res.json(item[0]);
 };
 
-
+//! Get items of owner
 export const getMyItems = async (
     req: AuthRequest,
     res: Response
@@ -71,66 +103,7 @@ export const getMyItems = async (
     res.json(items);
 };
 
-
-export const createNewitem = async (
-    req: AuthRequest,
-    res: Response
-) => {
-
-    const {
-        type,
-        title,
-        description,
-        itemCondition
-    } = req.body;
-
-    const owner_id = req.user!.userId;
-
-    const itemId = await createItem(
-        owner_id,
-        type,
-        title,
-        description,
-        itemCondition
-    );
-
-    res.status(201).json({
-        message: "Item created",
-        itemId
-    });
-};
-
-export const deleteItem = async (
-    req: AuthRequest,
-    res: Response
-) => {
-
-    const item = await getItemById(
-        String(req.params.id)
-    );
-
-    if (item.length === 0) {
-        return res.status(404).json({
-            message: "Item not found"
-        });
-    }
-
-    if (item[0].owner_id !== req.user!.userId) {
-        return res.status(403).json({
-            message: "Forbidden"
-        });
-    }
-
-    await deleteItemById(
-        String(req.params.id)
-    );
-
-    res.json({
-        message: "Item deleted"
-    });
-};
-
-
+//! Modify item
 export const updateItem = async (
     req: AuthRequest,
     res: Response
@@ -172,3 +145,33 @@ export const updateItem = async (
     });
 };
 
+//! Delete item
+export const deleteItem = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    const item = await getItemById(
+        String(req.params.id)
+    );
+
+    if (item.length === 0) {
+        return res.status(404).json({
+            message: "Item not found"
+        });
+    }
+
+    if (item[0].owner_id !== req.user!.userId) {
+        return res.status(403).json({
+            message: "Forbidden"
+        });
+    }
+
+    await deleteItemById(
+        String(req.params.id)
+    );
+
+    res.json({
+        message: "Item deleted"
+    });
+};

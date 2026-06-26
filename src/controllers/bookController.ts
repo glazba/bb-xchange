@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { createBookDetails, getBookByItemId } from "../services/bookService";
 
+//! Create book
 export const createBook = async (
     req: Request,
     res: Response
@@ -29,7 +30,7 @@ export const createBook = async (
     });
 };
 
-
+//! Get book by ID
 export const getBook = async (
     req: Request,
     res: Response
@@ -40,7 +41,7 @@ export const getBook = async (
     );
 
     if (book.length === 0) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Book details not found"
         });
     }

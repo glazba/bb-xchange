@@ -3,7 +3,7 @@ import { AuthRequest } from "../types/AuthRequest";
 import { createTradeOffer, createOfferItem, getOffersByRequesterId, getReceivedOffers, getOfferById, updateOfferStatus } from "../services/tradeOffersService";
 import { getItemById } from "../services/itemService";
 
-
+//! Create offer
 export const createOffer = async (
     req: AuthRequest,
     res: Response
@@ -20,35 +20,35 @@ export const createOffer = async (
         String(targetItemId)
     );
 
-    //! Üres listát ne lehessen küldeni
+    //! Cannot offer empty item.
     if (!Array.isArray(offeredItemIds) || offeredItemIds.length === 0) {
         return res.status(400).json({
             message: "At least one offered item is required"
         });
     }
 
-    //! Target item létezik?
+    //! Does target item exist?
     if (targetItem.length === 0) {
         return res.status(404).json({
             message: "Target item not found"
         });
     }
 
-    //! Saját itemre ne lehessen ajánlatot tenni
+    //! Cannot offer on own item.
     if (targetItem[0].owner_id === requesterId) {
         return res.status(400).json({
             message: "You cannot make an offer on your own item"
         });
     }
 
-    //! A target item ne lehessen az offered listában
+    //! Target item cannot be offered.
     if (offeredItemIds.includes(targetItemId)) {
         return res.status(400).json({
             message: "Target item cannot be offered"
         });
     }
 
-    //! Minden felajánlott item validálása
+    //! Validate items
     for (const itemId of offeredItemIds) {
 
         const offeredItem = await getItemById(
@@ -88,7 +88,7 @@ export const createOffer = async (
     });
 };
 
-
+//! Get offers by requester
 export const getMyOffers = async (
     req: AuthRequest,
     res: Response
@@ -101,7 +101,7 @@ export const getMyOffers = async (
     res.json(offers);
 };
 
-
+//! Get received offers
 export const getMyReceivedOffers = async (
     req: AuthRequest,
     res: Response
@@ -114,7 +114,7 @@ export const getMyReceivedOffers = async (
     res.json(offers);
 };
 
-
+//! Modify offer status
 export const changeOfferStatus = async (
     req: AuthRequest,
     res: Response
@@ -131,6 +131,7 @@ export const changeOfferStatus = async (
         "cancelled"
     ];
 
+    //! Allowed status?
     if (!allowedStatuses.includes(status)) {
         return res.status(400).json({
             message: "Invalid status"
@@ -141,12 +142,14 @@ export const changeOfferStatus = async (
         String(req.params.id)
     );
 
+    //! Does offer exist?
     if (offer.length === 0) {
         return res.status(404).json({
             message: "Offer not found"
         });
     }
 
+    //! Only pending offers can be modified
     if (offer[0].status !== "pending") {
         return res.status(400).json({
             message: "Offer is already closed"

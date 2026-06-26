@@ -2,14 +2,17 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { AuthRequest } from "../types/AuthRequest";
 
+//! JWT middleware
 export const authMiddleware = (
     req: AuthRequest,
     res: Response,
     next: NextFunction
 ) => {
 
-    const authHeader = req.headers.authorization;
+    const authHeader =
+        req.headers.authorization;
 
+    //! No Auth Header
     if (!authHeader) {
         return res.status(401).json({
             message: "Token missing"
@@ -17,7 +20,15 @@ export const authMiddleware = (
     }
 
     try {
-        const token = authHeader.split(" ")[1];
+        const token =
+            authHeader.split(" ")[1];
+
+        //! Bad Auth format
+        if (!token) {
+            return res.status(401).json({
+                message: "Invalid token"
+            });
+        }
 
         const decoded = jwt.verify(
             token,

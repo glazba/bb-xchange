@@ -1,41 +1,15 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+
 import { Request, Response } from "express";
 import { getAllUsers, getUserById, createUser, getUserByEmail } from "../services/userService";
 
-
-export const getUsers = async (
-    req: Request,
-    res: Response
-) => {
-    const users = await getAllUsers();
-
-    res.json(users);
-};
-
-export const getUser = async (
-    req: Request,
-    res: Response
-) => {
-    
-    const user = await getUserById(String(req.params.id));
-
-    if (user.length === 0) {
-        return res.status(404).json({
-            message: "User not found"
-        });
-    }
-
-    res.json(user);
-};
-
-
-//! REGISTER
-
+//! Register
 export const registerUser = async (
     req: Request,
     res: Response
 ) => {
+
     const {
         username,
         email,
@@ -56,9 +30,33 @@ export const registerUser = async (
     });
 };
 
+export const getUsers = async (
+    req: Request,
+    res: Response
+) => {
 
-//! LOGIN
+    const users = await getAllUsers();
 
+    res.json(users);
+};
+
+export const getUser = async (
+    req: Request,
+    res: Response
+) => {
+
+    const user = await getUserById(String(req.params.id));
+
+    if (user.length === 0) {
+        return res.status(404).json({
+            message: "User not found"
+        });
+    }
+
+    res.json(user[0]);
+};
+
+//! Login
 export const loginUser = async (
     req: Request,
     res: Response
@@ -101,7 +99,7 @@ export const loginUser = async (
             expiresIn: "1d"
         }
     );
-    
+
     res.json({
         message: "Login successful",
         token

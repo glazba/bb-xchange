@@ -3,11 +3,8 @@ import { createBoardgame, getBoardgame } from "../controllers/boardgameControlle
 
 const router = Router();
 
-
 router.post("/", createBoardgame);
 
-
 router.get("/:itemId", getBoardgame);
-
 
 export default router;

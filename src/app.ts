@@ -3,11 +3,14 @@ import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 
+//! DB connection
 import { pool } from "./db/connections";
 
+//! Types and middleware
 import { AuthRequest } from "./types/AuthRequest";
 import { authMiddleware } from "./middleware/authMiddleware";
 
+//! Routes
 import userRoutes from "./routes/userRoutes";
 import itemRoutes from "./routes/itemRoutes";
 import bookRoutes from "./routes/bookRoutes";
@@ -16,6 +19,7 @@ import tradeOfferRoutes from "./routes/tradeOfferRoutes";
 
 const app = express();
 
+//! API Rate Limiter
 const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
@@ -24,10 +28,11 @@ const apiLimiter = rateLimit({
     }
 });
 
+//! Middlewares
 app.use(express.json());
 
 app.use(cors({
-    origin: "https://localhost:5173",
+    origin: "http://localhost:5173",
     credentials: true
 }));
 
@@ -35,32 +40,26 @@ app.use(helmet());
 
 app.use(apiLimiter);
 
-
+//! API Routes
 app.use("/users", userRoutes);
-
 app.use("/items", itemRoutes);
-
 app.use("/books", bookRoutes);
-
 app.use("/boardgames", boardgameRoutes);
-
 app.use("/offers", tradeOfferRoutes);
 
-
+//! Basic endpoint
 app.get("/", (req, res) => {
     res.send("Hello BB-Xchange");
 });
 
-app.get("/about", (req, res) => {
-    res.send("BB-Xchange backend");
-});
-
+//! Health check
 app.get("/health", (req, res) => {
     res.json({
         status: "ok"
     });
 });
 
+//! DB connection check
 app.get("/health/db", async (req, res) => {
     try {
         const connection = await pool.getConnection();
@@ -77,19 +76,15 @@ app.get("/health/db", async (req, res) => {
     }
 });
 
-app.get("/profile/:id", (req, res) => {
-    res.json({
-        profileId: req.params.id
-    });
-});
-
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
-});
-
+//! JWT test endpoint
 app.get("/protected", authMiddleware, (req: AuthRequest, res) => {
     res.json({
         message: "Protected route",
         user: req.user
     });
+});
+
+//! Server launch
+app.listen(3000, () => {
+    console.log("Server running on port 3000");
 });

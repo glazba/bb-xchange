@@ -1,7 +1,7 @@
 import { pool } from "../db/connections";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 
-
+//! Create offer
 export const createTradeOffer = async (
     requesterId: number,
     targetItemId: number
@@ -25,7 +25,7 @@ export const createTradeOffer = async (
     return result.insertId;
 };
 
-
+//! Create offer item
 export const createOfferItem = async (
     offerId: number,
     itemId: number
@@ -45,7 +45,7 @@ export const createOfferItem = async (
     );
 };
 
-
+//! Get offers by requestor
 export const getOffersByRequesterId = async (
     requesterId: number
 ) => {
@@ -69,7 +69,7 @@ export const getOffersByRequesterId = async (
     return rows;
 };
 
-
+//! Get received offers
 export const getReceivedOffers = async (
     userId: number
 ) => {
@@ -95,7 +95,7 @@ export const getReceivedOffers = async (
     return rows;
 };
 
-
+//! Get offer by ID
 export const getOfferById = async (
     offerId: string //? Number?
 ) => {
@@ -116,7 +116,7 @@ export const getOfferById = async (
     return rows;
 };
 
-
+//! Modify offer status
 export const updateOfferStatus = async (
     offerId: string,
     status: string

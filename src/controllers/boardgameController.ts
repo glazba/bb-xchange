@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { createBoardgameDetails, getBoardgameByItemId } from "../services/boardgameService";
 
+//! Create boardgame
 export const createBoardgame = async (
     req: Request,
     res: Response
@@ -29,6 +30,7 @@ export const createBoardgame = async (
     });
 };
 
+//! Get boardgame by ID
 export const getBoardgame = async (
     req: Request,
     res: Response
@@ -39,7 +41,7 @@ export const getBoardgame = async (
     );
 
     if (boardgame.length === 0) {
-        res.status(404).json({
+        return res.status(404).json({
             message: "Boardgame not found"
         });
     }

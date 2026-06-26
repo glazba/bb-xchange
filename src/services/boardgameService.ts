@@ -1,6 +1,7 @@
 import { pool } from "../db/connections";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 
+//! Create boardgame details
 export const createBoardgameDetails = async (
     itemId: number,
     genre: string,
@@ -35,7 +36,7 @@ export const createBoardgameDetails = async (
     return result;
 };
 
-
+//! Get boardgame by ID
 export const getBoardgameByItemId = async (
     itemId: string
 ) => {
@@ -49,11 +50,11 @@ export const getBoardgameByItemId = async (
             max_players,
             recommended_age,
             playtime
-        FROM boardgame_details
+        FROM boardgame_details    
         WHERE item_id = ?
         `,
         [itemId]
     );
 
     return rows;
-};
+};    
