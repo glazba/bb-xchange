@@ -6,13 +6,19 @@ interface AuthProviderProps {
 }
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem("token"),
+  );
 
   const login = (newToken: string) => {
+    localStorage.setItem("token", newToken);
+
     setToken(newToken);
   };
 
   const logout = () => {
+    localStorage.removeItem("token");
+
     setToken(null);
   };
 
