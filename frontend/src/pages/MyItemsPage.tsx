@@ -4,6 +4,7 @@ import { getMyItems, deleteItem } from "../api/itemApi";
 
 import type { Item } from "../types/Item";
 import ItemCard from "../components/ItemCard/ItemCard";
+import styles from "../styles/Pages.module.css";
 
 function MyItemsPage() {
   const { token } = useAuth();
@@ -34,17 +35,19 @@ function MyItemsPage() {
   }, [token]);
 
   return (
-    <>
+    <div className={styles.page}>
       <h1>Termékeim</h1>
-      {items.map((item) => (
-        <ItemCard
-          key={item.id}
-          item={item}
-          onDelete={handleDelete}
-          isOwner={true}
-        />
-      ))}
-    </>
+      <div className={styles.grid}>
+        {items.map((item) => (
+          <ItemCard
+            key={item.id}
+            item={item}
+            onDelete={handleDelete}
+            isOwner={true}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 

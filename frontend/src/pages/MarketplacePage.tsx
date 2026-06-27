@@ -5,6 +5,8 @@ import type { Item } from "../types/Item";
 import { getAllItems, getMyItems } from "../api/itemApi";
 import ItemCard from "../components/ItemCard/ItemCard";
 
+import styles from "../styles/Pages.module.css";
+
 function MarketplacePage() {
   const { token } = useAuth();
   const [items, setItems] = useState<Item[]>([]);
@@ -30,17 +32,19 @@ function MarketplacePage() {
   }, [token]);
 
   return (
-    <>
+    <div className={styles.page}>
       <h1>Termék Adatlap</h1>
-      {items.map((item) => (
-        <ItemCard
-          key={item.id}
-          item={item}
-          onDelete={() => {}}
-          isOwner={false}
-        />
-      ))}
-    </>
+      <div className={styles.grid}>
+        {items.map((item) => (
+          <ItemCard
+            key={item.id}
+            item={item}
+            onDelete={() => {}}
+            isOwner={false}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 

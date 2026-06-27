@@ -31,11 +31,14 @@ function ItemDetails() {
 
   return (
     <div className={styles.container}>
+      <div className={styles.image}>{item.type === "book" ? "📚" : "🎲"}</div>
       <h1>{item.title}</h1>
-      <p>Típus: {item.type}</p>
-      <p>{item.description}</p>
-      <p>Állapot: {item.item_condition}</p>
-      <p>Státusz: {item.status}</p>
+      <div className={styles.badges}>
+        <p>Típus: {item.type}</p>
+        <p>{item.description}</p>
+        <p>Állapot: {item.item_condition}</p>
+        <p>Státusz: {item.status}</p>
+      </div>
     </div>
   );
 }

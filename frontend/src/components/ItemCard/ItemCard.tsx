@@ -11,11 +11,14 @@ interface ItemCardProps {
 function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
   return (
     <div className={styles.card}>
+      <div className={styles.image}>{item.type === "book" ? "📚" : "🎲"}</div>
       <h3>{item.title}</h3>
+      <div className={styles.badges}>
+        <span>Típus: {item.type}</span>
+        <span>Állapot: {item.item_condition}</span>
+        <span>Státusz: {item.status}</span>
+      </div>
       <p>{item.description}</p>
-      <p>Típus: {item.type}</p>
-      <p>Állapot: {item.item_condition}</p>
-      <p>Státusz: {item.status}</p>
       <div className={styles.buttons}>
         {isOwner && (
           <>
