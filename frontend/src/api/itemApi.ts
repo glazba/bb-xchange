@@ -45,3 +45,21 @@ export const createItem = async (
 
     return data;
 };
+
+export const deleteItem = async (
+    token: string,
+    itemId: number
+) => {
+
+    const response = await fetch(
+        `http://localhost:3000/items/${itemId}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    return response.json();
+};

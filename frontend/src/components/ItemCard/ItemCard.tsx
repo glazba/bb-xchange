@@ -3,9 +3,10 @@ import styles from "./ItemCard.module.css";
 
 interface ItemCardProps {
   item: Item;
+  onDelete: (itemId: number) => void;
 }
 
-function ItemCard({ item }: ItemCardProps) {
+function ItemCard({ item, onDelete }: ItemCardProps) {
   return (
     <div className={styles.card}>
       <h3>{item.title}</h3>
@@ -16,7 +17,7 @@ function ItemCard({ item }: ItemCardProps) {
       <div className={styles.buttons}>
         <button>Megnyitás</button>
         <button>Módosítás</button>
-        <button>Törlés</button>
+        <button onClick={() => onDelete(item.id)}>Törlés</button>
       </div>
     </div>
   );
