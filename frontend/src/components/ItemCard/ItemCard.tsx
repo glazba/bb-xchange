@@ -1,4 +1,5 @@
 import type { Item } from "../../types/Item";
+import { Link } from "react-router-dom";
 import styles from "./ItemCard.module.css";
 
 interface ItemCardProps {
@@ -16,7 +17,9 @@ function ItemCard({ item, onDelete }: ItemCardProps) {
       <p>Státusz: {item.status}</p>
       <div className={styles.buttons}>
         <button>Megnyitás</button>
-        <button>Módosítás</button>
+        <button>
+          <Link to={`/edit-item/${item.id}`}>Módosítás</Link>
+        </button>
         <button onClick={() => onDelete(item.id)}>Törlés</button>
       </div>
     </div>

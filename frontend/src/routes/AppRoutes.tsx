@@ -10,6 +10,7 @@ import MyItemsPage from "../pages/MyItemsPage";
 import ItemDetailsPage from "../pages/ItemDetailsPage";
 import OffersPage from "../pages/OffersPage";
 import CreateItemPage from "../pages/CreateItemPage";
+import EditItemPage from "../pages/EditItemPage";
 
 function AppRoutes() {
   return (
@@ -56,6 +57,14 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <CreateItemPage />
+              </ProtectedRoute>
+            }
+          ></Route>
+          <Route
+            path="/edit-item/:id"
+            element={
+              <ProtectedRoute>
+                <EditItemPage />
               </ProtectedRoute>
             }
           ></Route>
