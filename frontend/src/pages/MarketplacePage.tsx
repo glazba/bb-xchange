@@ -1,51 +1,47 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
-import { getMyItems, deleteItem } from "../api/itemApi";
 
 import type { Item } from "../types/Item";
+import { getAllItems, getMyItems } from "../api/itemApi";
 import ItemCard from "../components/ItemCard/ItemCard";
 
-function MyItemsPage() {
+function MarketplacePage() {
   const { token } = useAuth();
-
   const [items, setItems] = useState<Item[]>([]);
-
-  const handleDelete = async (itemId: number) => {
-    if (!token) {
-      return;
-    }
-
-    await deleteItem(token, itemId);
-
-    setItems(items.filter((item) => item.id !== itemId));
-  };
 
   useEffect(() => {
     const fetchItems = async () => {
+      const allItems = await getAllItems();
+
       if (!token) {
+        setItems(allItems);
         return;
       }
+      const myItems = await getMyItems(token);
 
-      const data = await getMyItems(token);
+      const filteredItems = allItems.filter(
+        (item: Item) => !myItems.some((myItem: Item) => myItem.id === item.id),
+      );
 
-      setItems(data);
+      setItems(filteredItems);
     };
+
     fetchItems();
   }, [token]);
 
   return (
     <>
-      <h1>Termékeim</h1>
+      <h1>Termék Adatlap</h1>
       {items.map((item) => (
         <ItemCard
           key={item.id}
           item={item}
-          onDelete={handleDelete}
-          isOwner={true}
+          onDelete={() => {}}
+          isOwner={false}
         />
       ))}
     </>
   );
 }
 
-export default MyItemsPage;
+export default MarketplacePage;

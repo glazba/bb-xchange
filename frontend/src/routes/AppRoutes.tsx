@@ -11,6 +11,7 @@ import ItemDetailsPage from "../pages/ItemDetailsPage";
 import OffersPage from "../pages/OffersPage";
 import CreateItemPage from "../pages/CreateItemPage";
 import EditItemPage from "../pages/EditItemPage";
+import MarketplacePage from "../pages/MarketplacePage";
 
 function AppRoutes() {
   return (
@@ -27,7 +28,7 @@ function AppRoutes() {
                 <ProfilePage />
               </ProtectedRoute>
             }
-          ></Route>
+          />
           <Route
             path="/items"
             element={
@@ -35,7 +36,7 @@ function AppRoutes() {
                 <MyItemsPage />
               </ProtectedRoute>
             }
-          ></Route>
+          />
           <Route
             path="/items/:id"
             element={
@@ -43,7 +44,7 @@ function AppRoutes() {
                 <ItemDetailsPage />
               </ProtectedRoute>
             }
-          ></Route>
+          />
           <Route
             path="/offers"
             element={
@@ -51,7 +52,7 @@ function AppRoutes() {
                 <OffersPage />
               </ProtectedRoute>
             }
-          ></Route>
+          />
           <Route
             path="/create-item"
             element={
@@ -59,7 +60,7 @@ function AppRoutes() {
                 <CreateItemPage />
               </ProtectedRoute>
             }
-          ></Route>
+          />
           <Route
             path="/edit-item/:id"
             element={
@@ -67,7 +68,15 @@ function AppRoutes() {
                 <EditItemPage />
               </ProtectedRoute>
             }
-          ></Route>
+          />
+          <Route
+            path="/marketplace"
+            element={
+              <ProtectedRoute>
+                <MarketplacePage />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

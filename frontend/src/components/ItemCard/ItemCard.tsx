@@ -4,10 +4,11 @@ import styles from "./ItemCard.module.css";
 
 interface ItemCardProps {
   item: Item;
-  onDelete: (itemId: number) => void;
+  onDelete?: (itemId: number) => void;
+  isOwner?: boolean;
 }
 
-function ItemCard({ item, onDelete }: ItemCardProps) {
+function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
   return (
     <div className={styles.card}>
       <h3>{item.title}</h3>
@@ -16,11 +17,16 @@ function ItemCard({ item, onDelete }: ItemCardProps) {
       <p>Állapot: {item.item_condition}</p>
       <p>Státusz: {item.status}</p>
       <div className={styles.buttons}>
-        <button>Megnyitás</button>
-        <button>
-          <Link to={`/edit-item/${item.id}`}>Módosítás</Link>
-        </button>
-        <button onClick={() => onDelete(item.id)}>Törlés</button>
+        {isOwner && (
+          <>
+            <Link to={`/edit-item/${item.id}`}>Módosítás</Link>
+
+            {onDelete && (
+              <button onClick={() => onDelete(item.id)}>Törlés</button>
+            )}
+          </>
+        )}
+        {!isOwner && <Link to={`/items/${item.id}`}>Részletek</Link>}
       </div>
     </div>
   );

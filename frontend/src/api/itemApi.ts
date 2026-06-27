@@ -29,6 +29,15 @@ export const createItem = async (
 };
 
 
+export const getAllItems = async () => {
+    const response = await fetch(
+        "http://localhost:3000/items"
+    );
+
+    const data = await response.json();
+    return data;
+};
+
 export const getMyItems = async (
     token: string
 ) => {

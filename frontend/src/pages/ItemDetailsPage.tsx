@@ -1,5 +1,7 @@
+import ItemDetails from "../components/ItemDetails/ItemDetails";
+
 function ItemDetailsPage() {
-  return <h1>Item Details Page</h1>;
+  return <ItemDetails />;
 }
 
 export default ItemDetailsPage;

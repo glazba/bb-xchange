@@ -21,6 +21,7 @@ function Navbar() {
 
         {token && (
           <>
+            <Link to="/marketplace">Marketplace</Link>
             <Link to="/items">Termékeim</Link>
             <Link to="/create-item">Termék hozzáadása</Link>
             <Link to="/offers">Ajánlatok</Link>
