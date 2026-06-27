@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { loginUser } from "../../api/authApi";
 import { useAuth } from "../../hooks/useAuth";
+import styles from "./LoginForm.module.css";
 
 function LoginForm() {
   const { login } = useAuth();
@@ -22,10 +23,11 @@ function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Bejelentkezés</h1>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h1 className={styles.title}>Bejelentkezés</h1>
 
       <input
+        className={styles.input}
         type="email"
         placeholder="Email"
         value={email}
@@ -33,13 +35,16 @@ function LoginForm() {
       />
 
       <input
+        className={styles.input}
         type="password"
         placeholder="Jelszó"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
       />
 
-      <button type="submit">Bejelentkezés</button>
+      <button className={styles.button} type="submit">
+        Bejelentkezés
+      </button>
     </form>
   );
 }

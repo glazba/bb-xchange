@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { registerUser } from "../../api/authApi";
+import styles from "./RegisterForm.module.css";
 
 function RegisterForm() {
   const [username, setUsername] = useState("");
@@ -19,10 +20,11 @@ function RegisterForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Regisztráció</h1>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h1 className={styles.title}>Regisztráció</h1>
 
       <input
+        className={styles.input}
         type="text"
         placeholder="Felhasználónév"
         value={username}
@@ -30,6 +32,7 @@ function RegisterForm() {
       />
 
       <input
+        className={styles.input}
         type="email"
         placeholder="Email"
         value={email}
@@ -37,6 +40,7 @@ function RegisterForm() {
       />
 
       <input
+        className={styles.input}
         type="password"
         placeholder="Jelszó"
         value={password}
@@ -44,13 +48,16 @@ function RegisterForm() {
       />
 
       <input
+        className={styles.input}
         type="text"
         placeholder="Város"
         value={city}
         onChange={(event) => setCity(event.target.value)}
       />
 
-      <button type="submit">Regisztráció</button>
+      <button className={styles.button} type="submit">
+        Regisztráció
+      </button>
     </form>
   );
 }

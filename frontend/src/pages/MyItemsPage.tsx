@@ -3,6 +3,7 @@ import { useAuth } from "../hooks/useAuth";
 import { getMyItems } from "../api/itemApi";
 
 import type { Item } from "../types/Item";
+import ItemCard from "../components/ItemCard/ItemCard";
 
 function MyItemsPage() {
   const { token } = useAuth();
@@ -26,10 +27,7 @@ function MyItemsPage() {
     <>
       <h1>Termékeim</h1>
       {items.map((item) => (
-        <div key={item.id}>
-          <h3>{item.title}</h3>
-          <p>{item.description}</p>
-        </div>
+        <ItemCard key={item.id} item={item} />
       ))}
     </>
   );

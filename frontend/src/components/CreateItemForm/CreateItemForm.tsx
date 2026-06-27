@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { createItem } from "../../api/itemApi";
 
+import styles from "./CreateItemForm.module.css";
+
 function CreateItemForm() {
   const { token } = useAuth();
   const navigate = useNavigate();
@@ -26,16 +28,17 @@ function CreateItemForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Termék hozzáadása</h1>
+    <form className={styles.form} onSubmit={handleSubmit}>
+      <h1 className={styles.title}>Termék hozzáadása</h1>
 
-      <select value={type} onChange={(event) => setType(event.target.value)}>
+      <select className={styles.input} value={type} onChange={(event) => setType(event.target.value)}>
         <option value="">Típus</option>
         <option value="book">Könyv</option>
         <option value="boardgame">Társasjáték</option>
       </select>
 
       <input
+      className={styles.input}
         type="text"
         placeholder="Cím"
         value={title}
@@ -43,6 +46,7 @@ function CreateItemForm() {
       />
 
       <input
+      className={styles.input}
         type="text"
         placeholder="Leírás"
         value={description}
@@ -50,6 +54,7 @@ function CreateItemForm() {
       />
 
       <select
+      className={styles.input}
         value={itemCondition}
         onChange={(event) => setItemCondition(event.target.value)}
       >
@@ -60,7 +65,8 @@ function CreateItemForm() {
         <option value="used">Használt</option>
         <option value="damaged">Sérült</option>
       </select>
-      <button type="submit">Hozzáadás</button>
+
+      <button className={styles.button} type="submit">Hozzáadás</button>
     </form>
   );
 }
