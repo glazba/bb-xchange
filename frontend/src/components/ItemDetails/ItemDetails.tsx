@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import { getItemById } from "../../api/itemApi";
 import type { Item } from "../../types/Item";
@@ -68,6 +68,7 @@ function ItemDetails() {
             {new Date(item.updated_at).toLocaleDateString("hu-HU")}
           </p>
         )}
+        <Link to={`/offers/create/${item.id}`}>Ajánlat küldése</Link>
       </div>
     </div>
   );

@@ -28,14 +28,14 @@ export const createOffer = async (
     }
 
     //! Does target item exist?
-    if (targetItem.length === 0) {
+    if (!targetItem) {
         return res.status(404).json({
             message: "Target item not found"
         });
     }
 
     //! Cannot offer on own item.
-    if (targetItem[0].owner_id === requesterId) {
+    if (targetItem.owner_id === requesterId) {
         return res.status(400).json({
             message: "You cannot make an offer on your own item"
         });
@@ -55,13 +55,13 @@ export const createOffer = async (
             String(itemId)
         );
 
-        if (offeredItem.length === 0) {
+        if (!offeredItem) {
             return res.status(404).json({
                 message: `Item ${itemId} not found`
             });
         }
 
-        if (offeredItem[0].owner_id !== requesterId) {
+        if (offeredItem.owner_id !== requesterId) {
             return res.status(403).json({
                 message: "You can only offer your own items"
             });
@@ -160,7 +160,13 @@ export const changeOfferStatus = async (
         String(offer[0].target_item_id)
     );
 
-    if (item[0].owner_id !== req.user!.userId) {
+    if (!item) {
+        return res.status(404).json({
+            message: "Item not found"
+        });
+    }
+
+    if (item.owner_id !== req.user!.userId) {
         return res.status(403).json({
             message: "Forbidden"
         });

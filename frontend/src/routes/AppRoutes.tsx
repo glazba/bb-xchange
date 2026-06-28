@@ -12,6 +12,7 @@ import OffersPage from "../pages/OffersPage";
 import CreateItemPage from "../pages/CreateItemPage";
 import EditItemPage from "../pages/EditItemPage";
 import MarketplacePage from "../pages/MarketplacePage";
+import CreateOfferPage from "../pages/CreateOfferPage";
 
 function AppRoutes() {
   return (
@@ -74,6 +75,14 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <MarketplacePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/offers/create/:itemId"
+            element={
+              <ProtectedRoute>
+                <CreateOfferPage />
               </ProtectedRoute>
             }
           />
