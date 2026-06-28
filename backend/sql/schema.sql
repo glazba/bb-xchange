@@ -147,3 +147,6 @@ CREATE INDEX idx_boardgame_genre ON boardgame_details (genre);
 CREATE INDEX idx_trade_offers_status ON trade_offers (status);
 
 CREATE INDEX idx_messages_offer ON messages (offer_id);
+
+/* Add pending to item.status */
+ALTER TABLE items MODIFY COLUMN status ENUM ('active', 'pending', 'traded') DEFAULT 'active';

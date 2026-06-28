@@ -58,20 +58,25 @@ export const getItemById = async (id: string) => {
     const [rows] = await pool.query<RowDataPacket[]>(
         `
         SELECT
-            id,
-            owner_id,
-            type,
-            title,
-            description,
-            item_condition,
-            status
+            items.id,
+            items.owner_id,
+            users.username AS owner_name,
+            items.type,
+            items.title,
+            items.description,
+            items.item_condition,
+            items.status,
+            items.created_at,
+            items.updated_at
         FROM items
-        WHERE id = ?
+        JOIN users
+            ON items.owner_id = users.id
+        WHERE items.id = ?
         `,
         [id]
     );
 
-    return rows;
+    return rows[0];
 };
 
 //! Get all items of owner 

@@ -1,5 +1,12 @@
 import type { Item } from "../../types/Item";
 import { Link } from "react-router-dom";
+
+import {
+  itemTypeLables,
+  itemConditionLabels,
+  itemStatusLabels,
+} from "../../utils/itemLabels";
+
 import styles from "./ItemCard.module.css";
 
 interface ItemCardProps {
@@ -14,9 +21,9 @@ function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
       <div className={styles.image}>{item.type === "book" ? "📚" : "🎲"}</div>
       <h3>{item.title}</h3>
       <div className={styles.badges}>
-        <span>Típus: {item.type}</span>
-        <span>Állapot: {item.item_condition}</span>
-        <span>Státusz: {item.status}</span>
+        <span>Típus: {itemTypeLables[item.type]}</span>
+        <span>Állapot: {itemConditionLabels[item.item_condition]}</span>
+        <span>Státusz: {itemStatusLabels[item.status]}</span>
       </div>
       <p>{item.description}</p>
       <div className={styles.buttons}>

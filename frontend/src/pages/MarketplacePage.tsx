@@ -15,11 +15,25 @@ function MarketplacePage() {
     const fetchItems = async () => {
       const allItems = await getAllItems();
 
+      console.log("ALL ITEMS:", allItems);
+
+      if (!Array.isArray(allItems)) {
+        console.error("Az API nem tömböt adott vissza:", allItems);
+        setItems([]);
+        return;
+      }
+
       if (!token) {
         setItems(allItems);
         return;
       }
+
       const myItems = await getMyItems(token);
+
+      if (!Array.isArray(myItems)) {
+        setItems([]);
+        return;
+      }
 
       const filteredItems = allItems.filter(
         (item: Item) => !myItems.some((myItem: Item) => myItem.id === item.id),

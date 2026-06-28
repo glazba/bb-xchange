@@ -55,37 +55,37 @@ export const getItem = async (
         String(req.params.id)
     );
 
-    if (item.length === 0) {
+    if (!item) {
         return res.status(404).json({
             message: "Item not found"
         });
     }
 
-    if (item[0].type === "book") {
+    if (item.type === "book") {
 
         const book = await getBookByItemId(
             String(req.params.id)
         );
 
         return res.json({
-            ...item[0],
+            ...item,
             ...book[0]
         });
     }
 
-    if (item[0].type === "boardgame") {
+    if (item.type === "boardgame") {
 
         const boardgame = await getBoardgameByItemId(
             String(req.params.id)
         );
 
         return res.json({
-            ...item[0],
+            ...item,
             ...boardgame[0]
         });
     }
 
-    res.json(item[0]);
+    res.json(item);
 };
 
 //! Get items of owner
@@ -113,13 +113,13 @@ export const updateItem = async (
         String(req.params.id)
     );
 
-    if (item.length === 0) {
+    if (!item) {
         return res.status(404).json({
             message: "Item not found"
         });
     }
 
-    if (item[0].owner_id !== req.user!.userId) {
+    if (item.owner_id !== req.user!.userId) {
         return res.status(403).json({
             message: "Forbidden"
         });
@@ -155,13 +155,13 @@ export const deleteItem = async (
         String(req.params.id)
     );
 
-    if (item.length === 0) {
+    if (!item) {
         return res.status(404).json({
             message: "Item not found"
         });
     }
 
-    if (item[0].owner_id !== req.user!.userId) {
+    if (item.owner_id !== req.user!.userId) {
         return res.status(403).json({
             message: "Forbidden"
         });
