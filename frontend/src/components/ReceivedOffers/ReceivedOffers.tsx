@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
-import { getReceivedOffers } from "../../api/tradeOfferApi";
+import { getReceivedOffers, updateOfferStatus } from "../../api/tradeOfferApi";
+
 import type { TradeOffer } from "../../types/TradeOffer";
 import { offerStatusLabels } from "../../utils/itemLabels";
 
@@ -12,17 +13,44 @@ function ReceivedOffers() {
 
   const [offers, setOffers] = useState<TradeOffer[]>([]);
 
+  const fetchOffers = async () => {
+    if (!token) {
+      return;
+    }
+
+    const data = await getReceivedOffers(token);
+
+    setOffers(data);
+  };
+
   useEffect(() => {
-    const fetchOffers = async () => {
-      if (!token) {
-        return;
-      }
+    if (!token) {
+      return;
+    }
+    const loadOffers = async () => {
       const data = await getReceivedOffers(token);
       setOffers(data);
     };
 
-    fetchOffers();
+    loadOffers();
   }, [token]);
+
+  const handleAccept = async (offerId: number) => {
+    if (!token) {
+      return;
+    }
+    await updateOfferStatus(token, offerId, "accepted");
+
+    await fetchOffers();
+  };
+
+  const handleReject = async (offerId: number) => {
+    if (!token) {
+      return;
+    }
+    await updateOfferStatus(token, offerId, "rejected");
+    await fetchOffers();
+  };
 
   return (
     <div className={styles.container}>
@@ -46,6 +74,23 @@ function ReceivedOffers() {
               {new Date(offer.created_at).toLocaleDateString("hu-HU")}
             </p>
           </div>
+
+          {offer.status === "pending" && (
+            <div className={styles.buttons}>
+              <button
+                className={styles.acceptButton}
+                onClick={() => handleAccept(offer.id)}
+              >
+                Elfogadom
+              </button>
+              <button
+                className={styles.rejectButton}
+                onClick={() => handleReject(offer.id)}
+              >
+                Elutasítom
+              </button>
+            </div>
+          )}
         </div>
       ))}
     </div>

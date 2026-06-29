@@ -19,6 +19,7 @@ function Offers() {
       }
 
       const data = await getMyOffers(token);
+      console.log(data);
 
       setOffers(data);
     };
@@ -43,6 +44,9 @@ function Offers() {
             <p>
               <strong>Kért termék:</strong>{" "}
               {offer.target_title ?? offer.target_item_id}
+            </p>
+            <p>
+              <strong>Tulajdonos:</strong> {offer.owner_name ?? "Ismeretlen"}
             </p>
             <p>
               <strong>Létrehozva:</strong>{" "}

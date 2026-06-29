@@ -134,6 +134,24 @@ export const updateItemById = async (
     return result;
 };
 
+//! Update item status
+export const updateItemStatus = async (
+    itemId: string,
+    status: string
+) => {
+    await pool.query(
+        `
+        UPDATE items
+        SET status = ?
+        WHERE id = ?
+        `,
+        [
+            status,
+            itemId
+        ]
+    );
+};
+
 //! Delete item
 export const deleteItemById = async (
     id: string

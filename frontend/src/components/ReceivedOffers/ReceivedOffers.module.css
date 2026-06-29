@@ -20,3 +20,37 @@
   flex-direction: column;
   gap: 0.5rem;
 }
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.acceptButton,
+.rejectButton {
+  border: none;
+  padding: 0.8rem 1.2rem;
+
+  border-radius: 12px;
+
+  color: white;
+  cursor: pointer;
+
+  font-weight: 600;
+
+  transition: 0.2s;
+}
+
+.acceptButton {
+  background: #16a34a;
+}
+
+.rejectButton {
+  background: #dc2626;
+}
+
+.acceptButton:hover,
+.rejectButton:hover {
+  transform: translateY(-2px);
+}

@@ -53,3 +53,25 @@ export const getReceivedOffers = async (
 
     return response.json();
 };
+
+export const updateOfferStatus = async (
+    token: string,
+    offerId: number,
+    status: string
+) => {
+
+    const response = await fetch(
+        `http://localhost:3000/offers/${offerId}`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                status,
+            }),
+        }
+    );
+    return response.json();
+}

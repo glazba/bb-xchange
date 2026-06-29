@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
-import { createTradeOffer, createOfferItem, getOffersByRequesterId, getReceivedOffers, getOfferById, updateOfferStatus } from "../services/tradeOffersService";
-import { getItemById } from "../services/itemService";
+import { createTradeOffer, createOfferItem, getOfferItems, getOffersByRequesterId, getReceivedOffers, getOfferById, updateOfferStatus, cancelOtherOffers } from "../services/tradeOffersService";
+import { getItemById, updateItemStatus } from "../services/itemService";
+import { updateItem } from "./itemController";
 
 //! Create offer
 export const createOffer = async (
@@ -176,6 +177,29 @@ export const changeOfferStatus = async (
         String(req.params.id),
         status
     );
+
+    if (status === "accepted") {
+        await updateItemStatus(
+            String(offer[0].target_item_id),
+            "traded"
+        );
+
+        const offerItems = await getOfferItems(
+            String(req.params.id)
+        );
+
+        for (const item of offerItems) {
+            await updateItemStatus(
+                String(item.item_id),
+                "traded"
+            );
+        }
+
+        await cancelOtherOffers(
+            offer[0].target_item_id,
+            Number(req.params.id)
+        );
+    }
 
     res.json({
         message: "Offer updated"

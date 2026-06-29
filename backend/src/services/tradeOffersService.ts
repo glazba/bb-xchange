@@ -45,6 +45,23 @@ export const createOfferItem = async (
     );
 };
 
+//! Get offer items
+export const getOfferItems = async (
+    offerId: string
+) => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT item_id
+        FROM offer_items
+        WHERE offer_id = ?
+        `,
+        [offerId]
+    );
+
+    return rows;
+};
+
 //! Get offers by requestor
 export const getOffersByRequesterId = async (
     requesterId: number
@@ -57,12 +74,15 @@ export const getOffersByRequesterId = async (
             trade_offers.requester_id,
             trade_offers.target_item_id,
             items.title AS target_title,
+            users.username AS owner_name,
             trade_offers.status,
             trade_offers.created_at,
             trade_offers.updated_at
         FROM trade_offers
         INNER JOIN items
             ON trade_offers.target_item_id = items.id
+        INNER JOIN users
+            ON items.owner_id = users.id
         WHERE trade_offers.requester_id = ?
         ORDER BY trade_offers.created_at DESC
         `,
@@ -134,6 +154,26 @@ export const updateOfferStatus = async (
         [
             status,
             offerId
+        ]
+    );
+};
+
+//! Cancel offers
+export const cancelOtherOffers = async (
+    targetItemId: number,
+    acceptedOfferId: number
+) => {
+    await pool.query(
+        `
+        UPDATE trade_offers
+        SET status = 'calcelled'
+        WHERE target_item_id = ?
+        AND id != ?
+        AND status = 'pending'
+        `,
+        [
+            targetItemId,
+            acceptedOfferId
         ]
     );
 };
