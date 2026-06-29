@@ -1,4 +1,4 @@
-export const itemTypeLables: Record<string, string> = {
+export const itemTypeLabels: Record<string, string> = {
     book: "Könyv",
     boardgame: "Társasjáték"
 };

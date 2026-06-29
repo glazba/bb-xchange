@@ -20,6 +20,10 @@ export const loginUser = async (
 
     const data = await response.json();
 
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
     return data;
 };
 
@@ -48,6 +52,10 @@ export const registerUser = async (
     );
 
     const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
 
     return data;
 };

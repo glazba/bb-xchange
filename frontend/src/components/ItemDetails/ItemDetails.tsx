@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 
 import { getItemById } from "../../api/itemApi";
 import type { Item } from "../../types/Item";
 
 import {
-  itemTypeLables,
+  itemTypeLabels,
   itemConditionLabels,
   itemStatusLabels,
 } from "../../utils/itemLabels";
@@ -15,21 +15,37 @@ import styles from "./ItemDetails.module.css";
 function ItemDetails() {
   const { id } = useParams();
 
+  const navigate = useNavigate();
+
   const [item, setItem] = useState<Item | null>(null);
 
   useEffect(() => {
     const fetchItem = async () => {
       if (!id) {
+        alert("A termék nem található.");
+
+        navigate("/items");
+
         return;
       }
 
-      const data = await getItemById(id);
+      try {
+        const data = await getItemById(id);
 
-      setItem(data);
+        setItem(data);
+      } catch (error) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : "Nem sikerült betölteni a terméket.",
+        );
+
+        navigate("/items");
+      }
     };
 
     fetchItem();
-  }, [id]);
+  }, [id, navigate]);
 
   if (!item) {
     return <p>Betöltés...</p>;
@@ -45,7 +61,7 @@ function ItemDetails() {
           <strong>Tulajdonos:</strong> {item.owner_name ?? "Ismeretlen"}
         </p>
         <p>
-          <strong>Típus:</strong> {itemTypeLables[item.type]}
+          <strong>Típus:</strong> {itemTypeLabels[item.type]}
         </p>
         <p>
           <strong>Állapot:</strong> {itemConditionLabels[item.item_condition]}
@@ -68,7 +84,9 @@ function ItemDetails() {
             {new Date(item.updated_at).toLocaleDateString("hu-HU")}
           </p>
         )}
-        <Link to={`/offers/create/${item.id}`}>Ajánlat küldése</Link>
+        {item.status === "active" && (
+          <Link to={`/offers/create/${item.id}`}>Ajánlat küldése</Link>
+        )}
       </div>
     </div>
   );

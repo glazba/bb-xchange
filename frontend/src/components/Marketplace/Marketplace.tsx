@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 
 import type { Item } from "../../types/Item";
+
 import { getAllItems, getMyItems } from "../../api/itemApi";
 import ItemCard from "../ItemCard/ItemCard";
 
@@ -9,37 +10,33 @@ import styles from "./Marketplace.module.css";
 
 function MarketplacePage() {
   const { token } = useAuth();
+
   const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
     const fetchItems = async () => {
-      const allItems = await getAllItems();
+      try {
+        const allItems = await getAllItems();
 
-      console.log("ALL ITEMS:", allItems);
+        if (!token) {
+          setItems(allItems);
+          return;
+        }
 
-      if (!Array.isArray(allItems)) {
-        console.error("Az API nem tömböt adott vissza:", allItems);
-        setItems([]);
-        return;
+        const myItems = await getMyItems(token);
+
+        const filteredItems = allItems.filter(
+          (item) => !myItems.some((myItem) => myItem.id === item.id),
+        );
+
+        setItems(filteredItems);
+      } catch (error) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : "Nem sikerült betölteni a termékeket.",
+        );
       }
-
-      if (!token) {
-        setItems(allItems);
-        return;
-      }
-
-      const myItems = await getMyItems(token);
-
-      if (!Array.isArray(myItems)) {
-        setItems([]);
-        return;
-      }
-
-      const filteredItems = allItems.filter(
-        (item: Item) => !myItems.some((myItem: Item) => myItem.id === item.id),
-      );
-
-      setItems(filteredItems);
     };
 
     fetchItems();

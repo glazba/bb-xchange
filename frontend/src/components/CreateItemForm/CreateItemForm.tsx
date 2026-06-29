@@ -22,9 +22,22 @@ function CreateItemForm() {
       return;
     }
 
-    await createItem(token, type, title, description, itemCondition);
+    if (!type || !title.trim() || !itemCondition) {
+      alert("Tölts ki minden mezőt!");
+      return;
+    }
 
-    navigate("/items");
+    try {
+      await createItem(token, type, title, description, itemCondition);
+
+      navigate("/my-items");
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "A terméket nem sikerült létrehozni.",
+      );
+    }
   };
 
   return (

@@ -4,8 +4,9 @@ import { useAuth } from "../../hooks/useAuth";
 import { getMyOffers } from "../../api/tradeOfferApi";
 import type { TradeOffer } from "../../types/TradeOffer";
 
-import styles from "./Offers.module.css";
 import { offerStatusLabels } from "../../utils/itemLabels";
+
+import styles from "./Offers.module.css";
 
 function Offers() {
   const { token } = useAuth();
@@ -18,10 +19,19 @@ function Offers() {
         return;
       }
 
-      const data = await getMyOffers(token);
-      console.log(data);
+      try {
+        const data = await getMyOffers(token);
 
-      setOffers(data);
+        setOffers(data);
+      } catch (error) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : "Nem sikerült betölteni az ajánlatokat.",
+        );
+
+        setOffers([]);
+      }
     };
 
     fetchOffers();

@@ -1,10 +1,12 @@
+import type { Item } from "../types/Item";
+
 export const createItem = async (
     token: string,
     type: string,
     title: string,
     description: string,
     itemCondition: string
-) => {
+): Promise<Item> => {
 
     const response = await fetch(
         "http://localhost:3000/items",
@@ -25,22 +27,32 @@ export const createItem = async (
 
     const data = await response.json();
 
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
     return data;
 };
 
 
-export const getAllItems = async () => {
+export const getAllItems = async ()
+    : Promise<Item[]> => {
     const response = await fetch(
         "http://localhost:3000/items"
     );
 
     const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
     return data;
 };
 
 export const getMyItems = async (
-    token: string
-) => {
+    token: string,
+): Promise<Item[]> => {
 
     const response = await fetch(
         "http://localhost:3000/items/me",
@@ -53,17 +65,25 @@ export const getMyItems = async (
 
     const data = await response.json();
 
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
     return data;
 };
 
 export const getItemById = async (
     itemId: string
-) => {
+): Promise<Item> => {
     const response = await fetch(
         `http://localhost:3000/items/${itemId}`
     );
 
     const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
 
     return data;
 };
@@ -76,7 +96,7 @@ export const updateItem = async (
     title: string,
     description: string,
     itemCondition: string
-) => {
+): Promise<Item> => {
 
     const response = await fetch(
         `http://localhost:3000/items/${itemId}`,
@@ -97,6 +117,10 @@ export const updateItem = async (
 
     const data = await response.json();
 
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
     return data;
 };
 
@@ -104,7 +128,7 @@ export const updateItem = async (
 export const deleteItem = async (
     token: string,
     itemId: number
-) => {
+): Promise<Item> => {
 
     const response = await fetch(
         `http://localhost:3000/items/${itemId}`,
@@ -116,6 +140,11 @@ export const deleteItem = async (
         }
     );
 
-    return response.json();
-};
+    const data = await response.json();
 
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+};

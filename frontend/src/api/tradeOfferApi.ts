@@ -1,3 +1,5 @@
+import type { TradeOffer } from "../types/TradeOffer";
+
 export const createOffer = async (
     token: string,
     targetItemId: number,
@@ -19,12 +21,18 @@ export const createOffer = async (
         }
     );
 
-    return response.json();
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
 };
 
 export const getMyOffers = async (
     token: string,
-) => {
+): Promise<TradeOffer[]> => {
     const response = await fetch(
         "http://localhost:3000/offers/me",
         {
@@ -35,12 +43,18 @@ export const getMyOffers = async (
         }
     );
 
-    return response.json();
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
 };
 
 export const getReceivedOffers = async (
     token: string,
-) => {
+): Promise<TradeOffer[]> => {
     const response = await fetch(
         "http://localhost:3000/offers/received",
         {
@@ -51,7 +65,13 @@ export const getReceivedOffers = async (
         }
     );
 
-    return response.json();
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
 };
 
 export const updateOfferStatus = async (
@@ -73,5 +93,12 @@ export const updateOfferStatus = async (
             }),
         }
     );
-    return response.json();
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
 }

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+
 import { useAuth } from "../../hooks/useAuth";
 import { getMyItems, deleteItem } from "../../api/itemApi";
 
 import type { Item } from "../../types/Item";
+
 import ItemCard from "../../components/ItemCard/ItemCard";
 import styles from "./MyItems.module.css";
 
@@ -17,9 +19,19 @@ function MyItems() {
       return;
     }
 
-    await deleteItem(token, itemId);
+    try {
+      await deleteItem(token, itemId);
 
-    setItems(items.filter((item) => item.id !== itemId));
+      setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+
+      alert("A termék sikeresen törölve.");
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "A terméket nem sikerült törölni.",
+      );
+    }
   };
 
   useEffect(() => {
@@ -28,10 +40,21 @@ function MyItems() {
         return;
       }
 
-      const data = await getMyItems(token);
+      try {
+        const data = await getMyItems(token);
 
-      setItems(data);
+        setItems(data);
+      } catch (error) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : "Nem sikerült betölteni a termékeket.",
+        );
+
+        setItems([]);
+      }
     };
+
     fetchItems();
   }, [token]);
 

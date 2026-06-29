@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+
 import { useAuth } from "../../hooks/useAuth";
 
 import { getReceivedOffers, updateOfferStatus } from "../../api/tradeOfferApi";
 
 import type { TradeOffer } from "../../types/TradeOffer";
+
 import { offerStatusLabels } from "../../utils/itemLabels";
 
 import styles from "./ReceivedOffers.module.css";
@@ -18,18 +20,41 @@ function ReceivedOffers() {
       return;
     }
 
-    const data = await getReceivedOffers(token);
+    try {
+      const data = await getReceivedOffers(token);
 
-    setOffers(data);
+      setOffers(data);
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Nem sikerült betölteni az ajánlatokat.",
+      );
+
+      setOffers([]);
+    }
   };
 
   useEffect(() => {
-    if (!token) {
-      return;
-    }
     const loadOffers = async () => {
-      const data = await getReceivedOffers(token);
-      setOffers(data);
+      if (!token) {
+        return;
+      }
+
+      try {
+        const data = await getReceivedOffers(token);
+        console.log("Received offers:", data);
+
+        setOffers(data);
+      } catch (error) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : "Nem sikerült betölteni az ajánlatokat.",
+        );
+
+        setOffers([]);
+      }
     };
 
     loadOffers();
@@ -39,17 +64,40 @@ function ReceivedOffers() {
     if (!token) {
       return;
     }
-    await updateOfferStatus(token, offerId, "accepted");
 
-    await fetchOffers();
+    try {
+      await updateOfferStatus(token, offerId, "accepted");
+
+      alert("Az ajánlat elfogadva.");
+
+      await fetchOffers();
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Nem sikerült elfogadni az ajánlatot.",
+      );
+    }
   };
 
   const handleReject = async (offerId: number) => {
     if (!token) {
       return;
     }
-    await updateOfferStatus(token, offerId, "rejected");
-    await fetchOffers();
+
+    try {
+      await updateOfferStatus(token, offerId, "rejected");
+
+      alert("Az ajánlat elutasítva.");
+
+      await fetchOffers();
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Nem sikerült elutasítani az ajánlatot.",
+      );
+    }
   };
 
   return (
@@ -60,26 +108,31 @@ function ReceivedOffers() {
 
       {offers.map((offer) => (
         <div key={offer.id} className={styles.card}>
-          <h3>Ajánlat # {offer.id}</h3>
+          <h3>Ajánlat #{offer.id}</h3>
 
           <div className={styles.info}>
             <p>
               <strong>Ajánlatot tette:</strong> {offer.requester_name}
             </p>
+
             <p>
               <strong>Kért termék:</strong> {offer.target_title}
             </p>
+
             <p>
-              <strong>Felajánlott termék(ek)</strong>
+              <strong>Felajánlott termék(ek):</strong>
             </p>
+
             <ul className={styles.itemList}>
               {offer.offered_items.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
+
             <p>
               <strong>Státusz:</strong> {offerStatusLabels[offer.status]}
             </p>
+
             <p>
               <strong>Létrehozva:</strong>{" "}
               {new Date(offer.created_at).toLocaleDateString("hu-HU")}
@@ -94,6 +147,7 @@ function ReceivedOffers() {
               >
                 Elfogadom
               </button>
+
               <button
                 className={styles.rejectButton}
                 onClick={() => handleReject(offer.id)}

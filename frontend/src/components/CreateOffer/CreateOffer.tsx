@@ -26,13 +26,31 @@ function CreateOffer() {
         return;
       }
 
-      const data = await getMyItems(token);
+      try {
+        const data = await getMyItems(token);
 
-      setMyItems(data);
+        const activeItems = data.filter((item) => item.status === "active");
+
+        if (activeItems.length === 0) {
+          alert("Nincs aktív terméked, amit felajánlhatnál.");
+
+          navigate("/items");
+
+          return;
+        }
+
+        setMyItems(data);
+      } catch (error) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : "Nem sikerült betölteni a termékeket.",
+        );
+      }
     };
 
     fetchItems();
-  }, [token]);
+  }, [token, navigate]);
 
   const handleSubmit = async () => {
     if (!token) {
@@ -40,16 +58,31 @@ function CreateOffer() {
     }
 
     if (!itemId) {
+      alert("A termék nem található");
+      navigate("/");
+
       return;
     }
 
     if (!selectedItemId) {
+      alert("Válassz egy terméket!");
+
       return;
     }
 
-    await createOffer(token, Number(itemId), [Number(selectedItemId)]);
+    try {
+      await createOffer(token, Number(itemId), [Number(selectedItemId)]);
 
-    navigate("/offers");
+      alert("Ajánlat elküldve.");
+
+      navigate("/offers");
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "Az ajánlatot nem sikerült elküldeni.",
+      );
+    }
   };
 
   return (

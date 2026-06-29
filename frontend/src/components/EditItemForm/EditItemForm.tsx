@@ -20,13 +20,33 @@ function EditItemForm() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!token || !id) {
+    if (!token) {
       return;
     }
 
-    await updateItem(token, id, type, title, description, itemCondition);
+    if (!id) {
+      alert("A termék nem található.");
+      navigate("/items");
+      return;
+    }
 
-    navigate("/items");
+    if (!type || !title.trim() || !description.trim() || !itemCondition) {
+      alert("Tölts ki minden mezőt!");
+      return;
+    }
+
+    try {
+      await updateItem(token, id, type, title, description, itemCondition);
+      alert("Termék sikeresen módosítva.");
+
+      navigate("/items");
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "A terméket nem sikerült módosítani.",
+      );
+    }
   };
 
   useEffect(() => {
@@ -35,16 +55,25 @@ function EditItemForm() {
         return;
       }
 
-      const item = await getItemById(id);
+      try {
+        const item = await getItemById(id);
 
-      setType(item.type);
-      setTitle(item.title);
-      setDescription(item.description);
-      setItemCondition(item.item_condition);
+        setType(item.type);
+        setTitle(item.title);
+        setDescription(item.description);
+        setItemCondition(item.item_condition);
+      } catch (error) {
+        alert(
+          error instanceof Error
+            ? error.message
+            : "Nem sikerült betölteni a terméket.",
+        );
+
+        navigate("/items");
+      }
     };
-
     fetchItem();
-  }, [id]);
+  }, [id, navigate]);
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>

@@ -1,9 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { loginUser } from "../../api/authApi";
 import { useAuth } from "../../hooks/useAuth";
+
 import styles from "./LoginForm.module.css";
 
 function LoginForm() {
+  const navigate = useNavigate();
+
   const { login } = useAuth();
 
   const [email, setEmail] = useState("");
@@ -13,12 +18,23 @@ function LoginForm() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const data = await loginUser(email, password);
+    if (!email.trim() || !password.trim()) {
+      alert("Add meg az email címet és a jelszót!");
+      return;
+    }
 
-    console.log(data);
+    try {
+      const data = await loginUser(email.trim(), password);
 
-    if (data.token) {
       login(data.token);
+
+      alert("Sikeres bejelentkezés!");
+
+      navigate("/");
+    } catch (error) {
+      alert(
+        error instanceof Error ? error.message : "Sikertelen bejelentkezés.",
+      );
     }
   };
 

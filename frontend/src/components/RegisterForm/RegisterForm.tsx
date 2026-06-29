@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../api/authApi";
 import styles from "./RegisterForm.module.css";
 
 function RegisterForm() {
+  const navigate = useNavigate();
+
   const [username, setUsername] = useState("");
 
   const [email, setEmail] = useState("");
@@ -14,9 +17,28 @@ function RegisterForm() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const data = await registerUser(username, email, password, city);
+    if (!username.trim() || !email.trim() || !password.trim() || !city.trim()) {
+      alert("Tölts ki minden kötelező mezőt!");
+      return;
+    }
 
-    console.log(data);
+    if (password.length < 8) {
+      alert("A jelszónak legalább 8 karakterből kell állnia.");
+
+      return;
+    }
+
+    try {
+      await registerUser(username.trim(), email.trim(), password, city.trim());
+
+      alert("Sikeres regisztráció!");
+
+      navigate("/login");
+    } catch (error) {
+      alert(
+        error instanceof Error ? error.message : "Sikertelen regisztráció.",
+      );
+    }
   };
 
   return (

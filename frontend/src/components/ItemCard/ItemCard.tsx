@@ -2,7 +2,7 @@ import type { Item } from "../../types/Item";
 import { Link } from "react-router-dom";
 
 import {
-  itemTypeLables,
+  itemTypeLabels,
   itemConditionLabels,
   itemStatusLabels,
 } from "../../utils/itemLabels";
@@ -21,18 +21,26 @@ function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
       <div className={styles.image}>{item.type === "book" ? "📚" : "🎲"}</div>
       <h3>{item.title}</h3>
       <div className={styles.badges}>
-        <span>Típus: {itemTypeLables[item.type]}</span>
+        <span>Típus: {itemTypeLabels[item.type]}</span>
         <span>Állapot: {itemConditionLabels[item.item_condition]}</span>
         <span>Státusz: {itemStatusLabels[item.status]}</span>
       </div>
       <p>{item.description}</p>
       <div className={styles.buttons}>
-        {isOwner && (
+        {isOwner && item.status === "active" && (
           <>
             <Link to={`/edit-item/${item.id}`}>Módosítás</Link>
 
             {onDelete && (
-              <button onClick={() => onDelete(item.id)}>Törlés</button>
+              <button
+                onClick={() => {
+                  if (window.confirm("Biztosan törölni szeretnéd?")) {
+                    onDelete(item.id);
+                  }
+                }}
+              >
+                Törlés
+              </button>
             )}
           </>
         )}
