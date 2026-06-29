@@ -1,6 +1,16 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
-import { createTradeOffer, createOfferItem, getOfferItems, getOffersByRequesterId, getReceivedOffers, getOfferById, updateOfferStatus, cancelOtherOffers } from "../services/tradeOffersService";
+import {
+    createTradeOffer,
+    createOfferItem,
+    getOfferItems,
+    getOffersByRequesterId,
+    getReceivedOffers,
+    getOfferById,
+    updateOfferStatus,
+    cancelOtherOffers,
+    cancelOffersContainingItem
+} from "../services/tradeOffersService";
 import { getItemById, updateItemStatus } from "../services/itemService";
 import { updateItem } from "./itemController";
 
@@ -20,6 +30,12 @@ export const createOffer = async (
     const targetItem = await getItemById(
         String(targetItemId)
     );
+
+    if (targetItem.status !== "active") {
+        return res.status(400).json({
+            message: "This item is no longer available"
+        });
+    }
 
     //! Cannot offer empty item.
     if (!Array.isArray(offeredItemIds) || offeredItemIds.length === 0) {
@@ -184,6 +200,12 @@ export const changeOfferStatus = async (
             "traded"
         );
 
+        // Delete every offer containing this item
+        await cancelOffersContainingItem(
+            offer[0].target_item_id,
+            Number(req.params.id)
+        );
+
         const offerItems = await getOfferItems(
             String(req.params.id)
         );
@@ -193,12 +215,13 @@ export const changeOfferStatus = async (
                 String(item.item_id),
                 "traded"
             );
-        }
 
-        await cancelOtherOffers(
-            offer[0].target_item_id,
-            Number(req.params.id)
-        );
+            // Delete every other offer containing this item
+            await cancelOffersContainingItem(
+                item.item_id,
+                Number(req.params.id)
+            );
+        }
     }
 
     res.json({

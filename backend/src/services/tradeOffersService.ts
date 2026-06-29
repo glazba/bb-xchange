@@ -200,3 +200,31 @@ export const cancelOtherOffers = async (
         ]
     );
 };
+
+//! Cancel offers containing item
+export const cancelOffersContainingItem = async (
+    itemId: number,
+    acceptedOfferId: number
+) => {
+    await pool.query(
+        `
+        UPDATE trade_offers
+        SET status = 'cancelled'
+        WHERE id != ?
+        AND status = 'pending'
+        AND (
+            target_item_id = ?
+            OR id IN (
+            SELECT offer_id
+            FROM offer_items
+            WHERE item_id = ?
+            )
+        )
+        `,
+        [
+            acceptedOfferId,
+            itemId,
+            itemId
+        ]
+    );
+};

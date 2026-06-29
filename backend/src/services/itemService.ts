@@ -33,7 +33,7 @@ export const createItem = async (
     return result.insertId;
 };
 
-//! Get all items
+//! Get all active items
 export const getAllItems = async () => {
 
     const [rows] = await pool.query<RowDataPacket[]>(
@@ -47,6 +47,7 @@ export const getAllItems = async () => {
             item_condition,
             status
         FROM items
+        WHERE status = 'active'
         `
     );
 
