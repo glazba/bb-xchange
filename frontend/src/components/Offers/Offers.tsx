@@ -39,14 +39,14 @@ function Offers() {
 
           <div className={styles.info}>
             <p>
-              <strong>Státusz:</strong> {offerStatusLabels[offer.status]}
-            </p>
-            <p>
               <strong>Kért termék:</strong>{" "}
               {offer.target_title ?? offer.target_item_id}
             </p>
             <p>
               <strong>Tulajdonos:</strong> {offer.owner_name ?? "Ismeretlen"}
+            </p>
+            <p>
+              <strong>Státusz:</strong> {offerStatusLabels[offer.status]}
             </p>
             <p>
               <strong>Létrehozva:</strong>{" "}

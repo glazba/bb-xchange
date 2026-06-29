@@ -64,10 +64,21 @@ function ReceivedOffers() {
 
           <div className={styles.info}>
             <p>
-              <strong>Státusz:</strong> {offerStatusLabels[offer.status]}
+              <strong>Ajánlatot tette:</strong> {offer.requester_name}
             </p>
             <p>
-              <strong>Kért termék:</strong> {offer.target_item_id}
+              <strong>Kért termék:</strong> {offer.target_title}
+            </p>
+            <p>
+              <strong>Felajánlott termék(ek)</strong>
+            </p>
+            <ul className={styles.itemList}>
+              {offer.offered_items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <p>
+              <strong>Státusz:</strong> {offerStatusLabels[offer.status]}
             </p>
             <p>
               <strong>Létrehozva:</strong>{" "}

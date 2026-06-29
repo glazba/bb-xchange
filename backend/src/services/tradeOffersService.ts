@@ -102,20 +102,43 @@ export const getReceivedOffers = async (
         SELECT
             trade_offers.id,
             trade_offers.requester_id,
+            users.username AS requester_name,
             trade_offers.target_item_id,
+            target.title AS target_title,
             trade_offers.status,
             trade_offers.created_at,
-            trade_offers.updated_at
+            trade_offers.updated_at,
+            GROUP_CONCAT(
+                offered.title
+                ORDER BY offered.title
+                SEPARATOR '||'
+                ) AS offered_items
         FROM trade_offers
-        INNER JOIN items
-            ON trade_offers.target_item_id = items.id
-        WHERE items.owner_id = ?
+
+        INNER JOIN items target
+            ON trade_offers.target_item_id = target.id
+        INNER JOIN users
+            ON trade_offers.requester_id = users.id
+        INNER JOIN offer_items
+            ON trade_offers.id = offer_items.offer_id
+        INNER JOIN items offered
+            ON offer_items.item_id = offered.id
+
+        WHERE target.owner_id = ?
+
+        GROUP BY trade_offers.id
+
         ORDER BY trade_offers.created_at DESC
         `,
         [userId]
     );
 
-    return rows;
+    return rows.map((offer) => ({
+        ...offer,
+        offered_items: offer.offered_items
+            ? offer.offered_items.split("||")
+            : [],
+    }));
 };
 
 //! Get offer by ID
@@ -166,7 +189,7 @@ export const cancelOtherOffers = async (
     await pool.query(
         `
         UPDATE trade_offers
-        SET status = 'calcelled'
+        SET status = 'cancelled'
         WHERE target_item_id = ?
         AND id != ?
         AND status = 'pending'

@@ -54,3 +54,12 @@
 .rejectButton:hover {
   transform: translateY(-2px);
 }
+
+.itemList {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.itemList li {
+  margin-bottom: 0.25rem;
+}
