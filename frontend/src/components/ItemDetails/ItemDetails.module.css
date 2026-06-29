@@ -46,3 +46,13 @@
 .info p {
   font-size: 1rem;
 }
+
+.button {
+  width: max-content;
+  border: none;
+  background: #2563eb;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+}

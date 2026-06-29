@@ -85,7 +85,7 @@ function ItemDetails() {
           </p>
         )}
         {item.status === "active" && (
-          <Link to={`/offers/create/${item.id}`}>Ajánlat küldése</Link>
+          <Link className={styles.button} to={`/offers/create/${item.id}`}>Ajánlat küldése</Link>
         )}
       </div>
     </div>
