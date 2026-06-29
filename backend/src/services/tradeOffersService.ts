@@ -53,15 +53,18 @@ export const getOffersByRequesterId = async (
     const [rows] = await pool.query<RowDataPacket[]>(
         `
         SELECT
-            id,
-            requester_id,
-            target_item_id,
-            status,
-            created_at,
-            updated_at
+            trade_offers.id,
+            trade_offers.requester_id,
+            trade_offers.target_item_id,
+            items.title AS target_title,
+            trade_offers.status,
+            trade_offers.created_at,
+            trade_offers.updated_at
         FROM trade_offers
-        WHERE requester_id = ?
-        ORDER BY created_at DESC
+        INNER JOIN items
+            ON trade_offers.target_item_id = items.id
+        WHERE trade_offers.requester_id = ?
+        ORDER BY trade_offers.created_at DESC
         `,
         [requesterId]
     );

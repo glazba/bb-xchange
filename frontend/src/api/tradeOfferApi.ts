@@ -9,13 +9,29 @@ export const createOffer = async (
         {
             method: "POST",
             headers: {
-                "Content-Type": "apllication/json",
+                "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({
                 targetItemId,
                 offeredItemIds,
             }),
+        }
+    );
+
+    return response.json();
+};
+
+export const getMyOffers = async (
+    token: string,
+) => {
+    const response = await fetch(
+        "http://localhost:3000/offers/me",
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
         }
     );
 

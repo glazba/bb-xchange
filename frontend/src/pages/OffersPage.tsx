@@ -1,5 +1,7 @@
+import Offers from "../components/Offers/Offers.tsx";
+
 function OffersPage() {
-  return <h1>Offers Page</h1>;
+  return <Offers />;
 }
 
 export default OffersPage;
