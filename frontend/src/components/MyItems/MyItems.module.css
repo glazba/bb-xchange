@@ -1,0 +1,38 @@
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.page h1 {
+  margin-bottom: 2rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+
+  gap: 2rem;
+}
+
+.addButton {
+  position: fixed;
+  right: 2rem;
+  bottom: 2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  transition: 0.3s ease;
+}
+
+.addButton:hover {
+  transform: scale(1.1);
+}

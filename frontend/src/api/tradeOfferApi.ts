@@ -37,3 +37,19 @@ export const getMyOffers = async (
 
     return response.json();
 };
+
+export const getReceivedOffers = async (
+    token: string,
+) => {
+    const response = await fetch(
+        "http://localhost:3000/offers/received",
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+        }
+    );
+
+    return response.json();
+};

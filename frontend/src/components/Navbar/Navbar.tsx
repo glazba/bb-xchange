@@ -23,8 +23,9 @@ function Navbar() {
           <>
             <Link to="/marketplace">Marketplace</Link>
             <Link to="/items">Termékeim</Link>
-            <Link to="/create-item">Termék hozzáadása</Link>
-            <Link to="/offers">Ajánlatok</Link>
+            {/* <Link to="/create-item">Termék hozzáadása</Link> */}
+            <Link to="/offers">Ajánlataim</Link>
+            <Link to="/offers/received">Beérkező ajánlatok</Link>
             <Link to="/profile">Profil</Link>
             <button
               type="button"
