@@ -2,7 +2,17 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 import { Request, Response } from "express";
-import { getAllUsers, getUserById, createUser, getUserByEmail } from "../services/userService";
+import {
+    getAllUsers,
+    getUserById,
+    createUser,
+    getUserByEmail,
+    getProfileById,
+    updateProfileById,
+    updateUserInterests
+} from "../services/userService";
+
+import { AuthRequest } from "../types/AuthRequest";
 
 //! Register
 export const registerUser = async (
@@ -162,6 +172,76 @@ export const loginUser = async (
 
         return res.status(500).json({
             message: "Internal server error"
+        });
+    }
+};
+
+export const getProfile = async (
+    req: AuthRequest,
+    res: Response
+) => {
+    try {
+        const profile = await getProfileById(
+            req.user!.userId
+        );
+
+        if (!profile) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        return res.json(profile);
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+};
+
+export const updateProfile = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    try {
+
+        const {
+            username,
+            city,
+            bio,
+            interests
+        } = req.body;
+
+        if (!username) {
+            return res.status(400).json({
+                message: "A felhasználónév kötelező."
+            });
+        }
+
+        await updateProfileById(
+            req.user!.userId,
+            username,
+            city,
+            bio ?? ""
+        );
+
+        await updateUserInterests(
+            req.user!.userId,
+            interests ?? []
+        );
+
+        const profile = await getProfileById(
+            req.user!.userId
+        );
+
+        return res.json(profile);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Belső szerverhiba"
         });
     }
 };

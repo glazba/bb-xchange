@@ -1,6 +1,15 @@
 import { Router } from "express";
 import rateLimit from "express-rate-limit";
-import { getUsers, getUser, registerUser, loginUser } from "../controllers/userController";
+import {
+    getUsers,
+    getUser,
+    registerUser,
+    loginUser,
+    getProfile,
+    updateProfile
+} from "../controllers/userController";
+import { authMiddleware } from "../middleware/authMiddleware";
+import { getUserById } from "../services/userService";
 
 const router = Router();
 
@@ -18,6 +27,12 @@ router.post("/login", loginLimiter, loginUser);
 
 router.get("/", getUsers);
 
+router.get("/profile", authMiddleware, getProfile);
+
 router.get("/:id", getUser);
+
+router.get("/id", getUserById);
+
+router.put("/profile", authMiddleware, updateProfile);
 
 export default router;
