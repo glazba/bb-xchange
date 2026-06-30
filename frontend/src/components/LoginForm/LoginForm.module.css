@@ -32,7 +32,7 @@
 .button {
   border: none;
 
-  background: #2563eb;
+  background: #225ee0;
   color: white;
 
   padding: 0.9rem;
@@ -40,4 +40,9 @@
   border-radius: 10px;
 
   cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.button:hover {
+  background: #1d4ed8;
 }

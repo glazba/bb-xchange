@@ -16,18 +16,18 @@
 }
 
 .accepted {
-  background-color: #edf9f0;
+  background-color: #61f26d;
   border-color: #9fd8ab;
 }
 
 .rejected {
-  background-color: #fff0f0;
+  background-color: #f45858;
   border-color: #f0a3a3;
 }
 
 .revoked,
 .cancelled {
-  background-color: #f3f3f3;
+  background-color: #aaaaaa;
   border-color: #d1d1d1;
   opacity: 0.8;
 }

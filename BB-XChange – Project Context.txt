@@ -1,0 +1,513 @@
+# BB-XChange – Project Context
+
+## Projekt áttekintés
+
+A BB-XChange egy könyv- és társasjáték-csere platform.
+
+A felhasználók:
+
+* regisztrálhatnak és bejelentkezhetnek,
+* kezelhetik a profiljukat,
+* feltölthetnek könyveket és társasjátékokat,
+* böngészhetnek a Marketplace-en,
+* több terméket tartalmazó csereajánlatokat küldhetnek,
+* elfogadhatnak, elutasíthatnak vagy visszavonhatnak ajánlatokat,
+* később üzeneteket és értesítéseket kapnak.
+
+---
+
+# Tech Stack
+
+## Frontend
+
+* React
+* TypeScript
+* React Router
+* CSS Modules
+* Fetch API
+* No Axios
+
+## Backend
+
+* Node.js
+* Express.js
+* TypeScript
+* JWT Authentication
+
+## Adatbázis
+
+* MySQL
+* mysql2
+* Raw SQL
+* No ORM
+
+---
+
+# Projekt struktúra
+
+## Backend
+
+```text
+backend/
+├── sql/
+│   └── schema.sql
+│
+├── src/
+│   ├── app.ts
+│   │
+│   ├── db/
+│   │   └── connections.ts
+│   │
+│   ├── controllers/
+│   │   ├── userController.ts
+│   │   ├── itemController.ts
+│   │   ├── tradeOfferController.ts
+│   │   ├── bookController.ts
+│   │   └── boardgameController.ts
+│   │
+│   ├── middleware/
+│   │   └── authMiddleware.ts
+│   │
+│   ├── routes/
+│   │   ├── userRoutes.ts
+│   │   ├── itemRoutes.ts
+│   │   ├── tradeOfferRoutes.ts
+│   │   ├── bookRoutes.ts
+│   │   └── boardgameRoutes.ts
+│   │
+│   ├── services/
+│   │   ├── userService.ts
+│   │   ├── itemService.ts
+│   │   ├── tradeOffersService.ts
+│   │   ├── bookService.ts
+│   │   └── boardgameService.ts
+│   │
+│   └── types/
+│       └── AuthRequest.ts
+│
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── .env
+└── .gitignore
+```
+
+---
+
+## Frontend
+
+```text
+frontend/
+├── src/
+│
+│   ├── api/
+│   │   ├── authApi.ts
+│   │   ├── userApi.ts
+│   │   ├── itemApi.ts
+│   │   └── tradeOfferApi.ts
+│   │
+│   ├── components/
+│   │   ├── Navbar/
+│   │   ├── Home/
+│   │   ├── LoginForm/
+│   │   ├── RegisterForm/
+│   │   ├── Marketplace/
+│   │   ├── MyItems/
+│   │   ├── ItemCard/
+│   │   ├── ItemDetails/
+│   │   ├── CreateItemForm/
+│   │   ├── EditItemForm/
+│   │   ├── CreateOffer/
+│   │   ├── Offers/
+│   │   ├── ReceivedOffers/
+│   │   └── Profile/
+│   │
+│   ├── context/
+│   │   ├── AuthContext.tsx
+│   │   └── AuthProvider.tsx
+│   │
+│   ├── hooks/
+│   │   └── useAuth.ts
+│   │
+│   ├── pages/
+│   │   ├── HomePage.tsx
+│   │   ├── LoginPage.tsx
+│   │   ├── RegisterPage.tsx
+│   │   ├── MarketplacePage.tsx
+│   │   ├── MyItemsPage.tsx
+│   │   ├── ItemDetailsPage.tsx
+│   │   ├── CreateItemPage.tsx
+│   │   ├── EditItemPage.tsx
+│   │   ├── CreateOfferPage.tsx
+│   │   ├── OffersPage.tsx
+│   │   ├── ReceivedOffersPage.tsx
+│   │   └── ProfilePage.tsx
+│   │
+│   ├── routes/
+│   │   ├── AppRoutes.tsx
+│   │   └── ProtectedRoute.tsx
+│   │
+│   ├── types/
+│   │   ├── AuthContextType.ts
+│   │   ├── Item.ts
+│   │   ├── TradeOffer.ts
+│   │   ├── User.ts
+│   │   └── UserProfile.ts
+│   │
+│   ├── utils/
+│   │   └── itemLabels.ts
+│   │
+│   ├── App.tsx
+│   └── main.tsx
+│
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+└── .gitignore
+```
+
+```
+
+---
+
+# Architektúra
+
+Minden új feature ezt a rétegezést kövesse:
+
+```text
+Route
+→ Controller
+→ Service
+→ Database
+```
+
+A frontend:
+
+```text
+Component
+→ API
+→ Backend
+```
+
+---
+
+# Általános szabályok
+
+* Ne vezess be új architektúrát, hacsak külön nem kérjük.
+* Ne használj ORM-et.
+* Ne használj Axios-t.
+* Kövesd a meglévő mintákat.
+* Egyszerű, kezdőbarát megoldások előnyben.
+
+---
+
+# Kommentelés
+
+Backend:
+
+```ts
+//! Create item
+//! Get item by ID
+//! Delete item
+```
+
+A meglévő kommentstílust meg kell tartani.
+
+---
+
+# Formázás
+
+```ts
+if (...) {
+    ...
+}
+```
+
+Ne használj egy soros if-eket.
+
+---
+
+# Hibakezelés
+
+## Backend
+
+Minden controller:
+
+```ts
+try {
+    ...
+} catch (error) {
+    console.error(error);
+
+    return res.status(500).json({
+        message: "Internal server error"
+    });
+}
+```
+
+HTTP státuszok:
+
+* 400 → Bad Request
+* 401 → Unauthorized
+* 403 → Forbidden
+* 404 → Not Found
+* 500 → Internal Server Error
+
+---
+
+## Frontend
+
+API:
+
+```ts
+if (!response.ok) {
+    throw new Error(data.message);
+}
+```
+
+Komponensek:
+
+```ts
+try {
+    ...
+} catch (error) {
+    alert(
+        error instanceof Error
+            ? error.message
+            : "Valami hiba történt."
+    );
+}
+```
+
+Sikeres műveletek után:
+
+```ts
+alert("Termék sikeresen létrehozva.");
+alert("Termék sikeresen módosítva.");
+alert("Ajánlat sikeresen visszavonva.");
+```
+
+Minden felhasználói üzenet magyar nyelvű legyen.
+
+---
+
+# CRUD sorrend
+
+Új feature fejlesztésekor:
+
+1. Database
+2. Service
+3. Controller
+4. Route
+5. API
+6. Frontend
+7. Tesztelés
+
+Ne ugorjunk át lépéseket.
+
+---
+
+# Verziókezelés
+
+Git használata kötelező.
+
+Minden nagyobb feature után:
+
+```bash
+git add .
+git commit -m "..."
+git push
+```
+
+Ajánlott commitok:
+
+```text
+feat:
+fix:
+refactor:
+style:
+docs:
+```
+
+Rendszeres commitolás szükséges.
+
+---
+
+# Authentication
+
+JWT Authentication.
+
+AuthRequest:
+
+```ts
+req.user?.userId
+req.user?.email
+```
+
+Middleware:
+
+```ts
+authMiddleware
+```
+
+---
+
+# Item típusok
+
+```text
+book
+boardgame
+```
+
+---
+
+# Item státuszok
+
+```text
+active
+traded
+```
+
+---
+
+# Trade Offer státuszok
+
+```text
+pending
+accepted
+rejected
+revoked
+cancelled
+```
+
+---
+
+# Book Details
+
+```text
+book_details
+```
+
+Mezők:
+
+* author
+* genre
+* page_count
+* published_year
+* isbn
+
+---
+
+# Boardgame Details
+
+```text
+boardgame_details
+```
+
+Mezők:
+
+* genre
+* min_players
+* max_players
+* recommended_age
+* playtime
+
+---
+
+# Elkészült funkciók
+
+✅ Regisztráció
+
+✅ Bejelentkezés
+
+✅ JWT Authentication
+
+✅ Profil megtekintése
+
+✅ Profil módosítása
+
+✅ Profil törlése
+
+✅ Marketplace
+
+✅ Saját termékek
+
+✅ Termék létrehozása
+
+✅ Termék módosítása
+
+✅ Termék törlése
+
+✅ Könyv részletek
+
+✅ Társasjáték részletek
+
+✅ Több terméket tartalmazó ajánlatok
+
+✅ Ajánlat elfogadása
+
+✅ Ajánlat elutasítása
+
+✅ Ajánlat visszavonása
+
+✅ Ajánlatok automatikus törlése termék törlésekor
+
+---
+
+# Tervezett, de még nem implementált modulok
+
+## Backend
+
+* messageController.ts
+* messageRoutes.ts
+* messageService.ts
+* interestService.ts
+
+## Frontend
+
+* messageApi.ts
+* components/Messages/
+* components/NotificationBell/
+
+---
+
+# Tervezett funkciók
+
+## Marketplace szűrés
+
+* típus
+* állapot
+* cím
+* könyv szerző
+* könyv műfaj
+* társas műfaj
+* játékosok száma
+* ajánlott életkor
+
+## Profil avatar feltöltése
+
+## Termékképek feltöltése
+
+* maximum 5 kép termékenként
+
+## Üzenetküldő rendszer
+
+* beszélgetések
+* olvasatlan üzenetek
+
+## Értesítési rendszer
+
+* új ajánlat érkezett
+* elfogadták az ajánlatodat
+* elutasították az ajánlatodat
+* visszavonták az ajánlatodat
+
+
+További szabályok:
+
+* A projekt Git verziókezelőt használ, ezért minden nagyobb feature vagy hibajavítás után javasolj commitot.
+* A projekt dokumentációját és a PROJECT_CONTEXT.md fájlt tekintsd elsődleges információforrásnak.
+* Ne feltételezd, hogy egy még nem implementált feature fájljai már léteznek.
+* Ha bizonytalan vagy egy fájl aktuális tartalmában, kérd el a konkrét fájlt.
+* Törekedj arra, hogy a projektben már használt mintákat és megoldásokat kövesd.
+
