@@ -1,10 +1,20 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
+import { log } from "node:console";
 
-import { getAllItems, getItemById, getItemsByOwnerId, createItem, deleteItemById, updateItemById } from "../services/itemService";
+import {
+    getAllItems,
+    getItemById,
+    getItemsByOwnerId,
+    createItem,
+    deleteItemById,
+    updateItemById,
+}
+    from "../services/itemService";
+
+import { cancelOffersByDeletedItem } from "../services/tradeOffersService";
 import { getBookByItemId } from "../services/bookService";
 import { getBoardgameByItemId } from "../services/boardgameService";
-import { log } from "node:console";
 
 //! Create item
 export const createNewItem = async (
@@ -21,6 +31,12 @@ export const createNewItem = async (
 
     const ownerId = req.user!.userId;
 
+    if (!type || !title || !itemCondition) {
+        return res.status(400).json({
+            message: "Missing required fields"
+        });
+    }
+
     const itemId = await createItem(
         ownerId,
         type,
@@ -28,12 +44,6 @@ export const createNewItem = async (
         description,
         itemCondition
     );
-
-    if (!type || !title || !itemCondition) {
-        return res.status(400).json({
-            message: "Missing required fields"
-        });
-    }
 
     return res.status(201).json({
         message: "Item created",
@@ -104,6 +114,7 @@ export const getItem = async (
         });
     }
 };
+
 //! Get items of owner
 export const getMyItems = async (
     req: AuthRequest,
@@ -158,6 +169,12 @@ export const updateItem = async (
             itemCondition
         } = req.body;
 
+        if (!type || !title || !itemCondition) {
+            return res.status(400).json({
+                message: "Missing required fields"
+            });
+        }
+
         await updateItemById(
             String(req.params.id),
             type,
@@ -165,12 +182,6 @@ export const updateItem = async (
             description,
             itemCondition
         );
-
-        if (!type || !title || !itemCondition) {
-            return res.status(400).json({
-                message: "Missing required fields"
-            });
-        }
 
         return res.json({
             message: "Item updated"
@@ -215,6 +226,8 @@ export const deleteItem = async (
             });
         }
 
+        await cancelOffersByDeletedItem(item.id);
+
         await deleteItemById(
             String(req.params.id)
         );
@@ -232,3 +245,4 @@ export const deleteItem = async (
         });
     }
 };
+

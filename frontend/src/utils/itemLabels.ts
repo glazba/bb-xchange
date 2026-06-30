@@ -21,5 +21,6 @@ export const offerStatusLabels: Record<string, string> = {
     pending: "Folyamatban",
     accepted: "Elfogadva",
     rejected: "Elutasítva",
-    cancelled: "Visszavonva"
+    cancelled: "Törölve",
+    revoked: "Visszavonva"
 };

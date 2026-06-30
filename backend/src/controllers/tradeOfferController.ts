@@ -9,7 +9,8 @@ import {
     getOfferById,
     updateOfferStatus,
     cancelOtherOffers,
-    cancelOffersContainingItem
+    cancelOffersContainingItem,
+    revokeOffer as revokeOfferService
 } from "../services/tradeOffersService";
 import { getItemById, updateItemStatus } from "../services/itemService";
 
@@ -269,6 +270,38 @@ export const changeOfferStatus = async (
 
         console.error(error);
 
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+};
+
+export const revokeOffer = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    try {
+        const offerId = Number(req.params.id);
+        const requesterId = req.user!.userId;
+
+        const success = await revokeOfferService(
+            offerId,
+            requesterId
+        );
+
+        if (!success) {
+            return res.status(404).json({
+                message: "Offer not found or cannot be revoked"
+            });
+        }
+
+        return res.json({
+            message: "Offer revoked successfully"
+        });
+
+    } catch (error) {
+        console.error(error);
         return res.status(500).json({
             message: "Internal server error"
         });

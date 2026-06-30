@@ -73,23 +73,45 @@ export const getOffersByRequesterId = async (
             trade_offers.id,
             trade_offers.requester_id,
             trade_offers.target_item_id,
-            items.title AS target_title,
+            target.title AS target_title,
             users.username AS owner_name,
             trade_offers.status,
             trade_offers.created_at,
-            trade_offers.updated_at
+            trade_offers.updated_at,
+            GROUP_CONCAT(
+                offered.title
+                ORDER BY offered.title
+                SEPARATOR '||'
+            ) AS offered_items
         FROM trade_offers
-        INNER JOIN items
-            ON trade_offers.target_item_id = items.id
+
+        INNER JOIN items target
+            ON trade_offers.target_item_id = target.id
+
         INNER JOIN users
-            ON items.owner_id = users.id
+            ON target.owner_id = users.id
+
+        LEFT JOIN offer_items
+            ON trade_offers.id = offer_items.offer_id
+
+        LEFT JOIN items offered
+            ON offer_items.item_id = offered.id
+
         WHERE trade_offers.requester_id = ?
+
+        GROUP BY trade_offers.id
+
         ORDER BY trade_offers.created_at DESC
         `,
         [requesterId]
     );
 
-    return rows;
+    return rows.map((offer) => ({
+        ...offer,
+        offered_items: offer.offered_items
+            ? offer.offered_items.split("||")
+            : []
+    }));
 };
 
 //! Get received offers
@@ -228,3 +250,49 @@ export const cancelOffersContainingItem = async (
         ]
     );
 };
+
+export const cancelOffersByDeletedItem = async (
+    itemId: number,
+) => {
+    await pool.query(
+        `
+        UPDATE trade_offers
+        SET status = 'cancelled'
+        WHERE status = 'pending'
+        AND(
+            target_item_id = ?
+            OR id IN (
+                SELECT offer_id
+                FROM offer_items
+                WHERE item_id = ?
+            )
+        )
+        `,
+        [
+            itemId,
+            itemId
+        ]
+    );
+}
+
+export const revokeOffer = async (
+    offerId: number,
+    requesterId: number
+) => {
+
+    const [result] = await pool.query<ResultSetHeader>(
+        `
+        UPDATE trade_offers
+        SET status = 'revoked'
+        WHERE id = ?
+        AND requester_id = ?
+        AND status = 'pending'
+        `,
+        [
+            offerId,
+            requesterId
+        ]
+    );
+
+    return result.affectedRows > 0;
+}

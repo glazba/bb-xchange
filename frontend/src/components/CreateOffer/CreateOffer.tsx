@@ -18,7 +18,7 @@ function CreateOffer() {
 
   const [myItems, setMyItems] = useState<Item[]>([]);
 
-  const [selectedItemId, setSelectedItemId] = useState("");
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -39,7 +39,7 @@ function CreateOffer() {
           return;
         }
 
-        setMyItems(data);
+        setMyItems(activeItems);
       } catch (error) {
         alert(
           error instanceof Error
@@ -52,26 +52,35 @@ function CreateOffer() {
     fetchItems();
   }, [token, navigate]);
 
+  const handleItemToggle = (itemId: number) => {
+    setSelectedItems((prev) =>
+      prev.includes(itemId)
+        ? prev.filter((id) => id !== itemId)
+        : [...prev, itemId],
+    );
+  };
+
   const handleSubmit = async () => {
     if (!token) {
       return;
     }
 
     if (!itemId) {
-      alert("A termék nem található");
+      alert("A termék nem található.");
+
       navigate("/");
 
       return;
     }
 
-    if (!selectedItemId) {
-      alert("Válassz egy terméket!");
+    if (selectedItems.length === 0) {
+      alert("Válassz legalább egy terméket!");
 
       return;
     }
 
     try {
-      await createOffer(token, Number(itemId), [Number(selectedItemId)]);
+      await createOffer(token, Number(itemId), selectedItems);
 
       alert("Ajánlat elküldve.");
 
@@ -89,21 +98,23 @@ function CreateOffer() {
     <div className={styles.container}>
       <h1>Ajánlat küldése</h1>
 
-      <p>Válassz egy saját terméket, amit felajánlasz cserére.</p>
+      <p>
+        Válaszd ki azokat a saját termékeidet, amelyeket felajánlasz cserére.
+      </p>
 
-      <select
-        className={styles.select}
-        value={selectedItemId}
-        onChange={(event) => setSelectedItemId(event.target.value)}
-      >
-        <option value="">Válassz terméket</option>
-
+      <div className={styles.checkboxGroup}>
         {myItems.map((item) => (
-          <option key={item.id} value={item.id}>
+          <label key={item.id} className={styles.checkbox}>
+            <input
+              type="checkbox"
+              checked={selectedItems.includes(item.id)}
+              onChange={() => handleItemToggle(item.id)}
+            />
+
             {item.title}
-          </option>
+          </label>
         ))}
-      </select>
+      </div>
 
       <button className={styles.button} onClick={handleSubmit}>
         Ajánlat küldése

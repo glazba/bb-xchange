@@ -15,10 +15,41 @@
   margin-bottom: 1.5rem;
 }
 
+.accepted {
+  background-color: #edf9f0;
+  border-color: #9fd8ab;
+}
+
+.rejected {
+  background-color: #fff0f0;
+  border-color: #f0a3a3;
+}
+
+.revoked,
+.cancelled {
+  background-color: #f3f3f3;
+  border-color: #d1d1d1;
+  opacity: 0.8;
+}
+
+.revoked h3,
+.cancelled h3 {
+  color: #666;
+}
+
 .info {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.itemList {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.itemList li {
+  margin-bottom: 0.25rem;
 }
 
 .buttons {
@@ -53,13 +84,4 @@
 .acceptButton:hover,
 .rejectButton:hover {
   transform: translateY(-2px);
-}
-
-.itemList {
-  margin: 0.5rem 0;
-  padding-left: 1.5rem;
-}
-
-.itemList li {
-  margin-bottom: 0.25rem;
 }

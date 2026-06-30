@@ -150,3 +150,11 @@ CREATE INDEX idx_messages_offer ON messages (offer_id);
 
 /* Add pending to item.status */
 ALTER TABLE items MODIFY COLUMN status ENUM ('active', 'pending', 'traded') DEFAULT 'active';
+
+ALTER TABLE trade_offers MODIFY COLUMN status ENUM (
+    'pending',
+    'accepted',
+    'rejected',
+    'cancelled',
+    'revoked'
+) NOT NULL DEFAULT 'pending';

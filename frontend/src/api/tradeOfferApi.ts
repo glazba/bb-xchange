@@ -102,3 +102,28 @@ export const updateOfferStatus = async (
 
     return data;
 }
+
+export const revokeOffer = async (
+    token: string,
+    offerId: number
+) => {
+
+    const response = await fetch(
+        `http://localhost:3000/offers/${offerId}/revoke`,
+        {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+};

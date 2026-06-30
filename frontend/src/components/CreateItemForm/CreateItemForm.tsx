@@ -30,7 +30,7 @@ function CreateItemForm() {
     try {
       await createItem(token, type, title, description, itemCondition);
 
-      navigate("/my-items");
+      navigate("/items");
     } catch (error) {
       alert(
         error instanceof Error

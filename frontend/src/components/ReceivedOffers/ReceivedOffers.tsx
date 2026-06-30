@@ -107,16 +107,19 @@ function ReceivedOffers() {
       {offers.length === 0 && <p>Még nem kaptál ajánlatot.</p>}
 
       {offers.map((offer) => (
-        <div key={offer.id} className={styles.card}>
-          <h3>Ajánlat #{offer.id}</h3>
+        <div
+          key={offer.id}
+          className={`${styles.card} ${styles[offer.status]}`}
+        >
+          <h3>Csereajánlat</h3>
 
           <div className={styles.info}>
             <p>
-              <strong>Ajánlatot tette:</strong> {offer.requester_name}
+              <strong>Kért termék:</strong> {offer.target_title}
             </p>
 
             <p>
-              <strong>Kért termék:</strong> {offer.target_title}
+              <strong>Ajánlatot tette:</strong> {offer.requester_name}
             </p>
 
             <p>

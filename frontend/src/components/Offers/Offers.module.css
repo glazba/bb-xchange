@@ -15,8 +15,62 @@
   margin-bottom: 1.5rem;
 }
 
+.accepted {
+  background-color: #edf9f0;
+  border-color: #9fd8ab;
+}
+
+.rejected {
+  background-color: #fff0f0;
+  border-color: #f0a3a3;
+}
+
+.revoked,
+.cancelled {
+  background-color: #f3f3f3;
+  border-color: #d1d1d1;
+  opacity: 0.8;
+}
+
+.revoked h3,
+.cancelled h3 {
+  color: #666;
+}
+
 .info {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.itemList {
+  margin-top: 0.5rem;
+  margin-left: 1rem;
+}
+
+.itemList li {
+  margin-bottom: 0.25rem;
+}
+
+.revokeButton {
+  margin-top: 1rem;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #6c757d;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.revokeButton:hover {
+  background-color: #5c636a;
+}
+
+.revokeButton:active {
+  transform: scale(0.98);
 }

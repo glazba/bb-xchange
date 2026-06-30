@@ -30,9 +30,9 @@ router.get("/", getUsers);
 
 router.get("/profile", authMiddleware, getProfile);
 
-router.get("/:id", getUser);
-
 router.get("/id", getUserById);
+
+router.get("/:id", getUser);
 
 router.put("/profile", authMiddleware, updateProfile);
 
