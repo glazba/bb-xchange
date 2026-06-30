@@ -5,9 +5,9 @@ import { ResultSetHeader, RowDataPacket } from "mysql2";
 export const createBoardgameDetails = async (
     itemId: number,
     genre: string,
-    minPlayers: number,
-    maxPlayers: number,
-    recommendedAge: number,
+    minPlayers: number | null,
+    maxPlayers: number | null,
+    recommendedAge: number | null,
     playtime: number | null
 ) => {
 
@@ -57,4 +57,38 @@ export const getBoardgameByItemId = async (
     );
 
     return rows;
-};    
+};
+
+//! Update boardgame details
+export const updateBoardgameDetails = async (
+    itemId: string,
+    genre: string,
+    minPlayers: number | null,
+    maxPlayers: number | null,
+    recommendedAge: number | null,
+    playtime: number | null
+) => {
+
+    const [result] = await pool.query<ResultSetHeader>(
+        `
+        UPDATE boardgame_details
+        SET
+            genre = ?,
+            min_players = ?,
+            max_players = ?,
+            recommended_age = ?,
+            playtime = ?
+        WHERE item_id = ?
+        `,
+        [
+            genre,
+            minPlayers,
+            maxPlayers,
+            recommendedAge,
+            playtime,
+            itemId
+        ]
+    );
+
+    return result;
+};

@@ -58,3 +58,36 @@ export const getBookByItemId = async (
 
     return rows;
 }
+
+export const updateBookDetails = async (
+    itemId: string,
+    author: string,
+    genre: string,
+    pageCount: number | null,
+    publishedYear: number | null,
+    isbn: string | null
+) => {
+
+    const [result] = await pool.query<ResultSetHeader>(
+        `
+        UPDATE book_details
+        SET
+            author = ?,
+            genre = ?,
+            page_count = ?,
+            published_year = ?,
+            isbn = ?
+        WHERE item_id = ?
+        `,
+        [
+            author,
+            genre,
+            pageCount,
+            publishedYear,
+            isbn,
+            itemId
+        ]
+    );
+
+    return result;
+}

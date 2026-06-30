@@ -43,7 +43,6 @@ function ReceivedOffers() {
 
       try {
         const data = await getReceivedOffers(token);
-        console.log("Received offers:", data);
 
         setOffers(data);
       } catch (error) {

@@ -71,6 +71,55 @@ function ItemDetails() {
           <strong>Státusz:</strong> {itemStatusLabels[item.status]}
         </p>
 
+        {item.type === "book" && (
+          <>
+            <p>
+              <strong>Szerző:</strong> {item.author || "-"}
+            </p>
+
+            <p>
+              <strong>Műfaj:</strong> {item.genre || "-"}
+            </p>
+
+            <p>
+              <strong>Oldalszám:</strong> {item.page_count ?? "-"}
+            </p>
+
+            <p>
+              <strong>Kiadás éve:</strong> {item.published_year ?? "-"}
+            </p>
+
+            <p>
+              <strong>ISBN:</strong> {item.isbn || "-"}
+            </p>
+          </>
+        )}
+
+        {item.type === "boardgame" && (
+          <>
+            <p>
+              <strong>Műfaj:</strong> {item.genre || "-"}
+            </p>
+
+            <p>
+              <strong>Minimum játékos:</strong> {item.min_players ?? "-"}
+            </p>
+
+            <p>
+              <strong>Maximum játékos:</strong> {item.max_players ?? "-"}
+            </p>
+
+            <p>
+              <strong>Ajánlott életkor:</strong> {item.recommended_age ?? "-"}
+            </p>
+
+            <p>
+              <strong>Játékidő:</strong>{" "}
+              {item.playtime ? `${item.playtime} perc` : "-"}
+            </p>
+          </>
+        )}
+
         {item.created_at && (
           <p>
             <strong>Létrehozva:</strong>{" "}
@@ -85,7 +134,9 @@ function ItemDetails() {
           </p>
         )}
         {item.status === "active" && (
-          <Link className={styles.button} to={`/offers/create/${item.id}`}>Ajánlat küldése</Link>
+          <Link className={styles.button} to={`/offers/create/${item.id}`}>
+            Ajánlat küldése
+          </Link>
         )}
       </div>
     </div>

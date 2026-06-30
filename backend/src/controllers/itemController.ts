@@ -13,8 +13,8 @@ import {
     from "../services/itemService";
 
 import { cancelOffersByDeletedItem } from "../services/tradeOffersService";
-import { getBookByItemId } from "../services/bookService";
-import { getBoardgameByItemId } from "../services/boardgameService";
+import { createBookDetails, getBookByItemId, updateBookDetails } from "../services/bookService";
+import { createBoardgameDetails, getBoardgameByItemId, updateBoardgameDetails } from "../services/boardgameService";
 
 //! Create item
 export const createNewItem = async (
@@ -26,12 +26,24 @@ export const createNewItem = async (
         type,
         title,
         description,
-        itemCondition
+        item_condition,
+
+        author,
+        genre,
+        page_count,
+        published_year,
+        isbn,
+
+        min_players,
+        max_players,
+        recommended_age,
+        playtime
     } = req.body;
 
+    console.log(req.body);
     const ownerId = req.user!.userId;
 
-    if (!type || !title || !itemCondition) {
+    if (!type || !title || !item_condition) {
         return res.status(400).json({
             message: "Missing required fields"
         });
@@ -42,8 +54,30 @@ export const createNewItem = async (
         type,
         title,
         description,
-        itemCondition
+        item_condition
     );
+
+    if (type === "book") {
+        await createBookDetails(
+            itemId,
+            author ?? "",
+            genre ?? "",
+            page_count ?? null,
+            published_year ?? null,
+            isbn ?? null
+        );
+    }
+
+    if (type === "boardgame") {
+        await createBoardgameDetails(
+            itemId,
+            genre ?? "",
+            min_players ?? null,
+            max_players ?? null,
+            recommended_age ?? null,
+            playtime ?? null
+        );
+    }
 
     return res.status(201).json({
         message: "Item created",
@@ -166,10 +200,21 @@ export const updateItem = async (
             type,
             title,
             description,
-            itemCondition
+            item_condition,
+
+            author,
+            genre,
+            page_count,
+            published_year,
+            isbn,
+
+            min_players,
+            max_players,
+            recommended_age,
+            playtime
         } = req.body;
 
-        if (!type || !title || !itemCondition) {
+        if (!type || !title || !item_condition) {
             return res.status(400).json({
                 message: "Missing required fields"
             });
@@ -180,8 +225,38 @@ export const updateItem = async (
             type,
             title,
             description,
-            itemCondition
+            item_condition
         );
+
+        await updateItemById(
+            String(req.params.id),
+            type,
+            title,
+            description,
+            item_condition
+        );
+
+        if (type === "book") {
+            await updateBookDetails(
+                String(req.params.id),
+                author ?? "",
+                genre ?? "",
+                page_count ?? null,
+                published_year ?? null,
+                isbn ?? null
+            );
+        }
+
+        if (type === "boardgame") {
+            await updateBoardgameDetails(
+                String(req.params.id),
+                genre ?? "",
+                min_players ?? null,
+                max_players ?? null,
+                recommended_age ?? null,
+                playtime ?? null
+            );
+        }
 
         return res.json({
             message: "Item updated"

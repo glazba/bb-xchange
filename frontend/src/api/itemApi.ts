@@ -2,10 +2,7 @@ import type { Item } from "../types/Item";
 
 export const createItem = async (
     token: string,
-    type: string,
-    title: string,
-    description: string,
-    itemCondition: string
+    itemData: Partial<Item>
 ): Promise<Item> => {
 
     const response = await fetch(
@@ -16,12 +13,7 @@ export const createItem = async (
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify({
-                type,
-                title,
-                description,
-                itemCondition
-            })
+            body: JSON.stringify(itemData)
         }
     );
 
@@ -92,10 +84,7 @@ export const getItemById = async (
 export const updateItem = async (
     token: string,
     itemId: string,
-    type: string,
-    title: string,
-    description: string,
-    itemCondition: string
+    itemData: Partial<Item>
 ): Promise<Item> => {
 
     const response = await fetch(
@@ -106,12 +95,7 @@ export const updateItem = async (
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
             },
-            body: JSON.stringify({
-                type,
-                title,
-                description,
-                itemCondition
-            })
+            body: JSON.stringify(itemData)
         }
     );
 
