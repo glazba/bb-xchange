@@ -7,9 +7,11 @@ import {
     getUserById,
     createUser,
     getUserByEmail,
+    getUserWithPasswordById,
     getProfileById,
     updateProfileById,
-    updateUserInterests
+    updateUserInterests,
+    deleteUserById
 } from "../services/userService";
 
 import { AuthRequest } from "../types/AuthRequest";
@@ -62,6 +64,7 @@ export const registerUser = async (
     }
 };
 
+//! Get all users
 export const getUsers = async (
     req: Request,
     res: Response
@@ -83,7 +86,7 @@ export const getUsers = async (
     };
 };
 
-
+//! Get one user
 export const getUser = async (
     req: Request,
     res: Response
@@ -176,6 +179,7 @@ export const loginUser = async (
     }
 };
 
+//! Get profile
 export const getProfile = async (
     req: AuthRequest,
     res: Response
@@ -201,6 +205,7 @@ export const getProfile = async (
     }
 };
 
+//! Update profile
 export const updateProfile = async (
     req: AuthRequest,
     res: Response
@@ -242,6 +247,60 @@ export const updateProfile = async (
         console.error(error);
         return res.status(500).json({
             message: "Belső szerverhiba"
+        });
+    }
+};
+
+//! Delete profile
+export const deleteProfile = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    try {
+        const { password } = req.body;
+
+        if (!password) {
+            return res.status(400).json({
+                message: "A jelszó megadása kötelező."
+            });
+        }
+
+        const user = await getUserWithPasswordById(
+            req.user!.userId
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                message: "Felhasználó nem található."
+            });
+        }
+
+        const isMatch = await bcrypt.compare(
+            password,
+            user.password_hash
+        );
+
+        if (!isMatch) {
+            return res.status(401).json({
+                message: "Hibás jelszó."
+            });
+        }
+
+        await deleteUserById(
+            req.user!.userId
+        );
+
+        return res.json({
+            message: "A profil sikeresen törölve"
+        });
+
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Belső szerverhiba."
         });
     }
 };

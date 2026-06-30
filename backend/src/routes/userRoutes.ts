@@ -6,7 +6,8 @@ import {
     registerUser,
     loginUser,
     getProfile,
-    updateProfile
+    updateProfile,
+    deleteProfile
 } from "../controllers/userController";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { getUserById } from "../services/userService";
@@ -34,5 +35,7 @@ router.get("/:id", getUser);
 router.get("/id", getUserById);
 
 router.put("/profile", authMiddleware, updateProfile);
+
+router.delete("/profile", authMiddleware, deleteProfile);
 
 export default router;

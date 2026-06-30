@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
-import { getProfile, updateProfile } from "../../api/userApi";
+import { getProfile, updateProfile, deleteProfile } from "../../api/userApi";
 
 import type { UserProfile } from "../../types/UserProfile";
 
@@ -24,7 +25,9 @@ const allInterests = [
 ];
 
 function Profile() {
-  const { token } = useAuth();
+  const { token, logout } = useAuth();
+
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
@@ -37,6 +40,8 @@ function Profile() {
   const [bio, setBio] = useState("");
 
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+
+  const [deletePassword, setDeletePassword] = useState("");
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -97,6 +102,39 @@ function Profile() {
         error instanceof Error
           ? error.message
           : "A profil módosítása sikertelen.",
+      );
+    }
+  };
+
+  const handleDeleteProfile = async () => {
+    if (!token) {
+      return;
+    }
+
+    if (!deletePassword) {
+      alert("Add meg a jelszavad!");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      "Biztosan törölni szeretnéd a profilodat? Ez a művelet nem vonható vissza.",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteProfile(token, deletePassword);
+
+      alert("A profil sikeresen törölve.");
+
+      logout();
+
+      navigate("/");
+    } catch (error) {
+      alert(
+        error instanceof Error ? error.message : "A profil törlése sikertelen.",
       );
     }
   };
@@ -203,6 +241,30 @@ function Profile() {
         >
           {isEditing ? "Mégse" : "Profil szerkesztése"}
         </button>
+
+        {/* delete */}
+        {!isEditing && (
+          <>
+            <hr />
+
+            <h3>Fiók törlése</h3>
+
+            <input
+              className={styles.input}
+              type="password"
+              placeholder="Jelszó"
+              value={deletePassword}
+              onChange={(event) => setDeletePassword(event.target.value)}
+            />
+
+            <button
+              className={styles.deleteButton}
+              onClick={handleDeleteProfile}
+            >
+              Fiók törlése
+            </button>
+          </>
+        )}
       </div>
     </div>
   );

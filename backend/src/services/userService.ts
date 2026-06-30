@@ -82,6 +82,25 @@ export const getUserByEmail = async (
     return rows;
 };
 
+//! Get user with password (Delete profile)
+export const getUserWithPasswordById = async (
+    userId: number
+) => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            password_hash
+        FROM users
+        WHERE id = ?
+        `,
+        [userId]
+    );
+
+    return rows[0];
+}
+
 //! Get profile
 export const getProfileById = async (
     userId: number
@@ -199,4 +218,18 @@ export const updateUserInterests = async (
             ]
         );
     }
+};
+
+//! Delete user
+export const deleteUserById = async (
+    userId: number
+) => {
+
+    await pool.query(
+        `
+        DELETE FROM users
+        WHERE id = ?
+        `,
+        [userId]
+    );
 };

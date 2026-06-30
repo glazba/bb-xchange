@@ -54,3 +54,31 @@ export const updateProfile = async (
 
     return data;
 };
+
+export const deleteProfile = async (
+    token: string,
+    password: string
+) => {
+
+    const response = await fetch(
+        "http://localhost:3000/users/profile",
+        {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                password
+            })
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+};
