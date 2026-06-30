@@ -8,7 +8,9 @@ function Navbar() {
 
   return (
     <nav className={styles.navbar}>
-      <h2 className={styles.logo}>BB-XChange</h2>
+      <Link to="/" className={styles.logo}>
+        BB-XChange
+      </Link>
 
       <div className={styles.links}>
         <Link to="/">Home</Link>
