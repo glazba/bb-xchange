@@ -1,513 +1,441 @@
-# BB-XChange – Project Context
+Developer Memory (DM)
+Projekt
 
-## Projekt áttekintés
+B-B Xchange
 
-A BB-XChange egy könyv- és társasjáték-csere platform.
+Tanuló- és portfólióprojekt.
 
-A felhasználók:
+Cél: könyvek és társasjátékok cseréjére szolgáló webalkalmazás.
 
-* regisztrálhatnak és bejelentkezhetnek,
-* kezelhetik a profiljukat,
-* feltölthetnek könyveket és társasjátékokat,
-* böngészhetnek a Marketplace-en,
-* több terméket tartalmazó csereajánlatokat küldhetnek,
-* elfogadhatnak, elutasíthatnak vagy visszavonhatnak ajánlatokat,
-* később üzeneteket és értesítéseket kapnak.
+Technológia
+Backend
+Node.js
+Express
+TypeScript
+MySQL
+mysql2
+JWT authentication
+Multer (avatarok és item képek)
+Helmet
+CORS
+Express Rate Limit
+Frontend
+React
+TypeScript
+React Router
+CSS Modules
+Fetch API (axios nincs)
+Kódolási szabályok
+Általános
+Beginner friendly.
+Egyszerű megoldások előnyben.
+Kerülni kell a túlzott absztrakciót.
+A cél egy deploy-olható tanuló-portfólió projekt.
+Pattern-ek
+Backend
 
----
+Service:
 
-# Tech Stack
+adatbázis műveletek
+nincs HTTP logika
 
-## Frontend
+Controller:
 
-* React
-* TypeScript
-* React Router
-* CSS Modules
-* Fetch API
-* No Axios
+try/catch
+response kezelés
+messages.ts használata
 
-## Backend
+Minden 500-as hiba:
 
-* Node.js
-* Express.js
-* TypeScript
-* JWT Authentication
-
-## Adatbázis
-
-* MySQL
-* mysql2
-* Raw SQL
-* No ORM
-
----
-
-# Projekt struktúra
-
-## Backend
-
-```text
-backend/
-├── sql/
-│   └── schema.sql
-│
-├── src/
-│   ├── app.ts
-│   │
-│   ├── db/
-│   │   └── connections.ts
-│   │
-│   ├── controllers/
-│   │   ├── userController.ts
-│   │   ├── itemController.ts
-│   │   ├── tradeOfferController.ts
-│   │   ├── bookController.ts
-│   │   └── boardgameController.ts
-│   │
-│   ├── middleware/
-│   │   └── authMiddleware.ts
-│   │
-│   ├── routes/
-│   │   ├── userRoutes.ts
-│   │   ├── itemRoutes.ts
-│   │   ├── tradeOfferRoutes.ts
-│   │   ├── bookRoutes.ts
-│   │   └── boardgameRoutes.ts
-│   │
-│   ├── services/
-│   │   ├── userService.ts
-│   │   ├── itemService.ts
-│   │   ├── tradeOffersService.ts
-│   │   ├── bookService.ts
-│   │   └── boardgameService.ts
-│   │
-│   └── types/
-│       └── AuthRequest.ts
-│
-├── package.json
-├── package-lock.json
-├── tsconfig.json
-├── .env
-└── .gitignore
-```
-
----
-
-## Frontend
-
-```text
-frontend/
-├── src/
-│
-│   ├── api/
-│   │   ├── authApi.ts
-│   │   ├── userApi.ts
-│   │   ├── itemApi.ts
-│   │   └── tradeOfferApi.ts
-│   │
-│   ├── components/
-│   │   ├── Navbar/
-│   │   ├── Home/
-│   │   ├── LoginForm/
-│   │   ├── RegisterForm/
-│   │   ├── Marketplace/
-│   │   ├── MyItems/
-│   │   ├── ItemCard/
-│   │   ├── ItemDetails/
-│   │   ├── CreateItemForm/
-│   │   ├── EditItemForm/
-│   │   ├── CreateOffer/
-│   │   ├── Offers/
-│   │   ├── ReceivedOffers/
-│   │   └── Profile/
-│   │
-│   ├── context/
-│   │   ├── AuthContext.tsx
-│   │   └── AuthProvider.tsx
-│   │
-│   ├── hooks/
-│   │   └── useAuth.ts
-│   │
-│   ├── pages/
-│   │   ├── HomePage.tsx
-│   │   ├── LoginPage.tsx
-│   │   ├── RegisterPage.tsx
-│   │   ├── MarketplacePage.tsx
-│   │   ├── MyItemsPage.tsx
-│   │   ├── ItemDetailsPage.tsx
-│   │   ├── CreateItemPage.tsx
-│   │   ├── EditItemPage.tsx
-│   │   ├── CreateOfferPage.tsx
-│   │   ├── OffersPage.tsx
-│   │   ├── ReceivedOffersPage.tsx
-│   │   └── ProfilePage.tsx
-│   │
-│   ├── routes/
-│   │   ├── AppRoutes.tsx
-│   │   └── ProtectedRoute.tsx
-│   │
-│   ├── types/
-│   │   ├── AuthContextType.ts
-│   │   ├── Item.ts
-│   │   ├── TradeOffer.ts
-│   │   ├── User.ts
-│   │   └── UserProfile.ts
-│   │
-│   ├── utils/
-│   │   └── itemLabels.ts
-│   │
-│   ├── App.tsx
-│   └── main.tsx
-│
-├── package.json
-├── package-lock.json
-├── tsconfig.json
-└── .gitignore
-```
-
-```
-
----
-
-# Architektúra
-
-Minden új feature ezt a rétegezést kövesse:
-
-```text
-Route
-→ Controller
-→ Service
-→ Database
-```
-
-A frontend:
-
-```text
-Component
-→ API
-→ Backend
-```
-
----
-
-# Általános szabályok
-
-* Ne vezess be új architektúrát, hacsak külön nem kérjük.
-* Ne használj ORM-et.
-* Ne használj Axios-t.
-* Kövesd a meglévő mintákat.
-* Egyszerű, kezdőbarát megoldások előnyben.
-
----
-
-# Kommentelés
+return handleControllerError(res, error);
+Hibaüzenetek
 
 Backend:
 
-```ts
-//! Create item
-//! Get item by ID
-//! Delete item
-```
+angol nyelvű.
 
-A meglévő kommentstílust meg kell tartani.
+Frontend:
 
----
+angol belső hibák.
+user által látott alert-ek magyar nyelvűek.
+API URL
 
-# Formázás
+Központosítva:
 
-```ts
-if (...) {
-    ...
-}
-```
+api/apiConfig.ts
+export const API_URL =
+  "http://localhost:3000";
+TypeScript
 
-Ne használj egy soros if-eket.
+Előnyben:
 
----
+közös Type-ok
+util-ok
+újrafelhasználható konstansok
 
-# Hibakezelés
+Kerülendő:
 
-## Backend
+fölösleges interface-ek
+overengineering
+túl sok custom hook
+Refactor szabály
 
-Minden controller:
+A projekt elkészüléséig:
 
-```ts
-try {
-    ...
-} catch (error) {
-    console.error(error);
+csak kötelező refactor
+minimális módosítás
 
-    return res.status(500).json({
-        message: "Internal server error"
-    });
-}
-```
+Nagy refactor:
 
-HTTP státuszok:
+feature freeze után.
+Meglévő funkciók
+Auth
+Register
+username
+email
+password
+city
+bio
+interests
+Login
 
-* 400 → Bad Request
-* 401 → Unauthorized
-* 403 → Forbidden
-* 404 → Not Found
-* 500 → Internal Server Error
+JWT token.
 
----
+Logout
 
-## Frontend
+Működik.
 
-API:
+Profile
+Saját profil
+avatar
+username
+city
+bio
+interests
+edit
+delete account
+Avatar feltöltés
 
-```ts
-if (!response.ok) {
-    throw new Error(data.message);
-}
-```
+Működik.
 
-Komponensek:
+Item rendszer
+Létrehozás
 
-```ts
-try {
-    ...
-} catch (error) {
-    alert(
-        error instanceof Error
-            ? error.message
-            : "Valami hiba történt."
-    );
-}
-```
+Book:
 
-Sikeres műveletek után:
+author
+genre
+page count
+published year
+isbn
 
-```ts
-alert("Termék sikeresen létrehozva.");
-alert("Termék sikeresen módosítva.");
-alert("Ajánlat sikeresen visszavonva.");
-```
+Boardgame:
 
-Minden felhasználói üzenet magyar nyelvű legyen.
+genre
+min players
+max players
+recommended age
+playtime
+Módosítás
 
----
+Működik.
 
-# CRUD sorrend
+Törlés
 
-Új feature fejlesztésekor:
+Működik.
 
-1. Database
-2. Service
-3. Controller
-4. Route
-5. API
-6. Frontend
-7. Tesztelés
+Item képek
+minimum 0
+maximum 5
 
-Ne ugorjunk át lépéseket.
+Több kép feltöltése működik.
 
----
+Backend eltárolja.
 
-# Verziókezelés
+Frontend:
 
-Git használata kötelező.
+egyelőre csak:
 
-Minden nagyobb feature után:
+cover_image
 
-```bash
-git add .
-git commit -m "..."
-git push
-```
+jelenik meg.
 
-Ajánlott commitok:
+Item képek jelenleg látszanak
+Home
+Marketplace
+MyItems
+ItemDetails
 
-```text
-feat:
-fix:
-refactor:
-style:
-docs:
-```
+Csak a cover.
 
-Rendszeres commitolás szükséges.
+Marketplace
 
----
+Szűrés:
 
-# Authentication
+title
+author
+type
+condition
+genre
+page count
+player count
+age
 
-JWT Authentication.
+Rendezés:
 
-AuthRequest:
+newest
+oldest
+title asc
+title desc
+Trade Offers
+Create offer
 
-```ts
-req.user?.userId
-req.user?.email
-```
+Működik.
 
-Middleware:
+Received offers
+accept
+reject
 
-```ts
-authMiddleware
-```
+Működik.
 
----
+Sent offers
+revoke
 
-# Item típusok
+Működik.
 
-```text
-book
-boardgame
-```
+Item státusz kezelés
 
----
+Elfogadott csere után:
 
-# Item státuszok
+item státuszok frissülnek
+pending offerök revoke-olódnak
+traded item eltűnik a marketplace-ről.
+Adatbázis
 
-```text
-active
-traded
-```
+Táblák:
 
----
-
-# Trade Offer státuszok
-
-```text
-pending
-accepted
-rejected
-revoked
-cancelled
-```
-
----
-
-# Book Details
-
-```text
+users
+interests
+user_interests
+items
+item_images
 book_details
-```
-
-Mezők:
-
-* author
-* genre
-* page_count
-* published_year
-* isbn
-
----
-
-# Boardgame Details
-
-```text
 boardgame_details
-```
+trade_offers
+offer_items
+messages (még nincs kész)
+notifications (még nincs kész)
+Kész refactorok
 
-Mezők:
+Backend:
 
-* genre
-* min_players
-* max_players
-* recommended_age
-* playtime
+✅ string id → number id
 
----
+✅ messages.ts
 
-# Elkészült funkciók
+✅ handleControllerError
 
-✅ Regisztráció
+✅ console.log-ok törölve
 
-✅ Bejelentkezés
+✅ API_URL központosítva
 
-✅ JWT Authentication
+✅ User + UserProfile összevonva
 
-✅ Profil megtekintése
+✅ util-ok:
 
-✅ Profil módosítása
+interests
+itemLabels
+itemGenres
+Következő feladatok
 
-✅ Profil törlése
+Prioritási sorrend.
 
-✅ Marketplace
+1.
+Item képek tökéletesítése
+Megjelenítés mindenhol
 
-✅ Saját termékek
+Ahol item van:
 
-✅ Termék létrehozása
+ItemCard
+Home
+Marketplace
+MyItems
+ajánlatok (ha hasznos)
+ItemDetails
 
-✅ Termék módosítása
+Lehessen:
 
-✅ Termék törlése
+az összes feltöltött képet látni
+galéria
+thumbnail-ek
+nagy kép kiválasztása
 
-✅ Könyv részletek
+Egyszerű megoldás.
 
-✅ Társasjáték részletek
+2.
+EditItem
 
-✅ Több terméket tartalmazó ajánlatok
+Lehessen:
 
-✅ Ajánlat elfogadása
+új képet feltölteni
+meglévő képet törölni
 
-✅ Ajánlat elutasítása
+Lehetőleg:
 
-✅ Ajánlat visszavonása
+külön endpoint
+egyszerű UI
+3.
+Publikus profil
 
-✅ Ajánlatok automatikus törlése termék törlésekor
+Más user profilja.
 
----
+Például:
 
-# Tervezett, de még nem implementált modulok
+/profile/:id
 
-## Backend
+Read-only.
 
-* messageController.ts
-* messageRoutes.ts
-* messageService.ts
-* interestService.ts
+Mutassa:
 
-## Frontend
+avatar
+username
+city
+bio
+interests
+regisztráció dátuma
+Később:
 
-* messageApi.ts
-* components/Messages/
-* components/NotificationBell/
+Mutassa:
 
----
+user termékeit.
+Linkek
 
-# Tervezett funkciók
+Ajánlatoknál:
 
-## Marketplace szűrés
+requester_name
+owner_name
 
-* típus
-* állapot
-* cím
-* könyv szerző
-* könyv műfaj
-* társas műfaj
-* játékosok száma
-* ajánlott életkor
+kattintható.
 
-## Profil avatar feltöltése
+4.
+Messages feature
 
-## Termékképek feltöltése
+A legvégén.
 
-* maximum 5 kép termékenként
+Egyszerű rendszer:
 
-## Üzenetküldő rendszer
+conversation list
+messages
+send message
 
-* beszélgetések
-* olvasatlan üzenetek
+Nem websocket.
 
-## Értesítési rendszer
+Poll vagy manuális refresh elég.
 
-* új ajánlat érkezett
-* elfogadták az ajánlatodat
-* elutasították az ajánlatodat
-* visszavonták az ajánlatodat
+5.
+Notifications
 
+A legvégén.
 
-További szabályok:
+Értesítések:
 
-* A projekt Git verziókezelőt használ, ezért minden nagyobb feature vagy hibajavítás után javasolj commitot.
-* A projekt dokumentációját és a PROJECT_CONTEXT.md fájlt tekintsd elsődleges információforrásnak.
-* Ne feltételezd, hogy egy még nem implementált feature fájljai már léteznek.
-* Ha bizonytalan vagy egy fájl aktuális tartalmában, kérd el a konkrét fájlt.
-* Törekedj arra, hogy a projektben már használt mintákat és megoldásokat kövesd.
+új ajánlat
+ajánlat elfogadva
+ajánlat elutasítva
+új üzenet
+6.
+Responsive CSS
 
+A projekt legvégén.
+
+Egységes:
+
+desktop
+tablet
+mobile
+7.
+README
+
+A legvégén.
+
+Teljes:
+
+telepítés
+env
+mysql
+futtatás
+képek
+funkciók
+screenshotok
+ChatGPT kezdő prompt
+A B-B Xchange projekten dolgozunk tovább.
+
+Stack:
+
+Backend:
+- Node.js
+- Express
+- TypeScript
+- MySQL
+- mysql2
+- JWT
+- Multer
+
+Frontend:
+- React
+- TypeScript
+- React Router
+- CSS Modules
+
+Cél:
+deploy-olható tanuló-portfólió projekt.
+
+Szabályok:
+
+- Beginner friendly megoldások.
+- A jelenlegi kódolási forma és pattern-ek megtartása.
+- Minél egyszerűbb megoldások.
+- Minél kevesebb kódismétlés.
+- Csak indokolt refactor.
+- Type és util refactor javaslatok jöhetnek.
+- Backend belső üzenetek angolul.
+- User által látott üzenetek magyarul.
+- Ne használjunk túlkomplikált architektúrát.
+
+Meglévő funkciók:
+- Auth
+- Profile
+- Avatar upload
+- Items
+- Multiple image upload
+- Marketplace
+- Trade offers
+- Item status handling
+
+Következő feladatok prioritási sorrendben:
+
+1. Item képek tökéletesítése:
+   - összes kép megjelenítése
+   - galéria az ItemDetails oldalon
+   - képek megjelenítése mindenhol, ahol item látható
+
+2. EditItem:
+   - képek feltöltése
+   - képek törlése
+
+3. Publikus profil:
+   - más felhasználók profiljának megtekintése
+   - később a termékeik is
+
+4. Messages feature.
+
+5. Notifications feature.
+
+6. Responsive CSS.
+
+7. README.
+
+Ha fájlokat küldök, azokat egyesével nézd át, és:
+- csak a kötelező módosításokat sorold fel;
+- refactor javaslatot csak akkor adj, ha valóban egyszerűsít vagy újrafelhasználhatóvá teszi a kódot;
+- maradj következetes a projekt jelenlegi pattern-jeivel.

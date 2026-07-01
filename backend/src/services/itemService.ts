@@ -121,7 +121,7 @@ export const getItemById = async (
     return rows[0];
 };
 
-//! Get all items of owner 
+//! Get all items of owner
 export const getItemsByOwnerId = async (
     ownerId: number
 ) => {
@@ -129,15 +129,26 @@ export const getItemsByOwnerId = async (
     const [rows] = await pool.query<RowDataPacket[]>(
         `
         SELECT
-            id,
-            owner_id,
-            type,
-            title,
-            description,
-            item_condition,
-            status
+            items.id,
+            items.owner_id,
+            items.type,
+            cover.image_url AS cover_image,
+            items.title,
+            items.description,
+            items.item_condition,
+            items.status,
+            items.created_at,
+            items.updated_at
+
         FROM items
-        WHERE owner_id = ?
+
+        LEFT JOIN item_images cover
+            ON items.id = cover.item_id
+            AND cover.is_cover = TRUE
+
+        WHERE items.owner_id = ?
+
+        ORDER BY items.created_at DESC
         `,
         [ownerId]
     );

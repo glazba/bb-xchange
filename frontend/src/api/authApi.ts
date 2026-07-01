@@ -7,7 +7,7 @@ export const loginUser = async (
 ) => {
 
     const response = await fetch(
-        `API_URL/users/login`,
+        `http://localhost:3000/users/login`,
         {
             method: "POST",
             headers: {
@@ -19,6 +19,9 @@ export const loginUser = async (
             })
         }
     );
+
+    console.log(response.status);
+
 
     const data = await response.json();
 
