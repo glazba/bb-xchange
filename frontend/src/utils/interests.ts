@@ -1,0 +1,15 @@
+export const allInterests = [
+    "Fantasy",
+    "Sci-Fi",
+    "Horror",
+    "Thriller",
+    "Krimi",
+    "Romantikus",
+    "Történelmi",
+    "Kaland",
+    "Stratégiai társasjátékok",
+    "Kooperatív társasjátékok",
+    "Party játékok",
+    "Kártyajátékok",
+    "Táblajátékok",
+];

@@ -177,7 +177,7 @@ function Profile() {
                 ))}
               </ul>
             ) : (
-              <p>Nincsenek megadott érdeklődési körök.</p>
+              <p>Még nem adtál meg érdeklődési köröket.</p>
             )}
 
             <p>

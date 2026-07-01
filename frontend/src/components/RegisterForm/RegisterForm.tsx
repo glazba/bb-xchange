@@ -2,17 +2,26 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../api/authApi";
 import styles from "./RegisterForm.module.css";
+import { allInterests } from "../../utils/interests";
 
 function RegisterForm() {
   const navigate = useNavigate();
 
   const [username, setUsername] = useState("");
-
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-
   const [city, setCity] = useState("");
+
+  const [bio, setBio] = useState("");
+  const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+
+  const handleInterestToggle = (interest: string) => {
+    setSelectedInterests((prev) =>
+      prev.includes(interest)
+        ? prev.filter((item) => item !== interest)
+        : [...prev, interest],
+    );
+  };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -29,7 +38,14 @@ function RegisterForm() {
     }
 
     try {
-      await registerUser(username.trim(), email.trim(), password, city.trim());
+      await registerUser(
+        username.trim(),
+        email.trim(),
+        password,
+        city.trim(),
+        bio.trim(),
+        selectedInterests,
+      );
 
       alert("Sikeres regisztráció!");
 
@@ -77,6 +93,26 @@ function RegisterForm() {
         onChange={(event) => setCity(event.target.value)}
       />
 
+      <textarea
+        className={styles.textarea}
+        placeholder="Bemutatkozás"
+        value={bio}
+        onChange={(event) => setBio(event.target.value)}
+      />
+      <h3 className={styles.subtitle}>Érdeklődési körök</h3>
+
+      <div className={styles.checkboxGroup}>
+        {allInterests.map((interest) => (
+          <label key={interest} className={styles.checkbox}>
+            <input
+              type="checkbox"
+              checked={selectedInterests.includes(interest)}
+              onChange={() => handleInterestToggle(interest)}
+            />
+            {interest}
+          </label>
+        ))}
+      </div>
       <button className={styles.button} type="submit">
         Regisztráció
       </button>

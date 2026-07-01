@@ -7,7 +7,8 @@ export const createUser = async (
     username: string,
     email: string,
     password: string,
-    city: string
+    city: string,
+    bio: string
 ) => {
 
     const hashedPassword = await bcrypt.hash(
@@ -21,15 +22,17 @@ export const createUser = async (
             username, 
             email,
             password_hash,
-            city
+            city,
+            bio
         )
-        VALUES (?,?,?,?)
+        VALUES (?,?,?,?,?)
         `,
         [
             username,
             email,
             hashedPassword,
-            city
+            city,
+            bio
         ]
     );
 

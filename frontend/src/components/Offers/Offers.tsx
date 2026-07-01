@@ -85,7 +85,7 @@ function Offers() {
     <div className={styles.container}>
       <h1 className={styles.title}>Elküldött ajánlataim</h1>
 
-      {offers.length === 0 && <p>Még nincs elküldött ajánlatod.</p>}
+      {offers.length === 0 && <p>Még nem küldtél csereajánlatot.</p>}
 
       {offers.map((offer) => (
         <div

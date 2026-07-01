@@ -103,7 +103,7 @@ function ReceivedOffers() {
     <div className={styles.container}>
       <h1 className={styles.title}>Beérkezett ajánlatok</h1>
 
-      {offers.length === 0 && <p>Még nem kaptál ajánlatot.</p>}
+      {offers.length === 0 && <p>Még nem kaptál csereajánlatot.</p>}
 
       {offers.map((offer) => (
         <div

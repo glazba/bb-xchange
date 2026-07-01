@@ -27,17 +27,12 @@ export const registerUser = async (
             username,
             email,
             password,
-            city
+            city,
+            bio,
+            interests
         } = req.body;
 
-        const userId = await createUser(
-            username,
-            email,
-            password,
-            city
-        );
-
-        if (!username || !email || !password) {
+        if (!username || !email || !password || !city) {
             return res.status(400).json({
                 message: "Missing required fields"
             });
@@ -48,6 +43,19 @@ export const registerUser = async (
                 message: "Password must be at least 8 characters"
             });
         }
+
+        const userId = await createUser(
+            username,
+            email,
+            password,
+            city,
+            bio ?? ""
+        );
+
+        await updateUserInterests(
+            userId,
+            interests ?? []
+        );
 
         return res.status(201).json({
             message: "User created",

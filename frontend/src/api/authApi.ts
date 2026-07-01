@@ -32,7 +32,9 @@ export const registerUser = async (
     username: string,
     email: string,
     password: string,
-    city: string
+    city: string,
+    bio: string,
+    interests: string[]
 ) => {
 
     const response = await fetch(
@@ -46,7 +48,9 @@ export const registerUser = async (
                 username,
                 email,
                 password,
-                city
+                city,
+                bio,
+                interests
             })
         }
     );

@@ -62,6 +62,7 @@ function MyItems() {
     <div className={styles.page}>
       <div className={styles.header}>
         <h1>Termékeim</h1>
+        {items.length === 0 && <p>Még nincsenek feltöltött termékeid.</p>}
         <Link to="/create-item" className={styles.addButton}>
           +
         </Link>
