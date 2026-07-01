@@ -52,7 +52,8 @@ export const getAllUsers = async () => {
 };
 
 //! Get user by ID
-export const getUserById = async (id: string) => {
+export const getUserById = async (
+    id: number) => {
     const [rows] = await pool.query<RowDataPacket[]>(
         `
         SELECT

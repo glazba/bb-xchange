@@ -38,7 +38,7 @@ export const createBookDetails = async (
 
 //! Get book by ID
 export const getBookByItemId = async (
-    itemId: string
+    itemId: number
 ) => {
 
     const [rows] = await pool.query<RowDataPacket[]>(
@@ -60,7 +60,7 @@ export const getBookByItemId = async (
 }
 
 export const updateBookDetails = async (
-    itemId: string,
+    itemId: number,
     author: string,
     genre: string,
     pageCount: number | null,

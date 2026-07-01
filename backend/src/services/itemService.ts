@@ -87,7 +87,9 @@ export const getAllItems = async () => {
 };
 
 //! Get item by ID
-export const getItemById = async (id: string) => {
+export const getItemById = async (
+    id: number
+) => {
     const [rows] = await pool.query<RowDataPacket[]>(
         `
         SELECT
@@ -145,7 +147,7 @@ export const getItemsByOwnerId = async (
 
 //! Modify item
 export const updateItemById = async (
-    id: string,
+    id: number,
     type: string,
     title: string,
     description: string,
@@ -176,7 +178,7 @@ export const updateItemById = async (
 
 //! Update item status
 export const updateItemStatus = async (
-    itemId: string,
+    itemId: number,
     status: string
 ) => {
     await pool.query(
@@ -248,9 +250,8 @@ export const getItemImageById = async (
     imageId: number
 ) => {
 
-    const [rows] =
-        await pool.query<RowDataPacket[]>(
-            `
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
             SELECT
                 id,
                 item_id,
@@ -259,8 +260,8 @@ export const getItemImageById = async (
             FROM item_images
             WHERE id = ?
             `,
-            [imageId]
-        );
+        [imageId]
+    );
 
     return rows[0];
 };
@@ -286,16 +287,16 @@ export const deleteItemImageById = async (
 
     await pool.query(
         `
-            DELETE FROM item_images
-            WHERE id = ?
-            `,
+        DELETE FROM item_images
+        WHERE id = ?
+        `,
         [imageId]
     );
 };
 
 //! Delete item
 export const deleteItemById = async (
-    id: string
+    id: number
 ) => {
 
     const [result] = await pool.query<ResultSetHeader>(

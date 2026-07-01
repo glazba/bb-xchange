@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
+
+/* import { messages } from "../utils/messages"; */
+import { handleControllerError } from "../utils/handleControllerErrors";
 import {
     createTradeOffer,
     createOfferItem,
@@ -8,10 +11,10 @@ import {
     getReceivedOffers,
     getOfferById,
     updateOfferStatus,
-    cancelOtherOffers,
     cancelOffersContainingItem,
     revokeOffer as revokeOfferService
 } from "../services/tradeOffersService";
+
 import { getItemById, updateItemStatus } from "../services/itemService";
 
 //! Create offer
@@ -29,7 +32,7 @@ export const createOffer = async (
         const requesterId = req.user!.userId;
 
         const targetItem = await getItemById(
-            String(targetItemId)
+            Number(targetItemId)
         );
 
         //! Does target item exist?
@@ -71,7 +74,7 @@ export const createOffer = async (
         for (const itemId of offeredItemIds) {
 
             const offeredItem = await getItemById(
-                String(itemId)
+                Number(itemId)
             );
 
             if (!offeredItem) {
@@ -113,12 +116,10 @@ export const createOffer = async (
         });
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -136,12 +137,10 @@ export const getMyOffers = async (
         return res.json(offers);
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -159,12 +158,10 @@ export const getMyReceivedOffers = async (
         return res.json(offers);
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -194,7 +191,7 @@ export const changeOfferStatus = async (
         }
 
         const offer = await getOfferById(
-            String(req.params.id)
+            Number(req.params.id)
         );
 
         //! Does offer exist?
@@ -212,7 +209,7 @@ export const changeOfferStatus = async (
         }
 
         const item = await getItemById(
-            String(offer[0].target_item_id)
+            Number(offer[0].target_item_id)
         );
 
         if (!item) {
@@ -228,13 +225,13 @@ export const changeOfferStatus = async (
         }
 
         await updateOfferStatus(
-            String(req.params.id),
+            Number(req.params.id),
             status
         );
 
         if (status === "accepted") {
             await updateItemStatus(
-                String(offer[0].target_item_id),
+                Number(offer[0].target_item_id),
                 "traded"
             );
 
@@ -245,12 +242,12 @@ export const changeOfferStatus = async (
             );
 
             const offerItems = await getOfferItems(
-                String(req.params.id)
+                Number(req.params.id)
             );
 
             for (const item of offerItems) {
                 await updateItemStatus(
-                    String(item.item_id),
+                    Number(item.item_id),
                     "traded"
                 );
 
@@ -267,12 +264,10 @@ export const changeOfferStatus = async (
         });
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -301,9 +296,9 @@ export const revokeOffer = async (
         });
 
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };

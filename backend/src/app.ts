@@ -17,7 +17,6 @@ import itemRoutes from "./routes/itemRoutes";
 import bookRoutes from "./routes/bookRoutes";
 import boardgameRoutes from "./routes/boardgameRoutes";
 import tradeOfferRoutes from "./routes/tradeOfferRoutes";
-import { log } from "node:console";
 
 const app = express();
 
@@ -43,18 +42,6 @@ app.use(helmet({
         policy: "cross-origin"
     }
 }));
-
-app.use((
-    err: Error,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-) => {
-    console.error(err);
-    return res.status(500).json({
-        message: "Internal server error"
-    });
-});
 
 app.use(apiLimiter);
 
@@ -109,4 +96,16 @@ app.get("/protected", authMiddleware, (req: AuthRequest, res) => {
 //! Server launch
 app.listen(3000, () => {
     console.log("Server running on port 3000");
+});
+
+app.use((
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+) => {
+    console.error(err);
+    return res.status(500).json({
+        message: "Internal server error"
+    });
 });

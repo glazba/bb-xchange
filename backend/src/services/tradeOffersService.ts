@@ -47,7 +47,7 @@ export const createOfferItem = async (
 
 //! Get offer items
 export const getOfferItems = async (
-    offerId: string
+    offerId: number
 ) => {
 
     const [rows] = await pool.query<RowDataPacket[]>(
@@ -165,7 +165,7 @@ export const getReceivedOffers = async (
 
 //! Get offer by ID
 export const getOfferById = async (
-    offerId: string //? Number?
+    offerId: number
 ) => {
 
     const [rows] = await pool.query<RowDataPacket[]>(
@@ -186,7 +186,7 @@ export const getOfferById = async (
 
 //! Modify offer status
 export const updateOfferStatus = async (
-    offerId: string,
+    offerId: number,
     status: string
 ) => {
 

@@ -1,8 +1,10 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
-import { log } from "node:console";
 import fs from "fs";
 import path from "path";
+
+/* import { messages } from "../utils/messages"; */
+import { handleControllerError } from "../utils/handleControllerErrors";
 
 import {
     getAllItems,
@@ -46,7 +48,6 @@ export const createNewItem = async (
         playtime
     } = req.body;
 
-    console.log(req.body);
     const ownerId = req.user!.userId;
 
     if (!type || !title || !item_condition) {
@@ -96,7 +97,6 @@ export const getItems = async (
     req: Request,
     res: Response
 ) => {
-
     const items = await getAllItems();
 
     return res.json(items);
@@ -107,10 +107,10 @@ export const getItem = async (
     req: Request,
     res: Response
 ) => {
-    try {
 
+    try {
         const item = await getItemById(
-            String(req.params.id)
+            Number(req.params.id)
         );
 
         if (!item) {
@@ -122,7 +122,7 @@ export const getItem = async (
         if (item.type === "book") {
 
             const book = await getBookByItemId(
-                String(req.params.id)
+                Number(req.params.id)
             );
 
             return res.json({
@@ -134,7 +134,7 @@ export const getItem = async (
         if (item.type === "boardgame") {
 
             const boardgame = await getBoardgameByItemId(
-                String(req.params.id)
+                Number(req.params.id)
             );
 
             return res.json({
@@ -146,12 +146,10 @@ export const getItem = async (
         return res.json(item);
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -170,12 +168,10 @@ export const getMyItems = async (
         return res.json(items);
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -187,7 +183,7 @@ export const updateItem = async (
 
     try {
         const item = await getItemById(
-            String(req.params.id)
+            Number(req.params.id)
         );
 
         if (!item) {
@@ -227,15 +223,7 @@ export const updateItem = async (
         }
 
         await updateItemById(
-            String(req.params.id),
-            type,
-            title,
-            description,
-            item_condition
-        );
-
-        await updateItemById(
-            String(req.params.id),
+            Number(req.params.id),
             type,
             title,
             description,
@@ -244,7 +232,7 @@ export const updateItem = async (
 
         if (type === "book") {
             await updateBookDetails(
-                String(req.params.id),
+                Number(req.params.id),
                 author ?? "",
                 genre ?? "",
                 page_count ?? null,
@@ -255,7 +243,7 @@ export const updateItem = async (
 
         if (type === "boardgame") {
             await updateBoardgameDetails(
-                String(req.params.id),
+                Number(req.params.id),
                 genre ?? "",
                 min_players ?? null,
                 max_players ?? null,
@@ -269,12 +257,10 @@ export const updateItem = async (
         });
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -286,7 +272,7 @@ export const deleteItem = async (
 
     try {
         const item = await getItemById(
-            String(req.params.id)
+            Number(req.params.id)
         );
 
         if (!item) {
@@ -310,7 +296,7 @@ export const deleteItem = async (
         await cancelOffersByDeletedItem(item.id);
 
         await deleteItemById(
-            String(req.params.id)
+            Number(req.params.id)
         );
 
         return res.json({
@@ -318,12 +304,10 @@ export const deleteItem = async (
         });
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -335,7 +319,7 @@ export const uploadImages = async (
 
     try {
         const item = await getItemById(
-            String(req.params.id)
+            Number(req.params.id)
         );
 
         if (!item) {
@@ -381,11 +365,10 @@ export const uploadImages = async (
         });
 
     } catch (error) {
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -396,20 +379,17 @@ export const getItemImages = async (
 ) => {
 
     try {
-
-        const images =
-            await getImagesByItemId(
-                Number(req.params.id)
-            );
+        const images = await getImagesByItemId(
+            Number(req.params.id)
+        );
 
         return res.json(images);
 
     } catch (error) {
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -420,11 +400,9 @@ export const deleteItemImage = async (
 ) => {
 
     try {
-
-        const image =
-            await getItemImageById(
-                Number(req.params.imageId)
-            );
+        const image = await getItemImageById(
+            Number(req.params.imageId)
+        );
 
         if (!image) {
             return res.status(404).json({
@@ -433,17 +411,13 @@ export const deleteItemImage = async (
             });
         }
 
-        const item =
-            await getItemById(
-                String(
-                    image.item_id
-                )
-            );
+        const item = await getItemById(
+            Number(image.item_id)
+        );
 
         if (!item) {
             return res.status(404).json({
-                message:
-                    "Item not found"
+                message: "Item not found"
             });
         }
 
@@ -459,9 +433,7 @@ export const deleteItemImage = async (
             image.image_url
         );
 
-        if (fs.existsSync(
-            imagePath
-        )) {
+        if (fs.existsSync(imagePath)) {
             fs.unlinkSync(imagePath);
         }
 
@@ -472,11 +444,9 @@ export const deleteItemImage = async (
         });
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };

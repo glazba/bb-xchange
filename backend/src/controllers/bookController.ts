@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { createBookDetails, getBookByItemId } from "../services/bookService";
 
+/* import { messages } from "../utils/messages"; */
+import { handleControllerError } from "../utils/handleControllerErrors";
+
 //! Create book
 export const createBook = async (
     req: Request,
@@ -31,12 +34,10 @@ export const createBook = async (
         });
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -48,7 +49,7 @@ export const getBook = async (
 
     try {
         const book = await getBookByItemId(
-            String(req.params.itemId)
+            Number(req.params.itemId)
         );
 
         if (book.length === 0) {
@@ -60,11 +61,9 @@ export const getBook = async (
         return res.json(book[0]);
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };

@@ -4,6 +4,11 @@ import fs from "fs";
 import path from "path";
 
 import { Request, Response } from "express";
+import { AuthRequest } from "../types/AuthRequest";
+
+/* import { messages } from "../utils/messages"; */
+import { handleControllerError } from "../utils/handleControllerErrors";
+
 import {
     getAllUsers,
     getUserById,
@@ -17,8 +22,6 @@ import {
     updateAvatarById,
     deleteUserById
 } from "../services/userService";
-
-import { AuthRequest } from "../types/AuthRequest";
 
 //! Register
 export const registerUser = async (
@@ -67,12 +70,10 @@ export const registerUser = async (
         });
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -83,18 +84,15 @@ export const getUsers = async (
 ) => {
 
     try {
-
         const users = await getAllUsers();
 
-        res.json(users);
+        return res.json(users);
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     };
 };
 
@@ -105,7 +103,7 @@ export const getUser = async (
 ) => {
 
     try {
-        const user = await getUserById(String(req.params.id));
+        const user = await getUserById(Number(req.params.id));
 
         if (user.length === 0) {
             return res.status(404).json({
@@ -116,12 +114,10 @@ export const getUser = async (
         return res.json(user[0]);
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -182,12 +178,10 @@ export const loginUser = async (
         });
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -209,11 +203,10 @@ export const getProfile = async (
 
         return res.json(profile);
     } catch (error) {
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -255,11 +248,12 @@ export const updateProfile = async (
         );
 
         return res.json(profile);
+
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            message: "Belső szerverhiba"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -298,10 +292,10 @@ export const uploadAvatar = async (
         });
 
     } catch (error) {
-        console.error(error);
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -351,10 +345,9 @@ export const deleteProfile = async (
 
 
     } catch (error) {
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Belső szerverhiba."
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };

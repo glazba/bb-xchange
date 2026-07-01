@@ -38,7 +38,7 @@ export const createBoardgameDetails = async (
 
 //! Get boardgame by ID
 export const getBoardgameByItemId = async (
-    itemId: string
+    itemId: number
 ) => {
 
     const [rows] = await pool.query<RowDataPacket[]>(
@@ -61,7 +61,7 @@ export const getBoardgameByItemId = async (
 
 //! Update boardgame details
 export const updateBoardgameDetails = async (
-    itemId: string,
+    itemId: number,
     genre: string,
     minPlayers: number | null,
     maxPlayers: number | null,

@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { createBoardgameDetails, getBoardgameByItemId } from "../services/boardgameService";
 
+/* import { messages } from "../utils/messages"; */
+import { handleControllerError } from "../utils/handleControllerErrors";
+
 //! Create boardgame
 export const createBoardgame = async (
     req: Request,
@@ -31,12 +34,10 @@ export const createBoardgame = async (
         });
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
 
@@ -48,7 +49,7 @@ export const getBoardgame = async (
 
     try {
         const boardgame = await getBoardgameByItemId(
-            String(req.params.itemId)
+            Number(req.params.itemId)
         );
 
         if (boardgame.length === 0) {
@@ -60,11 +61,9 @@ export const getBoardgame = async (
         return res.json(boardgame[0]);
 
     } catch (error) {
-
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal server error"
-        });
+        return handleControllerError(
+            error,
+            res
+        );
     }
 };
