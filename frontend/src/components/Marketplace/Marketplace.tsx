@@ -10,6 +10,7 @@ import { bookGenres, boardgameGenres } from "../../utils/itemGenres";
 import ItemCard from "../ItemCard/ItemCard";
 
 import styles from "./Marketplace.module.css";
+import { itemConditionLabels } from "../../utils/itemLabels";
 
 function Marketplace() {
   const { token } = useAuth();
@@ -18,6 +19,7 @@ function Marketplace() {
 
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
+  const [conditionFilter, setConditionFilter] = useState("");
   const [genreFilter, setGenreFilter] = useState("");
 
   const [pageFilter, setPageFilter] = useState("");
@@ -26,12 +28,16 @@ function Marketplace() {
 
   const [ageFilter, setAgeFilter] = useState("");
 
+  const [sortBy, setSortBy] = useState("newest");
+
   const genres =
     typeFilter === "book"
       ? bookGenres
       : typeFilter === "boardgame"
         ? boardgameGenres
         : [];
+
+  const conditions: [string, string][] = Object.entries(itemConditionLabels);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -71,48 +77,86 @@ function Marketplace() {
     setAgeFilter("");
   };
 
-  const filteredItems = items.filter((item) => {
-    const searchText = search.trim().toLowerCase();
+  const handleResetFilters = () => {
+    setSearch("");
+    setTypeFilter("");
+    setConditionFilter("");
+    setGenreFilter("");
+    setPageFilter("");
+    setPlayersFilter("");
+    setAgeFilter("");
+    setSortBy("newest");
+  };
 
-    const matchesSearch =
-      searchText === "" ||
-      item.title.toLowerCase().includes(searchText) ||
-      item.author?.toLowerCase().includes(searchText);
+  const filteredItems = items
+    .filter((item) => {
+      const searchText = search.trim().toLowerCase();
 
-    const matchesType = typeFilter === "" || item.type === typeFilter;
+      const matchesSearch =
+        searchText === "" ||
+        item.title.toLowerCase().includes(searchText) ||
+        item.author?.toLowerCase().includes(searchText);
 
-    const matchesGenre = genreFilter === "" || item.genre === genreFilter;
+      const matchesType = typeFilter === "" || item.type === typeFilter;
 
-    const matchesPages =
-      pageFilter === "" ||
-      (item.page_count !== null &&
-        item.page_count !== undefined &&
-        item.page_count >= Number(pageFilter));
+      const matchesCondition =
+        conditionFilter === "" || item.item_condition === conditionFilter;
 
-    const matchesPlayers =
-      playersFilter === "" ||
-      (item.min_players !== null &&
-        item.max_players !== null &&
-        item.min_players !== undefined &&
-        item.max_players !== undefined &&
-        Number(playersFilter) >= item.min_players &&
-        Number(playersFilter) <= item.max_players);
+      const matchesGenre = genreFilter === "" || item.genre === genreFilter;
 
-    const matchesAge =
-      ageFilter === "" ||
-      (item.recommended_age !== null &&
-        item.recommended_age !== undefined &&
-        item.recommended_age <= Number(ageFilter));
+      const matchesPages =
+        pageFilter === "" ||
+        (item.page_count !== null &&
+          item.page_count !== undefined &&
+          item.page_count >= Number(pageFilter));
 
-    return (
-      matchesSearch &&
-      matchesType &&
-      matchesGenre &&
-      matchesPages &&
-      matchesPlayers &&
-      matchesAge
-    );
-  });
+      const matchesPlayers =
+        playersFilter === "" ||
+        (item.min_players !== null &&
+          item.max_players !== null &&
+          item.min_players !== undefined &&
+          item.max_players !== undefined &&
+          Number(playersFilter) >= item.min_players &&
+          Number(playersFilter) <= item.max_players);
+
+      const matchesAge =
+        ageFilter === "" ||
+        (item.recommended_age !== null &&
+          item.recommended_age !== undefined &&
+          item.recommended_age <= Number(ageFilter));
+
+      return (
+        matchesSearch &&
+        matchesType &&
+        matchesCondition &&
+        matchesGenre &&
+        matchesPages &&
+        matchesPlayers &&
+        matchesAge
+      );
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case "title-asc":
+          return a.title.localeCompare(b.title);
+
+        case "title-desc":
+          return b.title.localeCompare(a.title);
+
+        case "oldest":
+          return (
+            new Date(a.created_at ?? "").getTime() -
+            new Date(b.created_at ?? "").getTime()
+          );
+
+        case "newest":
+        default:
+          return (
+            new Date(b.created_at ?? "").getTime() -
+            new Date(a.created_at ?? "").getTime()
+          );
+      }
+    });
 
   return (
     <div className={styles.page}>
@@ -135,6 +179,28 @@ function Marketplace() {
           <option value="book">Könyv</option>
 
           <option value="boardgame">Társasjáték</option>
+        </select>
+
+        <select
+          value={conditionFilter}
+          onChange={(event) => setConditionFilter(event.target.value)}
+        >
+          <option value="">Minden állapot</option>
+          {conditions.map(([value, label]) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={sortBy}
+          onChange={(event) => setSortBy(event.target.value)}
+        >
+          <option value="newest">Legújabb elöl</option>
+          <option value="oldest">Legrégebbi elöl</option>
+          <option value="title-asc">Cím (A-Z)</option>
+          <option value="title-desc">Cím (Z-A)</option>
         </select>
 
         {typeFilter === "book" && (
@@ -191,7 +257,11 @@ function Marketplace() {
             />
           </>
         )}
+
+        <button onClick={handleResetFilters}>Szűrők törlése</button>
       </div>
+
+      <p>{filteredItems.length} találat</p>
 
       {filteredItems.length === 0 && (
         <p className={styles.empty}>Nincs találat a megadott szűrőkre.</p>
