@@ -5,6 +5,7 @@ import { log } from "node:console";
 import {
     getAllItems,
     getItemById,
+    getGenresByType,
     getItemsByOwnerId,
     createItem,
     deleteItemById,

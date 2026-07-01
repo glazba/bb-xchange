@@ -39,15 +39,42 @@ export const getAllItems = async () => {
     const [rows] = await pool.query<RowDataPacket[]>(
         `
         SELECT
-            id,
-            owner_id,
-            type,
-            title,
-            description,
-            item_condition,
-            status
+            items.id,
+            items.owner_id,
+            items.type,
+            items.title,
+            items.description,
+            items.item_condition,
+            items.status,
+            items.created_at,
+            items.updated_at,
+
+            book_details.author,
+            COALESCE(
+                book_details.genre,
+                boardgame_details.genre
+            ) AS genre,
+
+            book_details.page_count,
+            book_details.published_year,
+            book_details.isbn,
+
+            boardgame_details.min_players,
+            boardgame_details.max_players,
+            boardgame_details.recommended_age,
+            boardgame_details.playtime
+
         FROM items
-        WHERE status = 'active'
+
+        LEFT JOIN book_details
+            ON items.id = book_details.item_id
+        
+        LEFT JOIN boardgame_details
+            ON items.id = boardgame_details.item_id
+
+        WHERE items.status = 'active'
+
+        ORDER BY items.created_at DESC
         `
     );
 

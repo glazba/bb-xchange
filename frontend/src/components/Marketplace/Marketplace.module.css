@@ -14,3 +14,23 @@
 
   gap: 2rem;
 }
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.filters input,
+.filters select {
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  min-width: 180px;
+}
+
+.empty {
+  margin-top: 2rem;
+  text-align: center;
+}
