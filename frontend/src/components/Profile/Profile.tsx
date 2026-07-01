@@ -9,25 +9,12 @@ import {
   deleteProfile,
 } from "../../api/userApi";
 
+import { allInterests } from "../../utils/interests";
+
 import type { UserProfile } from "../../types/UserProfile";
 
 import styles from "./Profile.module.css";
-
-const allInterests = [
-  "Fantasy",
-  "Sci-Fi",
-  "Horror",
-  "Thriller",
-  "Krimi",
-  "Romantikus",
-  "Történelmi",
-  "Kaland",
-  "Stratégiai társasjátékok",
-  "Kooperatív társasjátékok",
-  "Party játékok",
-  "Kártyajátékok",
-  "Táblajátékok",
-];
+import { API_URL } from "../../api/apiConfig";
 
 function Profile() {
   const { token, logout } = useAuth();
@@ -186,7 +173,7 @@ function Profile() {
         <div className={styles.avatar}>
           {profile.avatar ? (
             <img
-              src={`http://localhost:3000/uploads/${profile.avatar}`}
+              src={`${API_URL}/uploads/${profile.avatar}`}
               alt="Profilkép"
               className={styles.avatarImage}
             />
@@ -198,7 +185,7 @@ function Profile() {
         <input
           id="avatar-upload"
           type="file"
-          accept="image/"
+          accept="image/*"
           className={styles.hiddenInput}
           onChange={(event) =>
             setSelectedAvatar(event.target.files?.[0] ?? null)

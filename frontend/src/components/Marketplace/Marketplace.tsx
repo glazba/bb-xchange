@@ -269,12 +269,7 @@ function Marketplace() {
 
       <div className={styles.grid}>
         {filteredItems.map((item) => (
-          <ItemCard
-            key={item.id}
-            item={item}
-            onDelete={() => {}}
-            isOwner={false}
-          />
+          <ItemCard key={item.id} item={item} />
         ))}
       </div>
     </div>

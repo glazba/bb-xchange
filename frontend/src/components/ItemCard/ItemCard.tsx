@@ -8,6 +8,7 @@ import {
 } from "../../utils/itemLabels";
 
 import styles from "./ItemCard.module.css";
+import { API_URL } from "../../api/apiConfig";
 
 interface ItemCardProps {
   item: Item;
@@ -21,13 +22,13 @@ function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
       <div className={styles.image}>
         {item.cover_image ? (
           <img
-            src={`http://localhost:3000/uploads/${item.cover_image}`}
+            src={`${API_URL}/uploads/${item.cover_image}`}
             alt={item.title}
           />
         ) : (
           <span>{item.type === "book" ? "📚" : "🎲"}</span>
         )}
-      </div>{" "}
+      </div>
       <h3>{item.title}</h3>
       <div className={styles.badges}>
         <span>Típus: {itemTypeLabels[item.type]}</span>

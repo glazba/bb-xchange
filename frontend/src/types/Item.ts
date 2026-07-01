@@ -3,7 +3,8 @@ export interface Item {
     owner_id: number;
     owner_name?: string;
 
-    cover_image?: string;
+    cover_image?: string | null;
+    images?: string[]
 
     title: string;
     description: string;

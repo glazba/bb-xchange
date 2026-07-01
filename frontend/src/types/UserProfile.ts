@@ -1,10 +1,8 @@
-export interface UserProfile {
-    id: number;
-    username: string;
+import type { User } from "./User";
+
+export interface UserProfile extends User {
     email: string;
-    avatar?: string;
-    city: string;
-    bio?: string;
+    bio?: string | null;
     interests: string[];
     created_at: string;
     updated_at: string;

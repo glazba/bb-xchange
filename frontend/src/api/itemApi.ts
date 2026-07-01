@@ -1,12 +1,14 @@
 import type { Item } from "../types/Item";
 
+import { API_URL } from "./apiConfig";
+
 export const createItem = async (
     token: string,
     itemData: Partial<Item>
 ): Promise<{ message: string; itemId: number }> => {
 
     const response = await fetch(
-        "http://localhost:3000/items",
+        `${API_URL}/items`,
         {
             method: "POST",
             headers: {
@@ -30,7 +32,7 @@ export const createItem = async (
 export const getAllItems = async ()
     : Promise<Item[]> => {
     const response = await fetch(
-        "http://localhost:3000/items"
+        `${API_URL}/items`
     );
 
     const data = await response.json();
@@ -47,7 +49,7 @@ export const getMyItems = async (
 ): Promise<Item[]> => {
 
     const response = await fetch(
-        "http://localhost:3000/items/me",
+        `${API_URL}/items/me`,
         {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -68,7 +70,7 @@ export const getItemById = async (
     itemId: string
 ): Promise<Item> => {
     const response = await fetch(
-        `http://localhost:3000/items/${itemId}`
+        `${API_URL}/items/${itemId}`
     );
 
     const data = await response.json();
@@ -87,7 +89,7 @@ export const updateItem = async (
 ): Promise<Item> => {
 
     const response = await fetch(
-        `http://localhost:3000/items/${itemId}`,
+        `${API_URL}/items/${itemId}`,
         {
             method: "PUT",
             headers: {
@@ -114,7 +116,7 @@ export const deleteItem = async (
 ): Promise<Item> => {
 
     const response = await fetch(
-        `http://localhost:3000/items/${itemId}`,
+        `${API_URL}/items/${itemId}`,
         {
             method: "DELETE",
             headers: {
@@ -149,7 +151,7 @@ export const uploadItemImages = async (
     });
 
     const response = await fetch(
-        `http://localhost:3000/items/${itemId}/images`,
+        `${API_URL}/items/${itemId}/images`,
         {
             method: "POST",
             headers: {

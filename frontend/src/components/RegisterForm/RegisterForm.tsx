@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../../api/authApi";
-import styles from "./RegisterForm.module.css";
+
 import { allInterests } from "../../utils/interests";
+
+import styles from "./RegisterForm.module.css";
 
 function RegisterForm() {
   const navigate = useNavigate();

@@ -1,4 +1,5 @@
 import type { TradeOffer } from "../types/TradeOffer";
+import { API_URL } from "./apiConfig";
 
 export const createOffer = async (
     token: string,
@@ -7,7 +8,7 @@ export const createOffer = async (
 ) => {
 
     const response = await fetch(
-        "http://localhost:3000/offers",
+        `${API_URL}/offers`,
         {
             method: "POST",
             headers: {
@@ -34,7 +35,7 @@ export const getMyOffers = async (
     token: string,
 ): Promise<TradeOffer[]> => {
     const response = await fetch(
-        "http://localhost:3000/offers/me",
+        `${API_URL}/offers/me`,
         {
             headers: {
                 "Content-Type": "application/json",
@@ -56,7 +57,7 @@ export const getReceivedOffers = async (
     token: string,
 ): Promise<TradeOffer[]> => {
     const response = await fetch(
-        "http://localhost:3000/offers/received",
+        `${API_URL}/offers/received`,
         {
             headers: {
                 "Content-Type": "application/json",
@@ -81,7 +82,7 @@ export const updateOfferStatus = async (
 ) => {
 
     const response = await fetch(
-        `http://localhost:3000/offers/${offerId}`,
+        `${API_URL}/offers/${offerId}`,
         {
             method: "PUT",
             headers: {
@@ -109,7 +110,7 @@ export const revokeOffer = async (
 ) => {
 
     const response = await fetch(
-        `http://localhost:3000/offers/${offerId}/revoke`,
+        `${API_URL}/offers/${offerId}/revoke`,
         {
             method: "PATCH",
             headers: {

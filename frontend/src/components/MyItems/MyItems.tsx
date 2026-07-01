@@ -69,12 +69,7 @@ function MyItems() {
       </div>
       <div className={styles.grid}>
         {items.map((item) => (
-          <ItemCard
-            key={item.id}
-            item={item}
-            onDelete={handleDelete}
-            isOwner={true}
-          />
+          <ItemCard key={item.id} item={item} onDelete={handleDelete} isOwner />
         ))}
       </div>
     </div>

@@ -1,3 +1,5 @@
+import { API_URL } from "./apiConfig";
+
 //! Login
 export const loginUser = async (
     email: string,
@@ -5,7 +7,7 @@ export const loginUser = async (
 ) => {
 
     const response = await fetch(
-        "http://localhost:3000/users/login",
+        `API_URL/users/login`,
         {
             method: "POST",
             headers: {
@@ -38,7 +40,7 @@ export const registerUser = async (
 ) => {
 
     const response = await fetch(
-        "http://localhost:3000/users/register",
+        `${API_URL}/users/register`,
         {
             method: "POST",
             headers: {

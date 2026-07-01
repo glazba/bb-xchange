@@ -11,6 +11,7 @@ import {
 } from "../../utils/itemLabels";
 
 import styles from "./ItemDetails.module.css";
+import { API_URL } from "../../api/apiConfig";
 
 function ItemDetails() {
   const { id } = useParams();
@@ -56,13 +57,13 @@ function ItemDetails() {
       <div className={styles.image}>
         {item.cover_image ? (
           <img
-            src={`http://localhost:3000/uploads/${item.cover_image}`}
+            src={`${API_URL}/uploads/${item.cover_image}`}
             alt={item.title}
           />
         ) : (
           <span>{item.type === "book" ? "📚" : "🎲"}</span>
         )}
-      </div>{" "}
+      </div>
       <h1>{item.title}</h1>
       <p className={styles.description}>{item.description}</p>
       <div className={styles.info}>

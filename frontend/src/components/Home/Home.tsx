@@ -27,7 +27,11 @@ function Home() {
 
         setLatestItems(latest);
       } catch (error) {
-        console.error(error);
+        alert(
+          error instanceof Error
+            ? error.message
+            : "Nem sikerült betölteni a terméket.",
+        );
       }
     };
 
@@ -80,7 +84,7 @@ function Home() {
         ) : (
           <div className={styles.grid}>
             {latestItems.map((item) => (
-              <ItemCard key={item.id} item={item} isOwner={false} />
+              <ItemCard key={item.id} item={item} />
             ))}
           </div>
         )}

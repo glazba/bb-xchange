@@ -1,11 +1,12 @@
 import type { UserProfile } from "../types/UserProfile";
+import { API_URL } from "./apiConfig";
 
 export const getProfile = async (
     token: string,
 ): Promise<UserProfile> => {
 
     const response = await fetch(
-        "http://localhost:3000/users/profile",
+        `${API_URL}/users/profile`,
         {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -30,7 +31,7 @@ export const updateProfile = async (
 ): Promise<UserProfile> => {
 
     const response = await fetch(
-        "http://localhost:3000/users/profile",
+        `${API_URL}/users/profile`,
         {
             method: "PUT",
             headers: {
@@ -68,7 +69,7 @@ export const uploadAvatar = async (
     );
 
     const response = await fetch(
-        "http://localhost:3000/users/avatar",
+        `${API_URL}/users/avatar`,
         {
             method: "PUT",
             headers: {
@@ -93,7 +94,7 @@ export const deleteProfile = async (
 ) => {
 
     const response = await fetch(
-        "http://localhost:3000/users/profile",
+        `${API_URL}/users/profile`,
         {
             method: "DELETE",
             headers: {
