@@ -18,7 +18,16 @@ interface ItemCardProps {
 function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
   return (
     <div className={styles.card}>
-      <div className={styles.image}>{item.type === "book" ? "📚" : "🎲"}</div>
+      <div className={styles.image}>
+        {item.cover_image ? (
+          <img
+            src={`http://localhost:3000/uploads/${item.cover_image}`}
+            alt={item.title}
+          />
+        ) : (
+          <span>{item.type === "book" ? "📚" : "🎲"}</span>
+        )}
+      </div>{" "}
       <h3>{item.title}</h3>
       <div className={styles.badges}>
         <span>Típus: {itemTypeLabels[item.type]}</span>

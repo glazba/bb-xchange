@@ -3,7 +3,7 @@ import type { Item } from "../types/Item";
 export const createItem = async (
     token: string,
     itemData: Partial<Item>
-): Promise<Item> => {
+): Promise<{ message: string; itemId: number }> => {
 
     const response = await fetch(
         "http://localhost:3000/items",
@@ -120,6 +120,42 @@ export const deleteItem = async (
             headers: {
                 Authorization: `Bearer ${token}`
             }
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+};
+
+//! Upload item images
+export const uploadItemImages = async (
+    token: string,
+    itemId: number,
+    files: File[]
+) => {
+
+    const formData = new FormData();
+
+    files.forEach((file) => {
+        formData.append(
+            "images",
+            file
+        );
+    });
+
+    const response = await fetch(
+        `http://localhost:3000/items/${itemId}/images`,
+        {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            body: formData
         }
     );
 

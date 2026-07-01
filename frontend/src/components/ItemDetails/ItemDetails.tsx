@@ -53,7 +53,16 @@ function ItemDetails() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.image}>{item.type === "book" ? "📚" : "🎲"}</div>
+      <div className={styles.image}>
+        {item.cover_image ? (
+          <img
+            src={`http://localhost:3000/uploads/${item.cover_image}`}
+            alt={item.title}
+          />
+        ) : (
+          <span>{item.type === "book" ? "📚" : "🎲"}</span>
+        )}
+      </div>{" "}
       <h1>{item.title}</h1>
       <p className={styles.description}>{item.description}</p>
       <div className={styles.info}>

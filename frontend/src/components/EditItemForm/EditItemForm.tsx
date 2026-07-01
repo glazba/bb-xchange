@@ -4,6 +4,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { getItemById, updateItem } from "../../api/itemApi";
 
+import { itemConditionLabels } from "../../utils/itemLabels";
+
+import { bookGenres, boardgameGenres } from "../../utils/itemGenres";
+
 import styles from "./EditItemForm.module.css";
 
 function EditItemForm() {
@@ -28,6 +32,11 @@ function EditItemForm() {
   const [maxPlayers, setMaxPlayers] = useState("");
   const [recommendedAge, setRecommendedAge] = useState("");
   const [playTime, setPlayTime] = useState("");
+
+  const conditions: [string, string][] = Object.entries(itemConditionLabels);
+
+  const genres =
+    type === "book" ? bookGenres : type === "boardgame" ? boardgameGenres : [];
 
   const itemData = {
     type,
@@ -146,17 +155,21 @@ function EditItemForm() {
         onChange={(event) => setItemCondition(event.target.value)}
       >
         <option value="">Állapot</option>
-        <option value="new">Új</option>
-        <option value="excellent">Kitűnő</option>
-        <option value="good">Jó</option>
-        <option value="used">Használt</option>
-        <option value="damaged">Sérült</option>
+
+        {conditions.map(([value, label]) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
       </select>
 
       <select
         className={styles.input}
         value={type}
-        onChange={(event) => setType(event.target.value)}
+        onChange={(event) => {
+          setType(event.target.value);
+          setGenre("");
+        }}
       >
         <option value="">Típus</option>
 
@@ -174,13 +187,21 @@ function EditItemForm() {
             value={author}
             onChange={(event) => setAuthor(event.target.value)}
           />
-          <input
+
+          <select
             className={styles.input}
-            type="text"
-            placeholder="Műfaj"
             value={genre}
             onChange={(event) => setGenre(event.target.value)}
-          />
+          >
+            <option value="">Műfaj</option>
+
+            {genres.map((itemGenre) => (
+              <option key={itemGenre} value={itemGenre}>
+                {itemGenre}
+              </option>
+            ))}
+          </select>
+
           <input
             className={styles.input}
             type="number"
@@ -207,13 +228,20 @@ function EditItemForm() {
 
       {type === "boardgame" && (
         <>
-          <input
+          <select
             className={styles.input}
-            type="text"
-            placeholder="Műfaj"
             value={genre}
             onChange={(event) => setGenre(event.target.value)}
-          />
+          >
+            <option value="">Műfaj</option>
+
+            {genres.map((itemGenre) => (
+              <option key={itemGenre} value={itemGenre}>
+                {itemGenre}
+              </option>
+            ))}
+          </select>
+
           <input
             className={styles.input}
             type="number"

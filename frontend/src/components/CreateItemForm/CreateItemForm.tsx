@@ -2,13 +2,19 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
-import { createItem } from "../../api/itemApi";
+import { createItem, uploadItemImages } from "../../api/itemApi";
+
+import { itemConditionLabels } from "../../utils/itemLabels";
+
+import { bookGenres, boardgameGenres } from "../../utils/itemGenres";
 
 import styles from "./CreateItemForm.module.css";
 
 function CreateItemForm() {
   const { token } = useAuth();
   const navigate = useNavigate();
+
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const [type, setType] = useState("");
   const [title, setTitle] = useState("");
@@ -26,6 +32,22 @@ function CreateItemForm() {
   const [recommendedAge, setRecommendedAge] = useState("");
   const [playTime, setPlayTime] = useState("");
 
+  const conditions: [string, string][] = Object.entries(itemConditionLabels);
+
+  const genres =
+    type === "book" ? bookGenres : type === "boardgame" ? boardgameGenres : [];
+
+  const handleImagesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+
+    if (files.length > 5) {
+      alert("Maximum 5 kép tölthető fel.");
+      return;
+    }
+
+    setSelectedImages(files);
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -34,12 +56,12 @@ function CreateItemForm() {
     }
 
     if (!type || !title.trim() || !itemCondition) {
-      alert("Tölts ki minden mezőt!");
+      alert("Tölts ki minden kötelező mezőt!");
       return;
     }
 
     try {
-      await createItem(token, {
+      const result = await createItem(token, {
         type,
         title,
         description,
@@ -56,6 +78,12 @@ function CreateItemForm() {
         recommended_age: recommendedAge ? Number(recommendedAge) : undefined,
         playtime: playTime ? Number(playTime) : undefined,
       });
+
+      if (selectedImages.length > 0) {
+        await uploadItemImages(token, result.itemId, selectedImages);
+      }
+
+      alert("Termék sikeresen létrehozva.");
 
       navigate("/items");
     } catch (error) {
@@ -93,11 +121,12 @@ function CreateItemForm() {
         onChange={(event) => setItemCondition(event.target.value)}
       >
         <option value="">Állapot</option>
-        <option value="new">Új</option>
-        <option value="excellent">Kitűnő</option>
-        <option value="good">Jó</option>
-        <option value="used">Használt</option>
-        <option value="damaged">Sérült</option>
+
+        {conditions.map(([value, label]) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
       </select>
 
       <select
@@ -119,13 +148,21 @@ function CreateItemForm() {
             value={author}
             onChange={(event) => setAuthor(event.target.value)}
           />
-          <input
+
+          <select
             className={styles.input}
-            type="text"
-            placeholder="Műfaj"
             value={genre}
             onChange={(event) => setGenre(event.target.value)}
-          />
+          >
+            <option value="">Műfaj</option>
+
+            {genres.map((itemGenre) => (
+              <option key={itemGenre} value={itemGenre}>
+                {itemGenre}
+              </option>
+            ))}
+          </select>
+
           <input
             className={styles.input}
             type="number"
@@ -152,13 +189,20 @@ function CreateItemForm() {
 
       {type === "boardgame" && (
         <>
-          <input
+          <select
             className={styles.input}
-            type="text"
-            placeholder="Műfaj"
             value={genre}
             onChange={(event) => setGenre(event.target.value)}
-          />
+          >
+            <option value="">Műfaj</option>
+
+            {genres.map((itemGenre) => (
+              <option key={itemGenre} value={itemGenre}>
+                {itemGenre}
+              </option>
+            ))}
+          </select>
+
           <input
             className={styles.input}
             type="number"
@@ -189,6 +233,31 @@ function CreateItemForm() {
           />
         </>
       )}
+
+      <h3>Termék képei</h3>
+
+      <input
+        id="item-images"
+        type="file"
+        accept="image/*"
+        multiple
+        className={styles.hiddenInput}
+        onChange={handleImagesChange}
+      />
+
+      <label htmlFor="item-images" className={styles.uploadButton}>
+        📷 Képek kiválasztása
+      </label>
+
+      {selectedImages.length > 0 && (
+        <ul className={styles.imageList}>
+          {selectedImages.map((image) => (
+            <li key={image.name}>{image.name}</li>
+          ))}
+        </ul>
+      )}
+
+      <p>{selectedImages.length} / 5 kép kiválasztva</p>
 
       <button className={styles.button}>Hozzáadás</button>
     </form>

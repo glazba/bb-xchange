@@ -42,6 +42,7 @@ export const getAllItems = async () => {
             items.id,
             items.owner_id,
             items.type,
+            cover.image_url AS cover_image,
             items.title,
             items.description,
             items.item_condition,
@@ -72,6 +73,10 @@ export const getAllItems = async () => {
         LEFT JOIN boardgame_details
             ON items.id = boardgame_details.item_id
 
+        LEFT JOIN item_images cover
+            ON items.id = cover.item_id
+            AND cover.is_cover = TRUE
+
         WHERE items.status = 'active'
 
         ORDER BY items.created_at DESC
@@ -90,6 +95,7 @@ export const getItemById = async (id: string) => {
             items.owner_id,
             users.username AS owner_name,
             items.type,
+            cover.image_url AS cover_image,
             items.title,
             items.description,
             items.item_condition,
@@ -97,8 +103,14 @@ export const getItemById = async (id: string) => {
             items.created_at,
             items.updated_at
         FROM items
+
         JOIN users
             ON items.owner_id = users.id
+
+        LEFT JOIN item_images cover
+            ON items.id = cover.item_id
+            AND cover.is_cover = TRUE
+
         WHERE items.id = ?
         `,
         [id]
@@ -177,6 +189,107 @@ export const updateItemStatus = async (
             status,
             itemId
         ]
+    );
+};
+
+//! Create item image
+export const createItemImage = async (
+    itemId: number,
+    imageUrl: string,
+    isCover: boolean
+) => {
+
+    const [result] = await pool.query<ResultSetHeader>(
+        `
+        INSERT INTO item_images (
+            item_id,
+            image_url,
+            is_cover
+        )
+        VALUES (?, ?, ?)
+        `,
+        [
+            itemId,
+            imageUrl,
+            isCover
+        ]
+    );
+
+    return result;
+};
+
+//! Get item images
+export const getImagesByItemId = async (
+    itemId: number
+) => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            item_id,
+            image_url,
+            is_cover,
+            created_at
+        FROM item_images
+        WHERE item_id = ?
+        ORDER BY
+            is_cover DESC,
+            created_at ASC
+        `,
+        [itemId]
+    );
+
+    return rows;
+};
+
+//! Get item image by ID
+export const getItemImageById = async (
+    imageId: number
+) => {
+
+    const [rows] =
+        await pool.query<RowDataPacket[]>(
+            `
+            SELECT
+                id,
+                item_id,
+                image_url,
+                is_cover
+            FROM item_images
+            WHERE id = ?
+            `,
+            [imageId]
+        );
+
+    return rows[0];
+};
+
+//! Delete images by item ID
+export const deleteImagesByItemId = async (
+    itemId: number
+) => {
+
+    await pool.query(
+        `
+            DELETE FROM item_images
+            WHERE item_id = ?
+            `,
+        [itemId]
+    );
+};
+
+//! Delete item image
+export const deleteItemImageById = async (
+    imageId: number
+) => {
+
+    await pool.query(
+        `
+            DELETE FROM item_images
+            WHERE id = ?
+            `,
+        [imageId]
     );
 };
 

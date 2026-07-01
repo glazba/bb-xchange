@@ -1,14 +1,19 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
 import { log } from "node:console";
+import fs from "fs";
+import path from "path";
 
 import {
     getAllItems,
     getItemById,
-    getGenresByType,
     getItemsByOwnerId,
     createItem,
     deleteItemById,
+    createItemImage,
+    getImagesByItemId,
+    getItemImageById,
+    deleteItemImageById,
     updateItemById,
 }
     from "../services/itemService";
@@ -322,3 +327,156 @@ export const deleteItem = async (
     }
 };
 
+//! Upload item images
+export const uploadImages = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    try {
+        const item = await getItemById(
+            String(req.params.id)
+        );
+
+        if (!item) {
+            return res.status(404).json({
+                message: "Item not found"
+            });
+        }
+
+        if (item.owner_id !== req.user!.userId) {
+            return res.status(403).json({
+                message: "Forbidden"
+            });
+        }
+
+        const files =
+            req.files as Express.Multer.File[];
+
+        if (!files || files.length === 0
+        ) {
+            return res.status(400).json({
+                message: "No images uploaded"
+            });
+        }
+
+        if (files.length > 5) {
+            return res.status(400).json({
+                message: "Maximum 5 images allowed"
+            });
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            await createItemImage(
+                item.id,
+                `items/${file.filename}`,
+                i === 0
+            );
+        }
+
+        return res.status(201).json({
+            message: "Images uploaded successfully"
+        });
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+};
+
+//! Get item images
+export const getItemImages = async (
+    req: Request,
+    res: Response
+) => {
+
+    try {
+
+        const images =
+            await getImagesByItemId(
+                Number(req.params.id)
+            );
+
+        return res.json(images);
+
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+};
+
+//! Delete item image
+export const deleteItemImage = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    try {
+
+        const image =
+            await getItemImageById(
+                Number(req.params.imageId)
+            );
+
+        if (!image) {
+            return res.status(404).json({
+                message:
+                    "Image not found"
+            });
+        }
+
+        const item =
+            await getItemById(
+                String(
+                    image.item_id
+                )
+            );
+
+        if (!item) {
+            return res.status(404).json({
+                message:
+                    "Item not found"
+            });
+        }
+
+        if (item.owner_id !== req.user!.userId) {
+            return res.status(403).json({
+                message: "Forbidden"
+            });
+        }
+
+        const imagePath = path.join(
+            __dirname,
+            "../../uploads",
+            image.image_url
+        );
+
+        if (fs.existsSync(
+            imagePath
+        )) {
+            fs.unlinkSync(imagePath);
+        }
+
+        await deleteItemImageById(image.id);
+
+        return res.json({
+            message: "Image deleted"
+        });
+
+    } catch (error) {
+
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal server error"
+        });
+    }
+};
