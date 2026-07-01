@@ -55,6 +55,38 @@ export const updateProfile = async (
     return data;
 };
 
+export const uploadAvatar = async (
+    token: string,
+    file: File
+): Promise<{ message: string; avatar: string }> => {
+
+    const formData = new FormData();
+
+    formData.append(
+        "avatar",
+        file
+    );
+
+    const response = await fetch(
+        "http://localhost:3000/users/avatar",
+        {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+            body: formData
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+}
+
 export const deleteProfile = async (
     token: string,
     password: string

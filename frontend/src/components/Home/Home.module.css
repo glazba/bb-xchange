@@ -28,14 +28,15 @@
 
 .heroButtons a {
   text-decoration: none;
-  background: #4f46e5;
+  background: #2563eb;
   color: white;
   padding: 0.9rem 1.5rem;
   border-radius: 8px;
+  transition: 0.3s ease;
 }
 
 .heroButtons a:hover {
-  background: #4338ca;
+  background: #1d4ed8;
 }
 
 .howItWorks {
@@ -80,4 +81,9 @@
   text-decoration: none;
   color: #4f46e5;
   font-weight: bold;
+  transition: 0.3 ease;
+}
+
+.marketplaceLink:hover {
+  text-decoration: underline;
 }

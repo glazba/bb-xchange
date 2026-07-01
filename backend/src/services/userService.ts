@@ -152,6 +152,23 @@ export const getProfileById = async (
     };
 };
 
+//! Get avatar by ID
+export const getAvatarById = async (
+    userId: number
+) => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT avatar
+        FROM users
+        WHERE id = ?
+        `,
+        [userId]
+    );
+
+    return rows[0];
+};
+
 //! Update profile
 export const updateProfileById = async (
     userId: number,
@@ -222,6 +239,27 @@ export const updateUserInterests = async (
         );
     }
 };
+
+//! Update avatar
+export const updateAvatarById = async (
+    userId: number,
+    avatar: string
+) => {
+
+    const [result] = await pool.query<ResultSetHeader>(
+        `
+        UPDATE users
+        SET avatar = ?
+        WHERE id = ?
+        `,
+        [
+            avatar,
+            userId
+        ]
+    );
+
+    return result;
+}
 
 //! Delete user
 export const deleteUserById = async (

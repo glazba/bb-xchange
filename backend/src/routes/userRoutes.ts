@@ -7,9 +7,11 @@ import {
     loginUser,
     getProfile,
     updateProfile,
+    uploadAvatar,
     deleteProfile
 } from "../controllers/userController";
 import { authMiddleware } from "../middleware/authMiddleware";
+import { uploadAvatar as uploadMiddleware } from "../middleware/uploadMiddleware";
 import { getUserById } from "../services/userService";
 
 const router = Router();
@@ -35,6 +37,8 @@ router.get("/id", getUserById);
 router.get("/:id", getUser);
 
 router.put("/profile", authMiddleware, updateProfile);
+
+router.put("/avatar", authMiddleware, uploadMiddleware.single("avatar"), uploadAvatar);
 
 router.delete("/profile", authMiddleware, deleteProfile);
 

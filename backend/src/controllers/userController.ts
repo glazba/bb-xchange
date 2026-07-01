@@ -1,5 +1,7 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import fs from "fs";
+import path from "path";
 
 import { Request, Response } from "express";
 import {
@@ -9,8 +11,10 @@ import {
     getUserByEmail,
     getUserWithPasswordById,
     getProfileById,
+    getAvatarById,
     updateProfileById,
     updateUserInterests,
+    updateAvatarById,
     deleteUserById
 } from "../services/userService";
 
@@ -255,6 +259,48 @@ export const updateProfile = async (
         console.error(error);
         return res.status(500).json({
             message: "Belső szerverhiba"
+        });
+    }
+};
+
+//! Upload avatar
+export const uploadAvatar = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                message: "Nincs kiválasztott kép."
+            });
+        }
+
+        const userId = req.user!.userId;
+
+        const oldAvatar = await getAvatarById(userId);
+
+        if (oldAvatar?.avatar) {
+            const oldPath = path.join(__dirname, "../../uploads", oldAvatar.avatar);
+
+            if (fs.existsSync(oldPath)) {
+                fs.unlinkSync(oldPath);
+            }
+        }
+
+        const avatarPath = `avatars/${req.file.filename}`;
+
+        await updateAvatarById(userId, avatarPath);
+
+        return res.json({
+            message: "Profilkép sikeresen feltöltve.",
+            avatar: avatarPath
+        });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: "Internal server error"
         });
     }
 };

@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
-import { getProfile, updateProfile, deleteProfile } from "../../api/userApi";
+import {
+  getProfile,
+  updateProfile,
+  uploadAvatar,
+  deleteProfile,
+} from "../../api/userApi";
 
 import type { UserProfile } from "../../types/UserProfile";
 
@@ -32,6 +37,8 @@ function Profile() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
 
   const [isEditing, setIsEditing] = useState(false);
+
+  const [selectedAvatar, setSelectedAvatar] = useState<File | null>(null);
 
   const [username, setUsername] = useState("");
 
@@ -69,6 +76,36 @@ function Profile() {
 
     fetchProfile();
   }, [token]);
+
+  const handleAvatarUpload = async () => {
+    if (!token) {
+      return;
+    }
+
+    if (!selectedAvatar) {
+      alert("Válassz ki egy képet!");
+
+      return;
+    }
+
+    try {
+      await uploadAvatar(token, selectedAvatar);
+
+      const updatedProfile = await getProfile(token);
+
+      setProfile(updatedProfile);
+
+      setSelectedAvatar(null);
+
+      alert("Profilkép sikeresen feltöltve.");
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "A profilkép feltöltése sikertelen.",
+      );
+    }
+  };
 
   const handleInterestToggle = (interest: string) => {
     setSelectedInterests((prev) =>
@@ -146,7 +183,41 @@ function Profile() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <div className={styles.avatar}>👤</div>
+        <div className={styles.avatar}>
+          {profile.avatar ? (
+            <img
+              src={`http://localhost:3000/uploads/${profile.avatar}`}
+              alt="Profilkép"
+              className={styles.avatarImage}
+            />
+          ) : (
+            "👤"
+          )}
+        </div>
+
+        <input
+          id="avatar-upload"
+          type="file"
+          accept="image/"
+          className={styles.hiddenInput}
+          onChange={(event) =>
+            setSelectedAvatar(event.target.files?.[0] ?? null)
+          }
+        />
+
+        <label htmlFor="avatar-upload" className={styles.uploadButton}>
+          📷 Profilkép kiválasztása
+        </label>
+
+        {selectedAvatar && (
+          <p className={styles.fileName}>{selectedAvatar.name}</p>
+        )}
+
+        {selectedAvatar && (
+          <button className={styles.button} onClick={handleAvatarUpload}>
+            Feltöltés
+          </button>
+        )}
 
         <h1>{profile.username}</h1>
 

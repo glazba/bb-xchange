@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
+import path from "path";
 
 //! DB connection
 import { pool } from "./db/connections";
@@ -37,7 +38,11 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(helmet());
+app.use(helmet({
+    crossOriginResourcePolicy: {
+        policy: "cross-origin"
+    }
+}));
 
 app.use((
     err: Error,
@@ -59,6 +64,10 @@ app.use("/items", itemRoutes);
 app.use("/books", bookRoutes);
 app.use("/boardgames", boardgameRoutes);
 app.use("/offers", tradeOfferRoutes);
+
+app.use("/uploads", express.static(
+    path.join(__dirname, "../uploads")
+));
 
 //! Basic endpoint
 app.get("/", (req, res) => {
