@@ -8,11 +8,12 @@ import {
     getProfile,
     updateProfile,
     uploadAvatar,
-    deleteProfile
+    deleteProfile,
+    getPublicProfile,
+    getPublicUserItems
 } from "../controllers/userController";
 import { authMiddleware } from "../middleware/authMiddleware";
 import { uploadAvatar as uploadMiddleware } from "../middleware/uploadMiddleware";
-import { getUserById } from "../services/userService";
 
 const router = Router();
 
@@ -32,7 +33,9 @@ router.get("/", getUsers);
 
 router.get("/profile", authMiddleware, getProfile);
 
-router.get("/id", getUserById);
+router.get("/public/:id", getPublicProfile);
+
+router.get("/public/:id/items", getPublicUserItems);
 
 router.get("/:id", getUser);
 

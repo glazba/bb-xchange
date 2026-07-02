@@ -74,6 +74,7 @@ export const getOffersByRequesterId = async (
             trade_offers.requester_id,
             trade_offers.target_item_id,
             target.title AS target_title,
+            users.id AS owner_id,
             users.username AS owner_name,
             trade_offers.status,
             trade_offers.created_at,

@@ -1,5 +1,8 @@
 export interface TradeOffer {
     id: number;
+    owner_id?: number;
+    owner_name?: string;
+
     requester_id: number;
     requester_name: string;
 
@@ -7,8 +10,7 @@ export interface TradeOffer {
     target_title: string;
 
     offered_items: string[];
-    
-    owner_name?: string;
+
     status: string;
     created_at: string;
     updated_at: string;

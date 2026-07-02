@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 import { getMyOffers, revokeOffer } from "../../api/tradeOfferApi";
 import type { TradeOffer } from "../../types/TradeOffer";
@@ -101,7 +102,12 @@ function Offers() {
             </p>
 
             <p>
-              <strong>Tulajdonos:</strong> {offer.owner_name ?? "Ismeretlen"}
+              <strong>Tulajdonos:</strong>{" "}
+              {offer.owner_id ? (
+                <Link to={`/users/${offer.owner_id}`}>{offer.owner_name}</Link>
+              ) : (
+                (offer.owner_name ?? "Ismeretlen.")
+              )}
             </p>
 
             <p>

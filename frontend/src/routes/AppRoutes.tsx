@@ -14,6 +14,8 @@ import EditItemPage from "../pages/EditItemPage";
 import MarketplacePage from "../pages/MarketplacePage";
 import CreateOfferPage from "../pages/CreateOfferPage";
 import ReceivedOffersPage from "../pages/ReceivedOffersPage";
+import PublicProfilePage from "../pages/PublicProfilePage";
+import PublicUserItemsPage from "../pages/PublicUserItemsPage";
 
 function AppRoutes() {
   return (
@@ -92,6 +94,22 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <ReceivedOffersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/:id"
+            element={
+              <ProtectedRoute>
+                <PublicProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/users/:id/items"
+            element={
+              <ProtectedRoute>
+                <PublicUserItemsPage />
               </ProtectedRoute>
             }
           />

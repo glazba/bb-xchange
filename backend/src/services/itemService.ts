@@ -156,6 +156,42 @@ export const getItemsByOwnerId = async (
     return rows;
 };
 
+//! Get active items by owner ID (Public profile)
+export const getActiveItemsByOwnerId = async (
+    ownerId: number
+) => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            items.id,
+            items.owner_id,
+            items.type,
+            cover.image_url AS cover_image,
+            items.title,
+            items.description,
+            items.item_condition,
+            items.status,
+            items.created_at,
+            items.updated_at
+
+        FROM items
+
+        LEFT JOIN item_images cover
+            ON items.id = cover.item_id
+            AND cover.is_cover = TRUE
+
+        WHERE items.owner_id = ?
+            AND items.status = 'active'
+        
+        ORDER BY items.created_at DESC
+        `,
+        [ownerId]
+    );
+
+    return rows;
+};
+
 //! Modify item
 export const updateItemById = async (
     id: number,

@@ -20,8 +20,11 @@ import {
     updateProfileById,
     updateUserInterests,
     updateAvatarById,
-    deleteUserById
+    deleteUserById,
+    getPublicProfileById
 } from "../services/userService";
+
+import { getActiveItemsByOwnerId } from "../services/itemService";
 
 //! Register
 export const registerUser = async (
@@ -202,6 +205,63 @@ export const getProfile = async (
         }
 
         return res.json(profile);
+    } catch (error) {
+        return handleControllerError(
+            error,
+            res
+        );
+    }
+};
+
+//! Get public profile
+export const getPublicProfile = async (
+    req: Request,
+    res: Response
+) => {
+
+    try {
+        const profile = await getPublicProfileById(
+            Number(req.params.id)
+        );
+
+        if (!profile) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        return res.json(profile);
+
+    } catch (error) {
+        return handleControllerError(
+            error,
+            res
+        );
+    }
+};
+
+//! Get user items
+export const getPublicUserItems = async (
+    req: Request,
+    res: Response
+) => {
+
+    try {
+
+        const user = await getPublicProfileById(
+            Number(req.params.id)
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found"
+            });
+        }
+
+        const items = await getActiveItemsByOwnerId(user.id);
+
+        return res.json(items);
+
     } catch (error) {
         return handleControllerError(
             error,

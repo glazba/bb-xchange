@@ -30,12 +30,14 @@ function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
         )}
       </div>
       <h3>{item.title}</h3>
+
+      <p>{item.description}</p>
+
       <div className={styles.badges}>
         <span>Típus: {itemTypeLabels[item.type]}</span>
         <span>Állapot: {itemConditionLabels[item.item_condition]}</span>
         <span>Státusz: {itemStatusLabels[item.status]}</span>
       </div>
-      <p>{item.description}</p>
       <div className={styles.buttons}>
         {isOwner && item.status === "active" && (
           <>

@@ -1,6 +1,9 @@
 import type { UserProfile } from "../types/UserProfile";
 import { API_URL } from "./apiConfig";
 
+import type { Item } from "../types/Item";
+import type { PublicUserProfile } from "../types/PublicUserProfile";
+
 export const getProfile = async (
     token: string,
 ): Promise<UserProfile> => {
@@ -112,6 +115,40 @@ export const deleteProfile = async (
     if (!response.ok) {
         throw new Error(data.message);
     }
+
+    return data;
+};
+
+export const getPublicProfile = async (
+    userId: number
+): Promise<PublicUserProfile> => {
+
+    const response = await fetch(
+        `${API_URL}/users/public/${userId}`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+};
+
+export const getPublicUserItems = async (
+    userId: number
+): Promise<Item[]> => {
+
+    const response = await fetch(
+        `${API_URL}/users/public/${userId}/items`
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message)
+    };
 
     return data;
 };

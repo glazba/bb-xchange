@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-
 import { useAuth } from "../../hooks/useAuth";
+import { Link } from "react-router-dom";
 
 import { getReceivedOffers, updateOfferStatus } from "../../api/tradeOfferApi";
 
 import type { TradeOffer } from "../../types/TradeOffer";
-
 import { offerStatusLabels } from "../../utils/itemLabels";
 
 import styles from "./ReceivedOffers.module.css";
@@ -118,7 +117,14 @@ function ReceivedOffers() {
             </p>
 
             <p>
-              <strong>Ajánlatot tette:</strong> {offer.requester_name}
+              <strong>Ajánlatot tette:</strong>{" "}
+              {offer.requester_id ? (
+                <Link to={`/users/${offer.requester_id}`}>
+                  {offer.requester_name}
+                </Link>
+              ) : (
+                (offer.requester_name ?? "Ismeretlen.")
+              )}
             </p>
 
             <p>

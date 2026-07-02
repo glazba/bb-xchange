@@ -2,6 +2,8 @@ import bcrypt from "bcryptjs";
 import { pool } from "../db/connections";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 
+import type { PublicUserProfile } from "../types/PublicUserProfile";
+
 //! Register
 export const createUser = async (
     username: string,
@@ -151,6 +153,54 @@ export const getProfileById = async (
             ? rows[0].interests.split("||")
             : []
     };
+};
+
+//! Get public profile by ID
+export const getPublicProfileById = async (
+    userId: number
+): Promise<PublicUserProfile | null> => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            users.id,
+            users.username,
+            users.avatar,
+            users.city,
+            users.bio,
+            users.created_at,
+
+            GROUP_CONCAT(
+                interests.name
+                ORDER BY interests.name
+                SEPARATOR '||'
+            ) AS interests
+
+        FROM users
+
+        LEFT JOIN user_interests
+            ON users.id = user_interests.user_id
+
+        LEFT JOIN interests
+            ON user_interests.interest_id = interests.id
+
+        WHERE users.id = ?
+
+        GROUP BY users.id
+        `,
+        [userId]
+    );
+
+    if (rows.length === 0) {
+        return null;
+    }
+
+    return {
+        ...rows[0],
+        interests: rows[0].interests
+            ? rows[0].interests.split("||")
+            : []
+    } as PublicUserProfile;
 };
 
 //! Get avatar by ID

@@ -91,7 +91,8 @@ function ItemDetails() {
 
       <div className={styles.info}>
         <p>
-          <strong>Tulajdonos:</strong> {item.owner_name ?? "Ismeretlen"}
+          <strong>Tulajdonos:</strong>{" "}
+          <Link to={`/users/${item.owner_id}`}>{item.owner_name}</Link>
         </p>
 
         <p>
