@@ -1,0 +1,27 @@
+:root {
+  --primary: #6388d3;
+  --primary-hover: #1d4ed8;
+
+  --danger: #d36363;
+  --danger-hover: #b91c1c;
+
+  --success: #65d363;
+
+  --background: #f5f7fa;
+  --surface: #ffffff;
+
+  --text: #1f2937;
+  --text-light: #6b7280;
+
+  --border: #d1d5db;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  --transition: 0.3s ease-in-out;
+
+  --page-width: 1200px;
+}

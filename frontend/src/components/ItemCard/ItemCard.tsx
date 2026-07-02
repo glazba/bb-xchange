@@ -41,10 +41,13 @@ function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
       <div className={styles.buttons}>
         {isOwner && item.status === "active" && (
           <>
-            <Link to={`/edit-item/${item.id}`}>Módosítás</Link>
+            <Link to={`/edit-item/${item.id}`} className="button buttonPrimary">
+              Módosítás
+            </Link>
 
             {onDelete && (
               <button
+                className="button buttonDanger"
                 onClick={() => {
                   if (window.confirm("Biztosan törölni szeretnéd?")) {
                     onDelete(item.id);
@@ -56,7 +59,12 @@ function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
             )}
           </>
         )}
-        {!isOwner && <Link to={`/items/${item.id}`}>Részletek</Link>}
+
+        {!isOwner && (
+          <Link to={`/items/${item.id}`} className="button buttonPrimary">
+            Részletek
+          </Link>
+        )}
       </div>
     </div>
   );

@@ -46,7 +46,7 @@ function PublicProfile() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
+      <div className={`panel ${styles.card}`}>
         <div className={styles.avatar}>
           {profile.avatar ? (
             <img
@@ -58,40 +58,45 @@ function PublicProfile() {
           )}
         </div>
 
-        <h1>{profile.username}</h1>
+        <h1 className={styles.title}>{profile.username}</h1>
 
-        <p>
-          <strong>Város:</strong> {profile.city}
-        </p>
+        <div className={styles.info}>
+          <p>
+            <strong>Város:</strong> {profile.city}
+          </p>
 
-        <p>
-          <strong>Bemutatkozás:</strong>
-        </p>
+          <p>
+            <strong>Bemutatkozás:</strong>
+          </p>
 
-        <p>{profile.bio || "Nincs bemutatkozás."}</p>
+          <p className={styles.bio}>{profile.bio || "Nincs bemutatkozás."}</p>
 
-        <p>
-          <strong>Érdeklődési körök:</strong>
-        </p>
+          <p>
+            <strong>Érdeklődési körök:</strong>
+          </p>
 
-        {profile.interests.length > 0 ? (
-          <ul>
-            {profile.interests.map((interest) => (
-              <li key={interest}>{interest}</li>
-            ))}
-          </ul>
-        ) : (
-          <p>Nincsenek érdeklődési körök.</p>
-        )}
+          {profile.interests.length > 0 ? (
+            <ul className={styles.interests}>
+              {profile.interests.map((interest) => (
+                <li key={interest}>{interest}</li>
+              ))}
+            </ul>
+          ) : (
+            <p>Nincsenek érdeklődési körök.</p>
+          )}
 
-        <p>
-          <strong>Regisztrált:</strong>{" "}
-          {new Date(profile.created_at).toLocaleDateString("hu-HU")} óta
-        </p>
+          <p>
+            <strong>Regisztrált:</strong>{" "}
+            {new Date(profile.created_at).toLocaleDateString("hu-HU")} óta
+          </p>
 
-        <Link className={styles.button} to={`/users/${profile.id}/items`}>
-          Termékei megtekintése
-        </Link>
+          <Link
+            className="button buttonPrimary"
+            to={`/users/${profile.id}/items`}
+          >
+            Termékei megtekintése
+          </Link>
+        </div>
       </div>
     </div>
   );

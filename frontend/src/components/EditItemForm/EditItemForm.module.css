@@ -1,51 +1,19 @@
 .form {
-  width: 500px;
-
-  margin: 4rem auto;
-
-  background: white;
-
-  padding: 2rem;
-
-  border-radius: 20px;
-
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
 .title {
-  text-align: center;
   margin-bottom: 1rem;
-}
-
-.input {
-  padding: 0.9rem;
-
-  border: 1px solid #d1d5db;
-
-  border-radius: 10px;
-}
-
-.button {
-  border: none;
-
-  background: #2563eb;
-  color: white;
-
-  padding: 0.9rem;
-
-  border-radius: 10px;
-
-  cursor: pointer;
+  text-align: center;
 }
 
 .imageGallery {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
+
   margin-bottom: 2rem;
 }
 
@@ -53,52 +21,30 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  width: 150px;
+
+  width: 160px;
 }
 
 .imageCard img {
   width: 150px;
   height: 150px;
+
   object-fit: cover;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
 }
 
 .imageList {
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding-left: 1rem;
+
+  color: var(--text-light);
 }
 
 .imageList li {
   margin-bottom: 0.3rem;
-}
-
-.imageCard button {
-  padding: 0.6rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
-}
-
-.coverButton {
-  background-color: #2563eb;
-  color: white;
-}
-
-.coverButton:hover {
-  background-color: #1d4ed8;
-}
-
-.deleteButton {
-  background-color: #dc2626;
-  color: white;
-}
-
-.deleteButton:hover {
-  background-color: #b91c1c;
 }
 
 .hiddenInput {
@@ -107,21 +53,16 @@
 
 .uploadButton {
   display: inline-block;
-  padding: 0.8rem 1.2rem;
-  background-color: #2563eb;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: 0.2s;
+  width: fit-content;
   margin-bottom: 1rem;
 }
 
-.uploadButton:hover {
-  background-color: #1d4ed8;
+.coverBadge {
+  color: #eab308;
+  font-weight: 600;
+  text-align: center;
 }
 
-.coverBadge {
-  font-weight: 600;
-  color: #eab308;
-  text-align: center;
+.counter {
+  color: var(--text-light);
 }

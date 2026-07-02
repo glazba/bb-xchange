@@ -99,7 +99,7 @@ function ReceivedOffers() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`page ${styles.container}`}>
       <h1 className={styles.title}>Beérkezett ajánlatok</h1>
 
       {offers.length === 0 && <p>Még nem kaptál csereajánlatot.</p>}
@@ -107,7 +107,7 @@ function ReceivedOffers() {
       {offers.map((offer) => (
         <div
           key={offer.id}
-          className={`${styles.card} ${styles[offer.status]}`}
+          className={`panel ${styles.card} ${styles[offer.status]}`}
         >
           <h3>Csereajánlat</h3>
 
@@ -150,14 +150,14 @@ function ReceivedOffers() {
           {offer.status === "pending" && (
             <div className={styles.buttons}>
               <button
-                className={styles.acceptButton}
+                className="button buttonSuccess"
                 onClick={() => handleAccept(offer.id)}
               >
                 Elfogadom
               </button>
 
               <button
-                className={styles.rejectButton}
+                className="button buttonDanger"
                 onClick={() => handleReject(offer.id)}
               >
                 Elutasítom

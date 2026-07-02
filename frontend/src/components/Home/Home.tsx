@@ -59,17 +59,17 @@ function Home() {
         <h2>Hogyan működik?</h2>
 
         <div className={styles.steps}>
-          <div className={styles.step}>
+          <div className={`panel ${styles.step}`}>
             <h3>1.</h3>
             <p>Tölts fel egy könyvet vagy társasjátékot.</p>
           </div>
 
-          <div className={styles.step}>
+          <div className={`panel ${styles.step}`}>
             <h3>2.</h3>
             <p>Böngéssz mások termékei között.</p>
           </div>
 
-          <div className={styles.step}>
+          <div className={`panel ${styles.step}`}>
             <h3>3.</h3>
             <p>Küldj csereajánlatot és cseréljetek.</p>
           </div>

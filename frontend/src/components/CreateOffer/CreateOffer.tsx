@@ -95,7 +95,7 @@ function CreateOffer() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`formCard ${styles.container}`}>
       <h1>Ajánlat küldése</h1>
 
       <p>
@@ -116,7 +116,7 @@ function CreateOffer() {
         ))}
       </div>
 
-      <button className={styles.button} onClick={handleSubmit}>
+      <button className="button buttonSuccess" onClick={handleSubmit}>
         Ajánlat küldése
       </button>
     </div>

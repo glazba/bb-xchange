@@ -59,15 +59,21 @@ function MyItems() {
   }, [token]);
 
   return (
-    <div className={styles.page}>
+    <div className={`page ${styles.page}`}>
       <div className={styles.header}>
         <h1>Termékeim</h1>
+
         {items.length === 0 && <p>Még nincsenek feltöltött termékeid.</p>}
-        <Link to="/create-item" className={styles.addButton}>
+
+        <Link
+          to="/create-item"
+          className={`button buttonPrimary ${styles.addButton}`}
+        >
           +
         </Link>
       </div>
-      <div className={styles.grid}>
+
+      <div className="grid">
         {items.map((item) => (
           <ItemCard key={item.id} item={item} onDelete={handleDelete} isOwner />
         ))}

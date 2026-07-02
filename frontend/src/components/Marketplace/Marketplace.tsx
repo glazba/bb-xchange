@@ -159,11 +159,12 @@ function Marketplace() {
     });
 
   return (
-    <div className={styles.page}>
+    <div className={`page ${styles.page}`}>
       <h1>Marketplace</h1>
 
-      <div className={styles.filters}>
+      <div className={`panel ${styles.filters}`}>
         <input
+          className="input"
           type="text"
           placeholder="Keresés cím vagy szerző alapján..."
           value={search}
@@ -171,21 +172,22 @@ function Marketplace() {
         />
 
         <select
+          className="input"
           value={typeFilter}
           onChange={(event) => handleTypeChange(event.target.value)}
         >
           <option value="">Minden típus</option>
-
           <option value="book">Könyv</option>
-
           <option value="boardgame">Társasjáték</option>
         </select>
 
         <select
+          className="input"
           value={conditionFilter}
           onChange={(event) => setConditionFilter(event.target.value)}
         >
           <option value="">Minden állapot</option>
+
           {conditions.map(([value, label]) => (
             <option key={value} value={value}>
               {label}
@@ -194,6 +196,7 @@ function Marketplace() {
         </select>
 
         <select
+          className="input"
           value={sortBy}
           onChange={(event) => setSortBy(event.target.value)}
         >
@@ -206,6 +209,7 @@ function Marketplace() {
         {typeFilter === "book" && (
           <>
             <select
+              className="input"
               value={genreFilter}
               onChange={(event) => setGenreFilter(event.target.value)}
             >
@@ -219,6 +223,7 @@ function Marketplace() {
             </select>
 
             <input
+              className="input"
               type="number"
               placeholder="Minimum oldalszám"
               value={pageFilter}
@@ -230,6 +235,7 @@ function Marketplace() {
         {typeFilter === "boardgame" && (
           <>
             <select
+              className="input"
               value={genreFilter}
               onChange={(event) => setGenreFilter(event.target.value)}
             >
@@ -243,6 +249,7 @@ function Marketplace() {
             </select>
 
             <input
+              className="input"
               type="number"
               placeholder="Játékosok száma"
               value={playersFilter}
@@ -250,6 +257,7 @@ function Marketplace() {
             />
 
             <input
+              className="input"
               type="number"
               placeholder="Ajánlott életkor"
               value={ageFilter}
@@ -258,16 +266,18 @@ function Marketplace() {
           </>
         )}
 
-        <button onClick={handleResetFilters}>Szűrők törlése</button>
+        <button className="button buttonPrimary" onClick={handleResetFilters}>
+          Szűrők törlése
+        </button>
       </div>
 
-      <p>{filteredItems.length} találat</p>
+      <p className={styles.resultCount}>{filteredItems.length} találat</p>
 
       {filteredItems.length === 0 && (
         <p className={styles.empty}>Nincs találat a megadott szűrőkre.</p>
       )}
 
-      <div className={styles.grid}>
+      <div className="grid">
         {filteredItems.map((item) => (
           <ItemCard key={item.id} item={item} />
         ))}

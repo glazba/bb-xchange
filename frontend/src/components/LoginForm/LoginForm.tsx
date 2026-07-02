@@ -39,11 +39,11 @@ function LoginForm() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={`formCard ${styles.form}`} onSubmit={handleSubmit}>
       <h1 className={styles.title}>Bejelentkezés</h1>
 
       <input
-        className={styles.input}
+        className="input"
         type="email"
         placeholder="Email"
         value={email}
@@ -51,14 +51,14 @@ function LoginForm() {
       />
 
       <input
-        className={styles.input}
+        className="input"
         type="password"
         placeholder="Jelszó"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
       />
 
-      <button className={styles.button} type="submit">
+      <button className="button buttonPrimary" type="submit">
         Bejelentkezés
       </button>
     </form>

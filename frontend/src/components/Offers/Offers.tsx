@@ -83,7 +83,7 @@ function Offers() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={`page ${styles.container}`}>
       <h1 className={styles.title}>Elküldött ajánlataim</h1>
 
       {offers.length === 0 && <p>Még nem küldtél csereajánlatot.</p>}
@@ -91,7 +91,7 @@ function Offers() {
       {offers.map((offer) => (
         <div
           key={offer.id}
-          className={`${styles.card} ${styles[offer.status]}`}
+          className={`panel ${styles.card} ${styles[offer.status]}`}
         >
           <h3>Csereajánlat</h3>
 
@@ -131,7 +131,7 @@ function Offers() {
 
             {offer.status === "pending" && (
               <button
-                className={styles.revokeButton}
+                className={`button buttonSecondary ${styles.revokeButton}`}
                 onClick={() => handleRevoke(offer.id)}
               >
                 Ajánlat visszavonása

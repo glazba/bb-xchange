@@ -14,6 +14,7 @@ function Navbar() {
 
       <div className={styles.links}>
         <Link to="/">Home</Link>
+
         {!token && (
           <>
             <Link to="/login">Bejelentkezés</Link>
@@ -25,14 +26,14 @@ function Navbar() {
           <>
             <Link to="/marketplace">Marketplace</Link>
             <Link to="/items">Termékeim</Link>
-            {/* <Link to="/create-item">Termék hozzáadása</Link> */}
             <Link to="/offers">Ajánlataim</Link>
             <Link to="/offers/received">Beérkező ajánlatok</Link>
             <Link to="/profile">Profil</Link>
+
             <button
               type="button"
               onClick={logout}
-              className={styles.logoutButton}
+              className={`button buttonDanger ${styles.logoutButton}`}
             >
               Kijelentkezés
             </button>

@@ -60,11 +60,11 @@ function RegisterForm() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={`formCard ${styles.form}`} onSubmit={handleSubmit}>
       <h1 className={styles.title}>Regisztráció</h1>
 
       <input
-        className={styles.input}
+        className="input"
         type="text"
         placeholder="Felhasználónév"
         value={username}
@@ -72,7 +72,7 @@ function RegisterForm() {
       />
 
       <input
-        className={styles.input}
+        className="input"
         type="email"
         placeholder="Email"
         value={email}
@@ -80,7 +80,7 @@ function RegisterForm() {
       />
 
       <input
-        className={styles.input}
+        className="input"
         type="password"
         placeholder="Jelszó"
         value={password}
@@ -88,7 +88,7 @@ function RegisterForm() {
       />
 
       <input
-        className={styles.input}
+        className="input"
         type="text"
         placeholder="Város"
         value={city}
@@ -96,7 +96,7 @@ function RegisterForm() {
       />
 
       <textarea
-        className={styles.textarea}
+        className="textarea"
         placeholder="Bemutatkozás"
         value={bio}
         onChange={(event) => setBio(event.target.value)}
@@ -115,7 +115,7 @@ function RegisterForm() {
           </label>
         ))}
       </div>
-      <button className={styles.button} type="submit">
+      <button className="button buttonPrimary" type="submit">
         Regisztráció
       </button>
     </form>

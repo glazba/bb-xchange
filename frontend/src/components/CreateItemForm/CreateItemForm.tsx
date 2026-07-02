@@ -96,11 +96,11 @@ function CreateItemForm() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={`formCard ${styles.form}`} onSubmit={handleSubmit}>
       <h1 className={styles.title}>Termék hozzáadása</h1>
 
       <input
-        className={styles.input}
+        className="input"
         type="text"
         placeholder="Cím"
         value={title}
@@ -108,7 +108,7 @@ function CreateItemForm() {
       />
 
       <input
-        className={styles.input}
+        className="input"
         type="text"
         placeholder="Leírás"
         value={description}
@@ -116,7 +116,7 @@ function CreateItemForm() {
       />
 
       <select
-        className={styles.input}
+        className="input"
         value={itemCondition}
         onChange={(event) => setItemCondition(event.target.value)}
       >
@@ -130,7 +130,7 @@ function CreateItemForm() {
       </select>
 
       <select
-        className={styles.input}
+        className="input"
         value={type}
         onChange={(event) => setType(event.target.value)}
       >
@@ -142,7 +142,7 @@ function CreateItemForm() {
       {type === "book" && (
         <>
           <input
-            className={styles.input}
+            className="input"
             type="text"
             placeholder="Szerző"
             value={author}
@@ -150,7 +150,7 @@ function CreateItemForm() {
           />
 
           <select
-            className={styles.input}
+            className="input"
             value={genre}
             onChange={(event) => setGenre(event.target.value)}
           >
@@ -164,21 +164,21 @@ function CreateItemForm() {
           </select>
 
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Oldalszám"
             value={pageCount}
             onChange={(event) => setPageCount(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Kiadás éve"
             value={publishedYear}
             onChange={(event) => setPublishedYear(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="text"
             placeholder="ISBN szám"
             value={isbn}
@@ -190,7 +190,7 @@ function CreateItemForm() {
       {type === "boardgame" && (
         <>
           <select
-            className={styles.input}
+            className="input"
             value={genre}
             onChange={(event) => setGenre(event.target.value)}
           >
@@ -204,28 +204,28 @@ function CreateItemForm() {
           </select>
 
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Minimum játékos"
             value={minPlayers}
             onChange={(event) => setMinPlayers(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Maximum játékos"
             value={maxPlayers}
             onChange={(event) => setMaxPlayers(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Ajánlott életkor"
             value={recommendedAge}
             onChange={(event) => setRecommendedAge(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Játékidő percben"
             value={playTime}
@@ -245,7 +245,10 @@ function CreateItemForm() {
         onChange={handleImagesChange}
       />
 
-      <label htmlFor="item-images" className={styles.uploadButton}>
+      <label
+        htmlFor="item-images"
+        className={`button buttonSecondary ${styles.uploadButton}`}
+      >
         📷 Képek kiválasztása
       </label>
 
@@ -257,9 +260,11 @@ function CreateItemForm() {
         </ul>
       )}
 
-      <p>{selectedImages.length} / 5 kép kiválasztva</p>
+      <p className={styles.counter}>
+        {selectedImages.length} / 5 kép kiválasztva
+      </p>
 
-      <button className={styles.button}>Hozzáadás</button>
+      <button className="button buttonPrimary">Hozzáadás</button>
     </form>
   );
 }

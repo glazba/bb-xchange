@@ -43,7 +43,7 @@ function PublicUserItems() {
 
   return (
     <div className={styles.page}>
-      <h1>Felhasználó termékei</h1>
+      <h1 className={styles.title}>Felhasználó termékei</h1>
 
       {items.length === 0 ? (
         <p>Nincsenek aktív termékei.</p>

@@ -7,18 +7,17 @@
 .card {
   width: 100%;
   max-width: 700px;
-  background: #fff;
-  border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 4px 16px rgb(0 0 0 / 10%);
 }
 
 .avatar {
   width: 150px;
   height: 150px;
-  margin: 0 auto 1.5rem;
+
+  margin: 0 auto 2rem;
+
   border-radius: 50%;
   overflow: hidden;
+
   background: #f4f4f4;
 
   display: flex;
@@ -34,35 +33,34 @@
   object-fit: cover;
 }
 
-.card h1 {
-  text-align: center;
+.title {
   margin-bottom: 2rem;
+  text-align: center;
 }
 
-.card p {
-  margin-bottom: 1rem;
-  line-height: 1.5;
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.info p {
+  line-height: 1.6;
+}
+
+.info a {
+  width: fit-content;
+}
+
+.bio {
+  white-space: pre-wrap;
+  color: var(--color-text-light);
 }
 
 .interests {
-  margin-top: 0.5rem;
   padding-left: 1.5rem;
 }
 
-.button {
-  display: inline-block;
-  margin-top: 2rem;
-  padding: 0.75rem 1.5rem;
-
-  background: #4f46e5;
-  color: white;
-  text-decoration: none;
-
-  border-radius: 8px;
-
-  transition: 0.2s;
-}
-
-.button:hover {
-  background: #4338ca;
+.interests li {
+  margin-bottom: 0.35rem;
 }

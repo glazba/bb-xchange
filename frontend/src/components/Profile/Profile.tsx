@@ -169,7 +169,7 @@ function Profile() {
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
+      <div className={`panel ${styles.card}`}>
         <div className={styles.avatar}>
           {profile.avatar ? (
             <img
@@ -192,7 +192,10 @@ function Profile() {
           }
         />
 
-        <label htmlFor="avatar-upload" className={styles.uploadButton}>
+        <label
+          htmlFor="avatar-upload"
+          className={`button buttonPrimary ${styles.uploadButton}`}
+        >
           📷 Profilkép kiválasztása
         </label>
 
@@ -201,7 +204,10 @@ function Profile() {
         )}
 
         {selectedAvatar && (
-          <button className={styles.button} onClick={handleAvatarUpload}>
+          <button
+            className={`button buttonPrimary ${styles.button}`}
+            onClick={handleAvatarUpload}
+          >
             Feltöltés
           </button>
         )}
@@ -251,31 +257,31 @@ function Profile() {
         ) : (
           <div className={styles.editForm}>
             <input
-              className={styles.input}
+              className="input"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(event) => setUsername(event.target.value)}
               placeholder="Felhasználónév"
             />
 
             <input
-              className={styles.input}
+              className="input"
               value={city}
-              onChange={(e) => setCity(e.target.value)}
+              onChange={(event) => setCity(event.target.value)}
               placeholder="Város"
             />
 
             <textarea
-              className={styles.textarea}
+              className="textarea"
               value={bio}
-              onChange={(e) => setBio(e.target.value)}
+              onChange={(event) => setBio(event.target.value)}
               placeholder="Bemutatkozás"
             />
 
             <h3>Érdeklődési körök</h3>
 
-            <div className={styles.checkboxGroup}>
+            <div className="checkboxGroup">
               {allInterests.map((interest) => (
-                <label key={interest} className={styles.checkbox}>
+                <label key={interest} className="checkbox">
                   <input
                     type="checkbox"
                     checked={selectedInterests.includes(interest)}
@@ -287,20 +293,22 @@ function Profile() {
               ))}
             </div>
 
-            <button className={styles.button} onClick={handleSave}>
+            <button
+              className={`button buttonSuccess ${styles.button}`}
+              onClick={handleSave}
+            >
               Mentés
             </button>
           </div>
         )}
 
         <button
-          className={styles.button}
+          className={`button buttonPrimary ${styles.button}`}
           onClick={() => setIsEditing(!isEditing)}
         >
           {isEditing ? "Mégse" : "Profil szerkesztése"}
         </button>
 
-        {/* delete */}
         {!isEditing && (
           <>
             <hr />
@@ -308,7 +316,7 @@ function Profile() {
             <h3>Fiók törlése</h3>
 
             <input
-              className={styles.input}
+              className="input"
               type="password"
               placeholder="Jelszó"
               value={deletePassword}
@@ -316,7 +324,7 @@ function Profile() {
             />
 
             <button
-              className={styles.deleteButton}
+              className={`button buttonDanger ${styles.deleteButton}`}
               onClick={handleDeleteProfile}
             >
               Fiók törlése

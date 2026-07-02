@@ -1,6 +1,5 @@
 .container {
   max-width: 900px;
-  margin: 3rem auto;
 }
 
 .title {
@@ -8,28 +7,20 @@
 }
 
 .card {
-  background: white;
-  padding: 2rem;
-  border-radius: 20px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
   margin-bottom: 1.5rem;
 }
 
 .accepted {
-  background-color: #61f26d;
-  border-color: #9fd8ab;
+  background-color: #dcfce7;
 }
 
 .rejected {
-  background-color: #f45858;
-  border-color: #f0a3a3;
+  background-color: #fee2e2;
 }
 
 .revoked,
 .cancelled {
-  background-color: #aaaaaa;
-  border-color: #d1d1d1;
-  opacity: 0.8;
+  background-color: #f3f4f6;
 }
 
 .revoked h3,
@@ -56,32 +47,4 @@
   display: flex;
   gap: 1rem;
   margin-top: 1.5rem;
-}
-
-.acceptButton,
-.rejectButton {
-  border: none;
-  padding: 0.8rem 1.2rem;
-
-  border-radius: 12px;
-
-  color: white;
-  cursor: pointer;
-
-  font-weight: 600;
-
-  transition: 0.2s;
-}
-
-.acceptButton {
-  background: #16a34a;
-}
-
-.rejectButton {
-  background: #dc2626;
-}
-
-.acceptButton:hover,
-.rejectButton:hover {
-  transform: translateY(-2px);
 }

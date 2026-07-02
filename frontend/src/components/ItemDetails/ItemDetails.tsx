@@ -58,7 +58,7 @@ function ItemDetails() {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={`panel ${styles.container}`}>
       <div className={styles.image}>
         {selectedImage ? (
           <img src={`${API_URL}/uploads/${selectedImage}`} alt={item.title} />
@@ -87,7 +87,9 @@ function ItemDetails() {
 
       <h1>{item.title}</h1>
 
-      <p className={styles.description}>{item.description}</p>
+      <p className={styles.description}>
+        {item.description || "Nincs leírás."}
+      </p>
 
       <div className={styles.info}>
         <p>
@@ -171,7 +173,10 @@ function ItemDetails() {
         )}
 
         {item.status === "active" && (
-          <Link className={styles.button} to={`/offers/create/${item.id}`}>
+          <Link
+            className={`button buttonSuccess ${styles.offerLink}`}
+            to={`/offers/create/${item.id}`}
+          >
             Ajánlat küldése
           </Link>
         )}

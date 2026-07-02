@@ -209,7 +209,7 @@ function EditItemForm() {
   }, [id, navigate]);
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={`formCard ${styles.form}`} onSubmit={handleSubmit}>
       <h1 className={styles.title}>Termék módosítása</h1>
 
       <div className={styles.imageGallery}>
@@ -222,7 +222,7 @@ function EditItemForm() {
             ) : (
               <button
                 type="button"
-                className={styles.coverButton}
+                className="button buttonPrimary"
                 onClick={() => handleSetCover(image.id)}
               >
                 Legyen borítókép
@@ -231,7 +231,7 @@ function EditItemForm() {
 
             <button
               type="button"
-              className={styles.deleteButton}
+              className="button buttonDanger"
               onClick={() => handleDeleteImage(image.id)}
             >
               Törlés
@@ -249,7 +249,10 @@ function EditItemForm() {
         onChange={handleImagesChange}
       />
 
-      <label htmlFor="item-images" className={styles.uploadButton}>
+      <label
+        htmlFor="item-images"
+        className={`button buttonSecondary ${styles.uploadButton}`}
+      >
         📷 Képek hozzáadása
       </label>
 
@@ -261,10 +264,12 @@ function EditItemForm() {
         </ul>
       )}
 
-      <p>{itemImages.length + selectedImages.length} / 5 kép</p>
+      <p className={styles.counter}>
+        {itemImages.length + selectedImages.length} / 5 kép
+      </p>
 
       <input
-        className={styles.input}
+        className="input"
         type="text"
         placeholder="Cím"
         value={title}
@@ -272,7 +277,7 @@ function EditItemForm() {
       />
 
       <input
-        className={styles.input}
+        className="input"
         type="text"
         placeholder="Leírás"
         value={description}
@@ -280,7 +285,7 @@ function EditItemForm() {
       />
 
       <select
-        className={styles.input}
+        className="input"
         value={itemCondition}
         onChange={(event) => setItemCondition(event.target.value)}
       >
@@ -294,7 +299,7 @@ function EditItemForm() {
       </select>
 
       <select
-        className={styles.input}
+        className="input"
         value={type}
         onChange={(event) => {
           setType(event.target.value);
@@ -311,7 +316,7 @@ function EditItemForm() {
       {type === "book" && (
         <>
           <input
-            className={styles.input}
+            className="input"
             type="text"
             placeholder="Szerző"
             value={author}
@@ -319,7 +324,7 @@ function EditItemForm() {
           />
 
           <select
-            className={styles.input}
+            className="input"
             value={genre}
             onChange={(event) => setGenre(event.target.value)}
           >
@@ -333,21 +338,21 @@ function EditItemForm() {
           </select>
 
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Oldalszám"
             value={pageCount}
             onChange={(event) => setPageCount(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Kiadás éve"
             value={publishedYear}
             onChange={(event) => setPublishedYear(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="text"
             placeholder="ISBN szám"
             value={isbn}
@@ -359,7 +364,7 @@ function EditItemForm() {
       {type === "boardgame" && (
         <>
           <select
-            className={styles.input}
+            className="input"
             value={genre}
             onChange={(event) => setGenre(event.target.value)}
           >
@@ -373,28 +378,28 @@ function EditItemForm() {
           </select>
 
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Minimum játékos"
             value={minPlayers}
             onChange={(event) => setMinPlayers(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Maximum játékos"
             value={maxPlayers}
             onChange={(event) => setMaxPlayers(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Ajánlott életkor"
             value={recommendedAge}
             onChange={(event) => setRecommendedAge(event.target.value)}
           />
           <input
-            className={styles.input}
+            className="input"
             type="number"
             placeholder="Játékidő percben"
             value={playTime}
@@ -403,7 +408,7 @@ function EditItemForm() {
         </>
       )}
 
-      <button className={styles.button}>Mentés</button>
+      <button className="button buttonSuccess">Mentés</button>
     </form>
   );
 }

@@ -1,0 +1,169 @@
+.page {
+  max-width: var(--page-width);
+
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.formCard {
+  width: min(500px, 100%);
+
+  margin: 4rem auto;
+  padding: 2rem;
+
+  background: var(--surface);
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow);
+}
+
+.panel {
+  background: var(--color-surface);
+
+  padding: 2rem;
+
+  border-radius: var(--radius-lg);
+
+  box-shadow: var(--shadow-sm);
+
+  transition: var(--transition);
+
+  border: 1px solid transparent;
+}
+
+.panel:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.grid {
+  display: grid;
+  gap: 1.5rem;
+
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.input,
+.textarea {
+  width: 100%;
+  padding: 0.9rem 1rem;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+
+  transition: var(--transition);
+}
+
+.input:focus,
+.textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgb(79 70 229 / 10%);
+}
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.5rem;
+
+  padding: 0.8rem 1.3rem;
+
+  border: none;
+  border-radius: var(--radius-sm);
+
+  font-weight: 600;
+  font-size: 0.95rem;
+
+  cursor: pointer;
+
+  transition: var(--transition);
+
+  text-decoration: none;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.buttonPrimary {
+  background: var(--primary);
+  color: white;
+}
+
+.buttonPrimary:hover {
+  background: var(--primary-hover);
+}
+
+.buttonSecondary {
+  background: var(--primary);
+  color: white;
+}
+
+.buttonSecondary:hover {
+  background: var(--primary-hover);
+}
+
+.buttonSuccess {
+  background: #16a34a;
+  color: white;
+}
+
+.buttonSuccess:hover {
+  background: #15803d;
+}
+
+.buttonDanger {
+  background: var(--danger);
+  color: white;
+}
+
+.buttonDanger:hover {
+  background: var(--danger-hover);
+}
+
+.checkboxGroup {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 0.75rem;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  padding: 0.75rem;
+
+  background: #fafafa;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+
+  cursor: pointer;
+
+  transition: var(--transition);
+}
+
+.checkbox:hover {
+  background: #f3f4f6;
+}
+
+.checkbox input {
+  width: 16px;
+  height: 16px;
+
+  cursor: pointer;
+}
