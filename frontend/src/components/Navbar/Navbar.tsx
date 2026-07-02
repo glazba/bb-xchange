@@ -9,7 +9,7 @@ function Navbar() {
   return (
     <nav className={styles.navbar}>
       <Link to="/" className={styles.logo}>
-        BB-XChange
+        <img src="../../public/bb_xchange_logo.png" alt="BB-XChange" />
       </Link>
 
       <div className={styles.links}>

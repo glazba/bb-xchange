@@ -4,12 +4,16 @@
 }
 
 .filters {
-  display: flex;
-  flex-wrap: wrap;
+  display: flex row wrap;
   align-items: center;
   gap: 1rem;
+  padding: 0;
+  align-content: stretch;
+}
 
-  margin-bottom: 2rem;
+.filters .input {
+  width: 25%;
+  margin: 0.5rem 0.5rem 0 0;
 }
 
 .resultCount {

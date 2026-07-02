@@ -67,19 +67,19 @@
 }
 
 .description {
-  margin: 2rem 0;
-
+  margin-bottom: 1rem;
   color: var(--color-text-light);
-
-  line-height: 1.7;
+  line-height: 1;
 }
 
 .info {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  margin-top: 1rem;
+}
 
-  margin-top: 2rem;
+.info p {
+  margin: 0 0 1rem 0;
 }
 
 .info a {

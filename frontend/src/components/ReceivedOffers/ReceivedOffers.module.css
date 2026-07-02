@@ -3,7 +3,7 @@
 }
 
 .title {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .card {
@@ -32,6 +32,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.info p {
+  margin: 0 0 0.5rem 0;
 }
 
 .itemList {

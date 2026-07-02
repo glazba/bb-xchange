@@ -8,6 +8,8 @@
 
 .card {
   margin-bottom: 1.5rem;
+  max-width: 30%;
+  border: 2px solid black !important;
 }
 
 .accepted {
@@ -32,18 +34,17 @@
 .info {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+}
+
+.info p {
+  margin: 0 0 0.5rem 0;
 }
 
 .itemList {
-  margin-top: 0.5rem;
   margin-left: 1rem;
-}
-
-.itemList li {
-  margin-bottom: 0.25rem;
 }
 
 .revokeButton {
   margin-top: 1rem;
+  width: fit-content;
 }

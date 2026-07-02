@@ -41,7 +41,9 @@ function Home() {
   return (
     <div className={styles.page}>
       <section className={styles.hero}>
-        <h1>B-B Xchange</h1>
+        <h1>
+          <img src="../../public/bb_xchange_logo.png" alt="B-B Xchange" />
+        </h1>
 
         <p>
           Cserélj könyveket és társasjátékokat egyszerűen, biztonságosan és
@@ -49,9 +51,13 @@ function Home() {
         </p>
 
         <div className={styles.heroButtons}>
-          <Link to="/marketplace">Marketplace</Link>
+          <Link className="button buttonPrimary" to="/marketplace">
+            Marketplace
+          </Link>
 
-          <Link to="/items">Saját termékeim</Link>
+          <Link className="button buttonPrimary" to="/items">
+            Saját termékeim
+          </Link>
         </div>
       </section>
 

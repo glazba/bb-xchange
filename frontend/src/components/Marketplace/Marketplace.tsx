@@ -172,7 +172,7 @@ function Marketplace() {
         />
 
         <select
-          className="input"
+          className={`input ${styles.input}`}
           value={typeFilter}
           onChange={(event) => handleTypeChange(event.target.value)}
         >
@@ -182,7 +182,7 @@ function Marketplace() {
         </select>
 
         <select
-          className="input"
+          className={`input ${styles.input}`}
           value={conditionFilter}
           onChange={(event) => setConditionFilter(event.target.value)}
         >
@@ -196,7 +196,7 @@ function Marketplace() {
         </select>
 
         <select
-          className="input"
+          className={`input ${styles.input}`}
           value={sortBy}
           onChange={(event) => setSortBy(event.target.value)}
         >
@@ -209,7 +209,7 @@ function Marketplace() {
         {typeFilter === "book" && (
           <>
             <select
-              className="input"
+              className={`input ${styles.input}`}
               value={genreFilter}
               onChange={(event) => setGenreFilter(event.target.value)}
             >
@@ -223,7 +223,7 @@ function Marketplace() {
             </select>
 
             <input
-              className="input"
+              className={`input ${styles.input}`}
               type="number"
               placeholder="Minimum oldalszám"
               value={pageFilter}
@@ -235,7 +235,7 @@ function Marketplace() {
         {typeFilter === "boardgame" && (
           <>
             <select
-              className="input"
+              className={`input ${styles.input}`}
               value={genreFilter}
               onChange={(event) => setGenreFilter(event.target.value)}
             >
@@ -249,7 +249,7 @@ function Marketplace() {
             </select>
 
             <input
-              className="input"
+              className={`input ${styles.input}`}
               type="number"
               placeholder="Játékosok száma"
               value={playersFilter}
@@ -257,7 +257,7 @@ function Marketplace() {
             />
 
             <input
-              className="input"
+              className={`input ${styles.input}`}
               type="number"
               placeholder="Ajánlott életkor"
               value={ageFilter}

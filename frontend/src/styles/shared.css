@@ -6,7 +6,7 @@
 }
 
 .formCard {
-  width: min(500px, 100%);
+  width: min(750px, 100%);
 
   margin: 4rem auto;
   padding: 2rem;
@@ -20,15 +20,10 @@
 
 .panel {
   background: var(--color-surface);
-
   padding: 2rem;
-
   border-radius: var(--radius-lg);
-
   box-shadow: var(--shadow-sm);
-
   transition: var(--transition);
-
   border: 1px solid transparent;
 }
 

@@ -174,7 +174,7 @@ function ItemDetails() {
 
         {item.status === "active" && (
           <Link
-            className={`button buttonSuccess ${styles.offerLink}`}
+            className="button buttonSuccess"
             to={`/offers/create/${item.id}`}
           >
             Ajánlat küldése

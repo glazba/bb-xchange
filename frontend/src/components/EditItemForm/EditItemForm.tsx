@@ -141,7 +141,7 @@ function EditItemForm() {
       return;
     }
 
-    if (!type || !title.trim() || !description.trim() || !itemCondition) {
+    if (!type || !title.trim() || !itemCondition) {
       alert("Tölts ki minden mezőt!");
       return;
     }
