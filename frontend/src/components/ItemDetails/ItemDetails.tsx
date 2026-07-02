@@ -19,6 +19,7 @@ function ItemDetails() {
   const navigate = useNavigate();
 
   const [item, setItem] = useState<Item | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>("");
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -34,6 +35,10 @@ function ItemDetails() {
         const data = await getItemById(id);
 
         setItem(data);
+
+        if (data.images && data.images.length > 0) {
+          setSelectedImage(data.images[0].image_url);
+        }
       } catch (error) {
         alert(
           error instanceof Error
@@ -55,24 +60,44 @@ function ItemDetails() {
   return (
     <div className={styles.container}>
       <div className={styles.image}>
-        {item.cover_image ? (
-          <img
-            src={`${API_URL}/uploads/${item.cover_image}`}
-            alt={item.title}
-          />
+        {selectedImage ? (
+          <img src={`${API_URL}/uploads/${selectedImage}`} alt={item.title} />
         ) : (
           <span>{item.type === "book" ? "📚" : "🎲"}</span>
         )}
       </div>
+
+      {item.images && item.images.length > 1 && (
+        <div className={styles.gallery}>
+          {item.images.map((image) => (
+            <img
+              key={image.id}
+              src={`${API_URL}/uploads/${image.image_url}`}
+              alt={item.title}
+              className={
+                selectedImage === image.image_url
+                  ? styles.activeThumbnail
+                  : styles.thumbnail
+              }
+              onClick={() => setSelectedImage(image.image_url)}
+            />
+          ))}
+        </div>
+      )}
+
       <h1>{item.title}</h1>
+
       <p className={styles.description}>{item.description}</p>
+
       <div className={styles.info}>
         <p>
           <strong>Tulajdonos:</strong> {item.owner_name ?? "Ismeretlen"}
         </p>
+
         <p>
           <strong>Típus:</strong> {itemTypeLabels[item.type]}
         </p>
+
         <p>
           <strong>Állapot:</strong> {itemConditionLabels[item.item_condition]}
         </p>
@@ -143,6 +168,7 @@ function ItemDetails() {
             {new Date(item.updated_at).toLocaleDateString("hu-HU")}
           </p>
         )}
+
         {item.status === "active" && (
           <Link className={styles.button} to={`/offers/create/${item.id}`}>
             Ajánlat küldése

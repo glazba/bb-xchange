@@ -169,3 +169,51 @@ export const uploadItemImages = async (
 
     return data;
 };
+
+export const setItemCoverImage = async (
+    token: string,
+    imageId: number
+) => {
+
+    const response = await fetch(
+        `${API_URL}/items/images/${imageId}/cover`,
+        {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+};
+
+export const deleteItemImage = async (
+    token: string,
+    imageId: number
+) => {
+
+    const response = await fetch(
+        `${API_URL}/items/images/${imageId}`,
+        {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+};

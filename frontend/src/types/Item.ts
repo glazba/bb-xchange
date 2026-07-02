@@ -1,17 +1,17 @@
+import type { ItemImage } from "./ItemImage";
+
 export interface Item {
     id: number;
     owner_id: number;
     owner_name?: string;
 
     cover_image?: string | null;
-    images?: string[]
+    images?: ItemImage[];
 
     title: string;
     description: string;
-
-    type: string;
     item_condition: string;
-
+    type: string;
     status: string;
 
     created_at?: string;

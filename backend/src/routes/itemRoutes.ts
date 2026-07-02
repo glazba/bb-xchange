@@ -8,6 +8,7 @@ import {
     deleteItem,
     uploadImages,
     getItemImages,
+    setItemImageAsCover,
     deleteItemImage
 } from "../controllers/itemController"; import { authMiddleware } from "../middleware/authMiddleware";
 
@@ -24,6 +25,8 @@ router.get("/me", authMiddleware, getMyItems);
 router.get("/:id", getItem);
 
 router.put("/:id", authMiddleware, updateItem);
+
+router.patch("/images/:imageId/cover", authMiddleware, setItemImageAsCover);
 
 router.delete("/:id", authMiddleware, deleteItem);
 

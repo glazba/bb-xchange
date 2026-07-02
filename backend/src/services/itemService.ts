@@ -277,7 +277,22 @@ export const getItemImageById = async (
     return rows[0];
 };
 
-//! Delete images by item ID
+export const countImagesByItemId = async (
+    itemId: number
+) => {
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT COUNT(*) AS count
+        FROM item_images
+        WHERE item_id = ?
+        `,
+        [itemId]
+    );
+
+    return rows[0].count;
+};
+
+//! Delete all item images by item ID
 export const deleteImagesByItemId = async (
     itemId: number
 ) => {
@@ -291,7 +306,7 @@ export const deleteImagesByItemId = async (
     );
 };
 
-//! Delete item image
+//! Delete one item image
 export const deleteItemImageById = async (
     imageId: number
 ) => {
@@ -305,7 +320,57 @@ export const deleteItemImageById = async (
     );
 };
 
-//! Delete item
+//! Romove cover image
+export const removeCoverFromItem = async (
+    itemId: number
+) => {
+    await pool.query(
+        `
+        UPDATE item_images
+        SET is_cover = FALSE
+        WHERE item_id = ?
+        `,
+        [itemId]
+    );
+};
+
+//! Set cover image
+export const setCoverImage = async (
+    imageId: number
+) => {
+    await pool.query(
+        `
+        UPDATE item_images
+        SET is_cover = TRUE
+        WHERE id = ?
+        `,
+        [imageId]
+    );
+};
+
+//! Get oldest image
+export const getOldestImageByItemId = async (
+    itemId: number
+) => {
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            id,
+            item_id,
+            image_url,
+            is_cover
+        FROM item_images
+        WHERE item_id = ?
+        ORDER BY created_at ASC
+        LIMIT 1
+        `,
+        [itemId]
+    );
+
+    return rows[0];
+};
+
+//! Delete one item
 export const deleteItemById = async (
     id: number
 ) => {

@@ -2,13 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
-import { getItemById, updateItem } from "../../api/itemApi";
+import {
+  getItemById,
+  updateItem,
+  uploadItemImages,
+  deleteItemImage,
+  setItemCoverImage,
+} from "../../api/itemApi";
+
+import type { ItemImage } from "../../types/ItemImage";
 
 import { itemConditionLabels } from "../../utils/itemLabels";
-
 import { bookGenres, boardgameGenres } from "../../utils/itemGenres";
 
 import styles from "./EditItemForm.module.css";
+import { API_URL } from "../../api/apiConfig";
 
 function EditItemForm() {
   const { token } = useAuth();
@@ -16,6 +24,9 @@ function EditItemForm() {
   const navigate = useNavigate();
 
   const { id } = useParams();
+
+  const [itemImages, setItemImages] = useState<ItemImage[]>([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const [type, setType] = useState("");
   const [title, setTitle] = useState("");
@@ -56,6 +67,67 @@ function EditItemForm() {
     playtime: playTime ? Number(playTime) : undefined,
   };
 
+  const handleImagesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files ?? []);
+
+    if (itemImages.length + files.length > 5) {
+      alert("Maximum 5 kép tölthető fel.");
+
+      return;
+    }
+
+    setSelectedImages(files);
+  };
+
+  const handleDeleteImage = async (imageId: number) => {
+    if (!token) {
+      return;
+    }
+
+    const confirmed = window.confirm("Biztosan törölni szeretnéd ezt a képet?");
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await deleteItemImage(token, imageId);
+
+      setItemImages((prev) => prev.filter((image) => image.id !== imageId));
+
+      alert("Kép sikeresen törölve.");
+    } catch (error) {
+      alert(
+        error instanceof Error ? error.message : "A kép törlése sikertelen.",
+      );
+    }
+  };
+
+  const handleSetCover = async (imageId: number) => {
+    if (!token) {
+      return;
+    }
+
+    try {
+      await setItemCoverImage(token, imageId);
+
+      setItemImages((prev) =>
+        prev.map((image) => ({
+          ...image,
+          is_cover: image.id === imageId,
+        })),
+      );
+
+      alert("Borítókép módosítva.");
+    } catch (error) {
+      alert(
+        error instanceof Error
+          ? error.message
+          : "A borítókép módosítása sikertelen.",
+      );
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -76,6 +148,11 @@ function EditItemForm() {
 
     try {
       await updateItem(token, id, itemData);
+
+      if (selectedImages.length > 0) {
+        await uploadItemImages(token, Number(id), selectedImages);
+      }
+
       alert("Termék sikeresen módosítva.");
 
       navigate("/items");
@@ -96,6 +173,8 @@ function EditItemForm() {
 
       try {
         const item = await getItemById(id);
+
+        setItemImages(item.images ?? []);
 
         setType(item.type);
         setTitle(item.title);
@@ -132,6 +211,57 @@ function EditItemForm() {
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
       <h1 className={styles.title}>Termék módosítása</h1>
+
+      <div className={styles.imageGallery}>
+        {itemImages.map((image) => (
+          <div key={image.id} className={styles.imageCard}>
+            <img src={`${API_URL}/uploads/${image.image_url}`} alt={title} />
+
+            {image.is_cover ? (
+              <p className={styles.coverBadge}>⭐ Borítókép</p>
+            ) : (
+              <button
+                type="button"
+                className={styles.coverButton}
+                onClick={() => handleSetCover(image.id)}
+              >
+                Legyen borítókép
+              </button>
+            )}
+
+            <button
+              type="button"
+              className={styles.deleteButton}
+              onClick={() => handleDeleteImage(image.id)}
+            >
+              Törlés
+            </button>
+          </div>
+        ))}
+      </div>
+
+      <input
+        id="item-images"
+        type="file"
+        accept="image/*"
+        multiple
+        className={styles.hiddenInput}
+        onChange={handleImagesChange}
+      />
+
+      <label htmlFor="item-images" className={styles.uploadButton}>
+        📷 Képek hozzáadása
+      </label>
+
+      {selectedImages.length > 0 && (
+        <ul className={styles.imageList}>
+          {selectedImages.map((image) => (
+            <li key={image.name}>{image.name}</li>
+          ))}
+        </ul>
+      )}
+
+      <p>{itemImages.length + selectedImages.length} / 5 kép</p>
 
       <input
         className={styles.input}

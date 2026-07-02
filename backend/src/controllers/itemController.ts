@@ -7,16 +7,21 @@ import path from "path";
 import { handleControllerError } from "../utils/handleControllerErrors";
 
 import {
+    createItem,
     getAllItems,
     getItemById,
     getItemsByOwnerId,
-    createItem,
-    deleteItemById,
-    createItemImage,
-    getImagesByItemId,
-    getItemImageById,
-    deleteItemImageById,
     updateItemById,
+    deleteItemById,
+
+    createItemImage,
+    getItemImageById,
+    getImagesByItemId,
+    getOldestImageByItemId,
+    countImagesByItemId,
+    removeCoverFromItem,
+    setCoverImage,
+    deleteItemImageById,
 }
     from "../services/itemService";
 
@@ -119,6 +124,10 @@ export const getItem = async (
             });
         }
 
+        const images = await getImagesByItemId(
+            Number(req.params.id)
+        );
+
         if (item.type === "book") {
 
             const book = await getBookByItemId(
@@ -127,7 +136,8 @@ export const getItem = async (
 
             return res.json({
                 ...item,
-                ...book[0]
+                ...book[0],
+                images
             });
         }
 
@@ -139,11 +149,15 @@ export const getItem = async (
 
             return res.json({
                 ...item,
-                ...boardgame[0]
+                ...boardgame[0],
+                images
             });
         }
 
-        return res.json(item);
+        return res.json({
+            ...item,
+            images
+        });
 
     } catch (error) {
         return handleControllerError(
@@ -350,15 +364,24 @@ export const uploadImages = async (
             });
         }
 
+        const imageCount = await countImagesByItemId(item.id);
+
+        if (imageCount + files.length > 5) {
+            return res.status(400).json({
+                message: "Maximum 5 images allowed"
+            });
+        }
+
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
 
             await createItemImage(
                 item.id,
                 `items/${file.filename}`,
-                i === 0
+                imageCount === 0 && i === 0
             );
         }
+
 
         return res.status(201).json({
             message: "Images uploaded successfully"
@@ -384,6 +407,54 @@ export const getItemImages = async (
         );
 
         return res.json(images);
+
+    } catch (error) {
+        return handleControllerError(
+            error,
+            res
+        );
+    }
+};
+
+//! Set item cover image
+export const setItemImageAsCover = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    try {
+        const image = await getItemImageById(
+            Number(req.params.imageId)
+        );
+
+        if (!image) {
+            return res.status(404).json({
+                message: "Image not found"
+            });
+        }
+
+        const item = await getItemById(
+            image.item_id
+        );
+
+        if (!item) {
+            return res.status(404).json({
+                message: "Item not found"
+            });
+        }
+
+        if (item.owner_id !== req.user!.userId) {
+            return res.status(403).json({
+                message: "Forbidden"
+            });
+        }
+
+        await removeCoverFromItem(item.id);
+        await setCoverImage(image.id);
+
+        return res.json({
+            message: "Cover image updated"
+        });
 
     } catch (error) {
         return handleControllerError(
@@ -438,6 +509,14 @@ export const deleteItemImage = async (
         }
 
         await deleteItemImageById(image.id);
+
+        if (image.is_cover) {
+            const oldestImage = await getOldestImageByItemId(image.item_id);
+
+            if (oldestImage) {
+                await setCoverImage(oldestImage.id)
+            };
+        }
 
         return res.json({
             message: "Image deleted"
