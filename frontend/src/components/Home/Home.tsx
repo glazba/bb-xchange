@@ -39,7 +39,7 @@ function Home() {
   }, []);
 
   return (
-    <div className={styles.page}>
+    <div className={`page ${styles.page}`}>
       <section className={styles.hero}>
         <h1>
           <img src="../../public/bb_xchange_logo.png" alt="B-B Xchange" />
