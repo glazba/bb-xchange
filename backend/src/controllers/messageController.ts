@@ -7,7 +7,8 @@ import {
     createMessage,
     getMessagesBetweenUsers,
     markMessagesAsRead,
-    getUnreadMessagesCount
+    getUnreadMessagesCount,
+    getConversations
 } from "../services/messageService";
 
 import {
@@ -123,6 +124,26 @@ export const unreadMessages = async (
         return res.json({
             unreadCount: count
         });
+
+    } catch (error) {
+        return handleControllerError(
+            error,
+            res
+        );
+    }
+};
+
+export const conversations = async (
+    req: AuthRequest,
+    res: Response
+) => {
+
+    try {
+        const data = await getConversations(
+            req.user!.userId
+        );
+
+        return res.json(data);
 
     } catch (error) {
         return handleControllerError(

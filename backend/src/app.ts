@@ -18,6 +18,7 @@ import bookRoutes from "./routes/bookRoutes";
 import boardgameRoutes from "./routes/boardgameRoutes";
 import tradeOfferRoutes from "./routes/tradeOfferRoutes";
 import messageRoutes from "./routes/messageRoutes";
+import notificationRoutes from "./routes/notificationRoutes";
 
 const app = express();
 
@@ -58,6 +59,7 @@ app.use("/uploads", express.static(
 ));
 
 app.use("/messages", messageRoutes);
+app.use("/notifications", notificationRoutes);
 
 //! Basic endpoint
 app.get("/", (req, res) => {

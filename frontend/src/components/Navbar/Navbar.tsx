@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
-import styles from "./Navbar.module.css";
-
 import { useAuth } from "../../hooks/useAuth";
+
+import NotificationBell from "../NotificationBell/NotificationBell";
+import MessageBell from "../MessageBell/MessageBell";
+
+import styles from "./Navbar.module.css";
 
 function Navbar() {
   const { token, logout } = useAuth();
@@ -28,6 +31,11 @@ function Navbar() {
             <Link to="/items">Termékeim</Link>
             <Link to="/offers">Ajánlataim</Link>
             <Link to="/offers/received">Beérkező ajánlatok</Link>
+
+            <MessageBell />
+
+            <NotificationBell />
+
             <Link to="/profile">Profil</Link>
 
             <button

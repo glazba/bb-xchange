@@ -17,6 +17,8 @@ import ReceivedOffersPage from "../pages/ReceivedOffersPage";
 import PublicProfilePage from "../pages/PublicProfilePage";
 import PublicUserItemsPage from "../pages/PublicUserItemsPage";
 import MessagesPage from "../pages/MessagesPage";
+import ConversationsPage from "../pages/ConversationsPage";
+import NotificationsPage from "../pages/NotificationsPage";
 
 function AppRoutes() {
   return (
@@ -119,6 +121,22 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <MessagesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages"
+            element={
+              <ProtectedRoute>
+                <ConversationsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute>
+                <NotificationsPage />
               </ProtectedRoute>
             }
           />

@@ -90,3 +90,25 @@ export const getUnreadMessagesCount = async (
 
     return data.unreadCount;
 };
+
+export const getConversations = async (
+    token: string
+) => {
+
+    const response = await fetch(
+        `${API_URL}/messages/conversations`,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
+        },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+};

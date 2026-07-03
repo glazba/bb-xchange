@@ -40,6 +40,8 @@ function Messages() {
         setMessages(data);
 
         await markMessagesAsRead(token, Number(userId));
+
+        window.dispatchEvent(new Event("messages-read"));
       } catch (error) {
         alert(
           error instanceof Error

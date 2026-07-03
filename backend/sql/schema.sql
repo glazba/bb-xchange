@@ -154,6 +154,31 @@ CREATE TABLE
         FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
     );
 
+CREATE TABLE notifications (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    type ENUM (
+        'new_offer',
+        'offer_accepted',
+        'offer_rejected'
+    ) NOT NULL,
+    message VARCHAR(255) NOT NULL,
+    link VARCHAR(255),
+    is_read BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_notifications_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
+
+CREATE INDEX idx_notifications_user
+ON notifications(user_id);
+
+CREATE INDEX idx_notifications_read
+ON notifications(is_read);
+
 CREATE INDEX idx_items_title ON items (title);
 
 CREATE INDEX idx_items_type ON items (type);

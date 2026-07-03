@@ -17,6 +17,8 @@ import {
 
 import { getItemById, updateItemStatus } from "../services/itemService";
 
+import { createNotification } from "../services/notificationService";
+
 //! Create offer
 export const createOffer = async (
     req: AuthRequest,
@@ -109,6 +111,13 @@ export const createOffer = async (
                 itemId
             );
         }
+
+        await createNotification(
+            targetItem.owner_id,
+            "new_offer",
+            "Új ajánlatod érkezett!",
+            "/offers/received"
+        );
 
         return res.status(201).json({
             message: "Offer created",
@@ -228,6 +237,24 @@ export const changeOfferStatus = async (
             Number(req.params.id),
             status
         );
+
+        if (status === "accepted") {
+            await createNotification(
+                offer[0].requester_id,
+                "offer_accepted",
+                "Elfogadták az ajánlatod!",
+                "/offers"
+            );
+        }
+
+        if (status === "rejected") {
+            await createNotification(
+                offer[0].requester_id,
+                "offer_rejected",
+                "Elutasították az ajánlatod.",
+                "/offers"
+            );
+        }
 
         if (status === "accepted") {
             await updateItemStatus(

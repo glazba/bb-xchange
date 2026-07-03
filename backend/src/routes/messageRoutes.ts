@@ -5,7 +5,8 @@ import {
     sendMessage,
     getMessages,
     readMessages,
-    unreadMessages
+    unreadMessages,
+    conversations
 } from "../controllers/messageController";
 
 const router = Router();
@@ -13,6 +14,8 @@ const router = Router();
 router.use(authMiddleware);
 
 router.post("/", sendMessage);
+
+router.get("/conversations", conversations);
 
 router.get("/user/:userId", getMessages);
 
