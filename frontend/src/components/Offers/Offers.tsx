@@ -129,6 +129,13 @@ function Offers() {
               {new Date(offer.created_at).toLocaleDateString("hu-HU")}
             </p>
 
+            <Link
+              className="button buttonPrimary"
+              to={`/messages/${offer.owner_id}`}
+            >
+              Beszélgetés
+            </Link>
+
             {offer.status === "pending" && (
               <button
                 className={`button buttonSecondary ${styles.revokeButton}`}

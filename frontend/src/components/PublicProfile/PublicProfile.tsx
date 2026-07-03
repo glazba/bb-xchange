@@ -87,14 +87,14 @@ function PublicProfile() {
 
           <p>
             <strong>Regisztrált:</strong>{" "}
-            {new Date(profile.created_at).toLocaleDateString("hu-HU")} óta
+            {new Date(profile.created_at).toLocaleDateString("hu-HU")}
           </p>
 
           <Link
             className="button buttonPrimary"
             to={`/users/${profile.id}/items`}
           >
-            Termékei megtekintése
+            {profile.username} termékei
           </Link>
         </div>
       </div>

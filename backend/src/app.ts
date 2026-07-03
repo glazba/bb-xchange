@@ -17,6 +17,7 @@ import itemRoutes from "./routes/itemRoutes";
 import bookRoutes from "./routes/bookRoutes";
 import boardgameRoutes from "./routes/boardgameRoutes";
 import tradeOfferRoutes from "./routes/tradeOfferRoutes";
+import messageRoutes from "./routes/messageRoutes";
 
 const app = express();
 
@@ -55,6 +56,8 @@ app.use("/offers", tradeOfferRoutes);
 app.use("/uploads", express.static(
     path.join(__dirname, "../uploads")
 ));
+
+app.use("/messages", messageRoutes);
 
 //! Basic endpoint
 app.get("/", (req, res) => {

@@ -8,6 +8,8 @@
 
 .card {
   margin-bottom: 1.5rem;
+  max-width: 30%;
+  border: 2px solid black !important;
 }
 
 .accepted {

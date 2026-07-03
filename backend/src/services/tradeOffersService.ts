@@ -297,3 +297,57 @@ export const revokeOffer = async (
 
     return result.affectedRows > 0;
 }
+
+export const canAccessOffer = async (
+    offerId: number,
+    userId: number
+) => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT
+            trade_offers.requester_id,
+            items.owner_id
+        FROM trade_offers
+
+        INNER JOIN items
+            ON trade_offers.target_item_id = items.id
+
+        WHERE trade_offers.id = ?
+        `,
+        [offerId]
+    );
+
+    if (rows.length === 0) {
+        return false;
+    }
+
+    const offer = rows[0];
+
+    return (
+        offer.requester_id === userId ||
+        offer.owner_id === userId
+    );
+};
+
+export const getOfferParticipants = async (
+    offerId: number
+) => {
+
+    const [rows] = await pool.query<RowDataPacket[]>(
+        `
+        SELECT 
+            trade_offers.requester_id,
+            items.owner_id
+        FROM trade_offers
+
+        INNER JOIN items
+            ON trade_offers.target_item_id = items.id
+
+        WHERE trade_offers.id = ?
+        `,
+        [offerId]
+    );
+
+    return rows[0];
+};

@@ -126,10 +126,32 @@ CREATE TABLE
         id INT AUTO_INCREMENT PRIMARY KEY,
         offer_id INT NOT NULL,
         sender_id INT NOT NULL,
+        receiver_id INT NOT NULL,
         content TEXT NOT NULL,
+        is_read BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT fk_message_offer FOREIGN KEY (offer_id) REFERENCES trade_offers (id) ON DELETE CASCADE,
-        CONSTRAINT fk_message_sender FOREIGN KEY (sender_id) REFERENCES users (id) ON DELETE CASCADE
+        CONSTRAINT fk_message_sender FOREIGN KEY (sender_id) REFERENCES users (id) ON DELETE CASCADE,
+        CONSTRAINT fk_message_receiver FOREIGN KEY (receiver_id) REFERENCES users (id) ON DELETE CASCADE
+    );
+
+CREATE TABLE
+    notifications (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT NOT NULL,
+        type ENUM (
+            'offer_received',
+            'offer_accepted',
+            'offer_rejected',
+            'offer_cancelled',
+            'offer_revoked',
+            'message'
+        ) NOT NULL,
+        message VARCHAR(255) NOT NULL,
+        link VARCHAR(255),
+        is_read BOOLEAN DEFAULT FALSE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
     );
 
 CREATE INDEX idx_items_title ON items (title);
@@ -158,3 +180,9 @@ ALTER TABLE trade_offers MODIFY COLUMN status ENUM (
     'cancelled',
     'revoked'
 ) NOT NULL DEFAULT 'pending';
+
+ALTER TABLE messages MODIFY offer_id INT NULL CREATE INDEX idx_messages_offer ON messages (offer_id);
+
+CREATE INDEX idx_messages_receiver ON messages (receiver_id);
+
+CREATE INDEX idx_messages_sender ON messages (sender_id);

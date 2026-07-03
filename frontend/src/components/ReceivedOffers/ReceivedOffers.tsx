@@ -145,6 +145,13 @@ function ReceivedOffers() {
               <strong>Létrehozva:</strong>{" "}
               {new Date(offer.created_at).toLocaleDateString("hu-HU")}
             </p>
+
+            <Link
+              className="button buttonPrimary"
+              to={`/messages/${offer.requester_id}`}
+            >
+              Beszélgetés
+            </Link>
           </div>
 
           {offer.status === "pending" && (

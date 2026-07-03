@@ -16,6 +16,7 @@ import CreateOfferPage from "../pages/CreateOfferPage";
 import ReceivedOffersPage from "../pages/ReceivedOffersPage";
 import PublicProfilePage from "../pages/PublicProfilePage";
 import PublicUserItemsPage from "../pages/PublicUserItemsPage";
+import MessagesPage from "../pages/MessagesPage";
 
 function AppRoutes() {
   return (
@@ -110,6 +111,14 @@ function AppRoutes() {
             element={
               <ProtectedRoute>
                 <PublicUserItemsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/messages/:userId"
+            element={
+              <ProtectedRoute>
+                <MessagesPage />
               </ProtectedRoute>
             }
           />
