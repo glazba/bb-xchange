@@ -47,56 +47,60 @@ function PublicProfile() {
   return (
     <div className={styles.container}>
       <div className={`panel ${styles.card}`}>
-        <div className={styles.avatar}>
-          {profile.avatar ? (
-            <img
-              src={`${API_URL}/uploads/${profile.avatar}`}
-              alt={profile.username}
-            />
-          ) : (
-            "👤"
-          )}
-        </div>
+        <header className={styles.header}>
+          <div className={styles.avatar}>
+            {profile.avatar ? (
+              <img
+                src={`${API_URL}/uploads/${profile.avatar}`}
+                alt={profile.username}
+              />
+            ) : (
+              "👤"
+            )}
+          </div>
 
-        <h1 className={styles.title}>{profile.username}</h1>
+          <h1 className={styles.title}>{profile.username}</h1>
 
-        <div className={styles.info}>
-          <p>
-            <strong>Város:</strong> {profile.city}
+          <p className={styles.memberSince}>
+            Tag: {new Date(profile.created_at).toLocaleDateString("hu-HU")}
           </p>
+        </header>
 
-          <p>
-            <strong>Bemutatkozás:</strong>
-          </p>
+        <section className={styles.info}>
+          <div className={styles.infoCard}>
+            <strong>Város</strong>
+            <span>{profile.city || "-"}</span>
+          </div>
 
-          <p className={styles.bio}>{profile.bio || "Nincs bemutatkozás."}</p>
+          <div className={styles.bioBox}>
+            <h3>Bemutatkozás</h3>
 
-          <p>
-            <strong>Érdeklődési körök:</strong>
-          </p>
+            <p className={styles.bio}>{profile.bio || "Nincs bemutatkozás."}</p>
+          </div>
 
-          {profile.interests.length > 0 ? (
-            <ul className={styles.interests}>
-              {profile.interests.map((interest) => (
-                <li key={interest}>{interest}</li>
-              ))}
-            </ul>
-          ) : (
-            <p>Nincsenek érdeklődési körök.</p>
-          )}
+          <div className={styles.interestsBox}>
+            <h3>Érdeklődési körök</h3>
 
-          <p>
-            <strong>Regisztrált:</strong>{" "}
-            {new Date(profile.created_at).toLocaleDateString("hu-HU")}
-          </p>
+            {profile.interests.length > 0 ? (
+              <div className={styles.tags}>
+                {profile.interests.map((interest) => (
+                  <span key={interest} className={styles.tag}>
+                    {interest}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <p>Nincsenek érdeklődési körök.</p>
+            )}
+          </div>
 
           <Link
-            className="button buttonPrimary"
+            className={`button buttonPrimary ${styles.itemsButton}`}
             to={`/users/${profile.id}/items`}
           >
-            {profile.username} termékei
+            📚 {profile.username} termékei
           </Link>
-        </div>
+        </section>
       </div>
     </div>
   );

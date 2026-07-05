@@ -12,7 +12,6 @@ function LoginForm() {
   const { login } = useAuth();
 
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -40,25 +39,31 @@ function LoginForm() {
 
   return (
     <form className={`formCard ${styles.form}`} onSubmit={handleSubmit}>
-      <h1 className={styles.title}>Bejelentkezés</h1>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Üdv újra!</h1>
 
-      <input
-        className="input"
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
+        <p className={styles.subtitle}>Jelentkezz be, és folytasd a cserét.</p>
+      </header>
 
-      <input
-        className="input"
-        type="password"
-        placeholder="Jelszó"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
+      <div className={styles.fields}>
+        <input
+          className="input"
+          type="email"
+          placeholder="Email cím"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
 
-      <button className="button buttonPrimary" type="submit">
+        <input
+          className="input"
+          type="password"
+          placeholder="Jelszó"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
+      </div>
+
+      <button className={`button buttonPrimary ${styles.button}`} type="submit">
         Bejelentkezés
       </button>
     </form>

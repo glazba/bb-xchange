@@ -60,24 +60,43 @@ function MyItems() {
 
   return (
     <div className={`page ${styles.page}`}>
-      <div className={styles.header}>
-        <h1>Termékeim</h1>
+      <header className={styles.header}>
+        <div>
+          <h1>Termékeim</h1>
 
-        {items.length === 0 && <p>Még nincsenek feltöltött termékeid.</p>}
+          <p className={styles.subtitle}>
+            Kezeld a feltöltött könyveidet és társasjátékaidat.
+          </p>
+        </div>
 
-        <Link
-          to="/create-item"
-          className={`button buttonPrimary ${styles.addButton}`}
-        >
-          +
-        </Link>
-      </div>
+        <p className={styles.counter}>{items.length} termék</p>
+      </header>
 
-      <div className="grid">
-        {items.map((item) => (
-          <ItemCard key={item.id} item={item} onDelete={handleDelete} isOwner />
-        ))}
-      </div>
+      {items.length === 0 ? (
+        <div className={styles.empty}>
+          <h3>Még nincsenek termékeid</h3>
+
+          <p>Tölts fel egy könyvet vagy társasjátékot, és kezdd el a cserét!</p>
+        </div>
+      ) : (
+        <div className="grid">
+          {items.map((item) => (
+            <ItemCard
+              key={item.id}
+              item={item}
+              onDelete={handleDelete}
+              isOwner
+            />
+          ))}
+        </div>
+      )}
+
+      <Link
+        to="/create-item"
+        className={`button buttonPrimary ${styles.addButton}`}
+      >
+        +
+      </Link>
     </div>
   );
 }

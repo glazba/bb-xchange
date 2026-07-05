@@ -74,133 +74,148 @@ function ItemDetails() {
 
   return (
     <div className={`panel ${styles.container}`}>
-      <div className={styles.image}>
-        {selectedImage ? (
-          <img
-            src={`${API_URL}/uploads/${selectedImage}`}
-            alt={item.title}
-            className={styles.mainImage}
-            onClick={() => setIsLightboxOpen(true)}
-          />
-        ) : (
-          <span>{item.type === "book" ? "📚" : "🎲"}</span>
-        )}
-      </div>
-
-      {item.images && item.images.length > 1 && (
-        <div className={styles.gallery}>
-          {item.images.map((image) => (
+      <section className={styles.imageSection}>
+        <div className={styles.image}>
+          {selectedImage ? (
             <img
-              key={image.id}
-              src={`${API_URL}/uploads/${image.image_url}`}
+              src={`${API_URL}/uploads/${selectedImage}`}
               alt={item.title}
-              className={
-                selectedImage === image.image_url
-                  ? styles.activeThumbnail
-                  : styles.thumbnail
-              }
-              onClick={() => setSelectedImage(image.image_url)}
+              className={styles.mainImage}
+              onClick={() => setIsLightboxOpen(true)}
             />
-          ))}
+          ) : (
+            <span>{item.type === "book" ? "📚" : "🎲"}</span>
+          )}
         </div>
-      )}
 
-      <h1>{item.title}</h1>
+        {item.images && item.images.length > 1 && (
+          <div className={styles.gallery}>
+            {item.images.map((image) => (
+              <img
+                key={image.id}
+                src={`${API_URL}/uploads/${image.image_url}`}
+                alt={item.title}
+                className={
+                  selectedImage === image.image_url
+                    ? styles.activeThumbnail
+                    : styles.thumbnail
+                }
+                onClick={() => setSelectedImage(image.image_url)}
+              />
+            ))}
+          </div>
+        )}
+      </section>
 
-      <p className={styles.description}>
-        {item.description || "Nincs leírás."}
-      </p>
+      <section className={styles.content}>
+        <h1 className={styles.title}>{item.title}</h1>
 
-      <div className={styles.info}>
-        <p>
+        <div className={styles.badges}>
+          <span>{itemTypeLabels[item.type]}</span>
+
+          <span>{itemConditionLabels[item.item_condition]}</span>
+
+          <span>{itemStatusLabels[item.status]}</span>
+        </div>
+
+        <div className={styles.owner}>
           <strong>Tulajdonos:</strong>{" "}
           <Link to={`/users/${item.owner_id}`}>{item.owner_name}</Link>
-        </p>
+        </div>
 
-        <p>
-          <strong>Típus:</strong> {itemTypeLabels[item.type]}
-        </p>
+        <div className={styles.descriptionBox}>
+          <h3>Leírás</h3>
 
-        <p>
-          <strong>Állapot:</strong> {itemConditionLabels[item.item_condition]}
-        </p>
+          <p>{item.description || "Nincs leírás."}</p>
+        </div>
 
-        <p>
-          <strong>Státusz:</strong> {itemStatusLabels[item.status]}
-        </p>
+        <div className={styles.detailsGrid}>
+          {item.type === "book" && (
+            <>
+              <div>
+                <strong>Szerző</strong>
+                <span>{item.author || "-"}</span>
+              </div>
 
-        {item.type === "book" && (
-          <>
-            <p>
-              <strong>Szerző:</strong> {item.author || "-"}
-            </p>
+              <div>
+                <strong>Műfaj</strong>
+                <span>{item.genre || "-"}</span>
+              </div>
 
-            <p>
-              <strong>Műfaj:</strong> {item.genre || "-"}
-            </p>
+              <div>
+                <strong>Oldalszám</strong>
+                <span>{item.page_count ?? "-"}</span>
+              </div>
 
-            <p>
-              <strong>Oldalszám:</strong> {item.page_count ?? "-"}
-            </p>
+              <div>
+                <strong>Kiadás éve</strong>
+                <span>{item.published_year ?? "-"}</span>
+              </div>
 
-            <p>
-              <strong>Kiadás éve:</strong> {item.published_year ?? "-"}
-            </p>
+              <div>
+                <strong>ISBN</strong>
+                <span>{item.isbn || "-"}</span>
+              </div>
+            </>
+          )}
 
-            <p>
-              <strong>ISBN:</strong> {item.isbn || "-"}
-            </p>
-          </>
-        )}
+          {item.type === "boardgame" && (
+            <>
+              <div>
+                <strong>Műfaj</strong>
+                <span>{item.genre || "-"}</span>
+              </div>
 
-        {item.type === "boardgame" && (
-          <>
-            <p>
-              <strong>Műfaj:</strong> {item.genre || "-"}
-            </p>
+              <div>
+                <strong>Minimum játékos</strong>
+                <span>{item.min_players ?? "-"}</span>
+              </div>
 
-            <p>
-              <strong>Minimum játékos:</strong> {item.min_players ?? "-"}
-            </p>
+              <div>
+                <strong>Maximum játékos</strong>
+                <span>{item.max_players ?? "-"}</span>
+              </div>
 
-            <p>
-              <strong>Maximum játékos:</strong> {item.max_players ?? "-"}
-            </p>
+              <div>
+                <strong>Ajánlott életkor</strong>
+                <span>{item.recommended_age ?? "-"}</span>
+              </div>
 
-            <p>
-              <strong>Ajánlott életkor:</strong> {item.recommended_age ?? "-"}
-            </p>
+              <div>
+                <strong>Játékidő</strong>
+                <span>{item.playtime ? `${item.playtime} perc` : "-"}</span>
+              </div>
+            </>
+          )}
 
-            <p>
-              <strong>Játékidő:</strong>{" "}
-              {item.playtime ? `${item.playtime} perc` : "-"}
-            </p>
-          </>
-        )}
+          {item.created_at && (
+            <div>
+              <strong>Létrehozva</strong>
+              <span>
+                {new Date(item.created_at).toLocaleDateString("hu-HU")}
+              </span>
+            </div>
+          )}
 
-        {item.created_at && (
-          <p>
-            <strong>Létrehozva:</strong>{" "}
-            {new Date(item.created_at).toLocaleDateString("hu-HU")}
-          </p>
-        )}
-
-        {item.updated_at && (
-          <p>
-            <strong>Szerkesztve:</strong>{" "}
-            {new Date(item.updated_at).toLocaleDateString("hu-HU")}
-          </p>
-        )}
+          {item.updated_at && (
+            <div>
+              <strong>Szerkesztve</strong>
+              <span>
+                {new Date(item.updated_at).toLocaleDateString("hu-HU")}
+              </span>
+            </div>
+          )}
+        </div>
 
         {item.status === "active" && (
           <Link
-            className="button buttonSuccess"
+            className={`button buttonSuccess ${styles.offerButton}`}
             to={`/offers/create/${item.id}`}
           >
             Ajánlat küldése
           </Link>
         )}
-      </div>
+      </section>
 
       {isLightboxOpen && (
         <div
@@ -214,13 +229,13 @@ function ItemDetails() {
               setIsLightboxOpen(false);
             }}
           >
-            X
+            ✕
           </button>
 
           <img
             src={`${API_URL}/uploads/${selectedImage}`}
             alt={item.title}
-            className={styles.lighboxImage}
+            className={styles.lightboxImage}
             onClick={(event) => event.stopPropagation()}
           />
         </div>

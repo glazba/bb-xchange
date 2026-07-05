@@ -51,11 +51,14 @@ function MessageBell() {
   }, [token]);
 
   return (
-    <div className={styles.messageLink}>
-      <Link to="/messages">Beszélgetések</Link>
-
-      {unreadCount > 0 && <span className={styles.badge}>{unreadCount}</span>}
-    </div>
+    <Link to="/messages" className={styles.messageLink}>
+      Beszélgetések
+      {unreadCount > 0 && (
+        <span className={styles.badge}>
+          {unreadCount > 99 ? "99+" : unreadCount}
+        </span>
+      )}
+    </Link>
   );
 }
 

@@ -3,8 +3,6 @@
   --primary: #6b7fd7;
   --primary-hover: #4f65c8;
 
-  --secondary: #f3ede6;
-
   --success: #5eb67d;
   --success-hover: #499663;
 
@@ -30,8 +28,8 @@
   --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.12);
 
   /* Animation */
-  --transition: 0.25s ease;
+  --transition: 0.3s ease-in-out;
 
   /* Layout */
-  --page-width: 1280px;
+  --page-width: 1200px;
 }

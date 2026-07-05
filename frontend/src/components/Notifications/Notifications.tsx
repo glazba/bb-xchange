@@ -73,11 +73,22 @@ function Notifications() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Értesítések</h1>
+    <div className={`page ${styles.page}`}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Értesítések</h1>
+
+        <p className={styles.subtitle}>{notifications.length} értesítés</p>
+      </div>
 
       {notifications.length === 0 ? (
-        <p>Nincsenek értesítéseid.</p>
+        <div className={`panel ${styles.empty}`}>
+          <h3>Nincsenek értesítéseid</h3>
+
+          <p>
+            Az új ajánlatokkal, elfogadásokkal és egyéb eseményekkel kapcsolatos
+            értesítések itt fognak megjelenni.
+          </p>
+        </div>
       ) : (
         <div className={styles.list}>
           {notifications.map((notification) => (
@@ -88,11 +99,15 @@ function Notifications() {
               }`}
               onClick={() => handleClick(notification)}
             >
-              <p>{notification.message}</p>
+              <div className={styles.content}>
+                <p>{notification.message}</p>
 
-              <small>
-                {new Date(notification.created_at).toLocaleString("hu-HU")}
-              </small>
+                <small>
+                  {new Date(notification.created_at).toLocaleString("hu-HU")}
+                </small>
+              </div>
+
+              {!notification.is_read && <span className={styles.dot} />}
             </button>
           ))}
         </div>

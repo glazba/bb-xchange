@@ -18,7 +18,7 @@ interface ItemCardProps {
 
 function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
   return (
-    <div className={styles.card}>
+    <article className={`panel ${styles.card}`}>
       <div className={styles.image}>
         {item.cover_image ? (
           <img
@@ -29,43 +29,52 @@ function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
           <span>{item.type === "book" ? "📚" : "🎲"}</span>
         )}
       </div>
-      <h3>{item.title}</h3>
 
-      <p>{item.description}</p>
+      <div className={styles.content}>
+        <h3>{item.title}</h3>
 
-      <div className={styles.badges}>
-        <span>Típus: {itemTypeLabels[item.type]}</span>
-        <span>Állapot: {itemConditionLabels[item.item_condition]}</span>
-        <span>Státusz: {itemStatusLabels[item.status]}</span>
+        <p className={styles.description}>
+          {item.description || "Nincs leírás."}
+        </p>
+
+        <div className={styles.badges}>
+          <span>Típus: {itemTypeLabels[item.type]}</span>
+
+          <span>Állapot: {itemConditionLabels[item.item_condition]}</span>
+
+          <span>Státusz: {itemStatusLabels[item.status]}</span>
+        </div>
       </div>
 
-      {isOwner && item.status === "active" && (
-        <>
-          <Link to={`/edit-item/${item.id}`} className="button buttonPrimary">
-            Módosítás
+      <div className={styles.actions}>
+        {isOwner && item.status === "active" && (
+          <>
+            <Link to={`/edit-item/${item.id}`} className="button buttonPrimary">
+              Módosítás
+            </Link>
+
+            {onDelete && (
+              <button
+                className="button buttonDanger"
+                onClick={() => {
+                  if (window.confirm("Biztosan törölni szeretnéd?")) {
+                    onDelete(item.id);
+                  }
+                }}
+              >
+                Törlés
+              </button>
+            )}
+          </>
+        )}
+
+        {!isOwner && (
+          <Link to={`/items/${item.id}`} className="button buttonPrimary">
+            Részletek
           </Link>
-
-          {onDelete && (
-            <button
-              className="button buttonDanger"
-              onClick={() => {
-                if (window.confirm("Biztosan törölni szeretnéd?")) {
-                  onDelete(item.id);
-                }
-              }}
-            >
-              Törlés
-            </button>
-          )}
-        </>
-      )}
-
-      {!isOwner && (
-        <Link to={`/items/${item.id}`} className="button buttonPrimary">
-          Részletek
-        </Link>
-      )}
-    </div>
+        )}
+      </div>
+    </article>
   );
 }
 

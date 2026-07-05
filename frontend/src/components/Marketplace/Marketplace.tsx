@@ -160,128 +160,147 @@ function Marketplace() {
 
   return (
     <div className={`page ${styles.page}`}>
-      <h1>Marketplace</h1>
+      <header className={styles.header}>
+        <h1>Marketplace</h1>
 
-      <div className={`panel ${styles.filters}`}>
-        <input
-          className="input"
-          type="text"
-          placeholder="Keresés cím vagy szerző alapján..."
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
+        <p className={styles.subtitle}>
+          Böngéssz a közösség könyvei és társasjátékai között.
+        </p>
+      </header>
 
-        <select
-          className={`input ${styles.input}`}
-          value={typeFilter}
-          onChange={(event) => handleTypeChange(event.target.value)}
-        >
-          <option value="">Minden típus</option>
-          <option value="book">Könyv</option>
-          <option value="boardgame">Társasjáték</option>
-        </select>
+      <section className={`panel ${styles.filters}`}>
+        <div className={styles.filtersGrid}>
+          <input
+            className="input"
+            type="text"
+            placeholder="Keresés cím vagy szerző alapján..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
 
-        <select
-          className={`input ${styles.input}`}
-          value={conditionFilter}
-          onChange={(event) => setConditionFilter(event.target.value)}
-        >
-          <option value="">Minden állapot</option>
+          <select
+            className="input"
+            value={typeFilter}
+            onChange={(event) => handleTypeChange(event.target.value)}
+          >
+            <option value="">Minden típus</option>
 
-          {conditions.map(([value, label]) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
+            <option value="book">Könyv</option>
+
+            <option value="boardgame">Társasjáték</option>
+          </select>
+
+          <select
+            className="input"
+            value={conditionFilter}
+            onChange={(event) => setConditionFilter(event.target.value)}
+          >
+            <option value="">Minden állapot</option>
+
+            {conditions.map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="input"
+            value={sortBy}
+            onChange={(event) => setSortBy(event.target.value)}
+          >
+            <option value="newest">Legújabb elöl</option>
+
+            <option value="oldest">Legrégebbi elöl</option>
+
+            <option value="title-asc">Cím (A-Z)</option>
+
+            <option value="title-desc">Cím (Z-A)</option>
+          </select>
+
+          {typeFilter === "book" && (
+            <>
+              <select
+                className="input"
+                value={genreFilter}
+                onChange={(event) => setGenreFilter(event.target.value)}
+              >
+                <option value="">Minden műfaj</option>
+
+                {genres.map((genre) => (
+                  <option key={genre} value={genre}>
+                    {genre}
+                  </option>
+                ))}
+              </select>
+
+              <input
+                className="input"
+                type="number"
+                placeholder="Minimum oldalszám"
+                value={pageFilter}
+                onChange={(event) => setPageFilter(event.target.value)}
+              />
+            </>
+          )}
+
+          {typeFilter === "boardgame" && (
+            <>
+              <select
+                className="input"
+                value={genreFilter}
+                onChange={(event) => setGenreFilter(event.target.value)}
+              >
+                <option value="">Minden műfaj</option>
+
+                {genres.map((genre) => (
+                  <option key={genre} value={genre}>
+                    {genre}
+                  </option>
+                ))}
+              </select>
+
+              <input
+                className="input"
+                type="number"
+                placeholder="Játékosok száma"
+                value={playersFilter}
+                onChange={(event) => setPlayersFilter(event.target.value)}
+              />
+
+              <input
+                className="input"
+                type="number"
+                placeholder="Ajánlott életkor"
+                value={ageFilter}
+                onChange={(event) => setAgeFilter(event.target.value)}
+              />
+            </>
+          )}
+        </div>
+
+        <div className={styles.filterFooter}>
+          <p className={styles.resultCount}>{filteredItems.length} találat</p>
+
+          <button className="button buttonPrimary" onClick={handleResetFilters}>
+            Szűrők törlése
+          </button>
+        </div>
+      </section>
+
+      {filteredItems.length === 0 ? (
+        <div className={styles.empty}>
+          <h3>Nincs találat</h3>
+
+          <p>Próbálj meg más szűrőket használni.</p>
+        </div>
+      ) : (
+        <div className="grid">
+          {filteredItems.map((item) => (
+            <ItemCard key={item.id} item={item} />
           ))}
-        </select>
-
-        <select
-          className={`input ${styles.input}`}
-          value={sortBy}
-          onChange={(event) => setSortBy(event.target.value)}
-        >
-          <option value="newest">Legújabb elöl</option>
-          <option value="oldest">Legrégebbi elöl</option>
-          <option value="title-asc">Cím (A-Z)</option>
-          <option value="title-desc">Cím (Z-A)</option>
-        </select>
-
-        {typeFilter === "book" && (
-          <>
-            <select
-              className={`input ${styles.input}`}
-              value={genreFilter}
-              onChange={(event) => setGenreFilter(event.target.value)}
-            >
-              <option value="">Minden műfaj</option>
-
-              {genres.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
-
-            <input
-              className={`input ${styles.input}`}
-              type="number"
-              placeholder="Minimum oldalszám"
-              value={pageFilter}
-              onChange={(event) => setPageFilter(event.target.value)}
-            />
-          </>
-        )}
-
-        {typeFilter === "boardgame" && (
-          <>
-            <select
-              className={`input ${styles.input}`}
-              value={genreFilter}
-              onChange={(event) => setGenreFilter(event.target.value)}
-            >
-              <option value="">Minden műfaj</option>
-
-              {genres.map((genre) => (
-                <option key={genre} value={genre}>
-                  {genre}
-                </option>
-              ))}
-            </select>
-
-            <input
-              className={`input ${styles.input}`}
-              type="number"
-              placeholder="Játékosok száma"
-              value={playersFilter}
-              onChange={(event) => setPlayersFilter(event.target.value)}
-            />
-
-            <input
-              className={`input ${styles.input}`}
-              type="number"
-              placeholder="Ajánlott életkor"
-              value={ageFilter}
-              onChange={(event) => setAgeFilter(event.target.value)}
-            />
-          </>
-        )}
-
-        <button className="button buttonPrimary" onClick={handleResetFilters}>
-          Szűrők törlése
-        </button>
-      </div>
-
-      <p className={styles.resultCount}>{filteredItems.length} találat</p>
-
-      {filteredItems.length === 0 && (
-        <p className={styles.empty}>Nincs találat a megadott szűrőkre.</p>
+        </div>
       )}
-
-      <div className="grid">
-        {filteredItems.map((item) => (
-          <ItemCard key={item.id} item={item} />
-        ))}
-      </div>
     </div>
   );
 }

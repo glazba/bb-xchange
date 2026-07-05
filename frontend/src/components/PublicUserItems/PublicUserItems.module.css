@@ -1,17 +1,43 @@
 .page {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 0 4rem;
 }
 
-.title {
-  margin-bottom: 2rem;
+.header {
+  margin-bottom: 2.5rem;
   text-align: center;
 }
 
-.grid {
-  display: grid;
-  gap: 2rem;
+.title {
+  margin-bottom: 0.5rem;
+}
 
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+.subtitle {
+  color: var(--text-light);
+  font-size: 1rem;
+}
+
+.empty {
+  max-width: 700px;
+  margin: 0 auto;
+
+  text-align: center;
+}
+
+.empty h3 {
+  margin-bottom: 1rem;
+}
+
+.empty p {
+  color: var(--text-light);
+  line-height: 1.7;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 1.5rem 0 3rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
 }

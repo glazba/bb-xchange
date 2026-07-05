@@ -1,29 +1,40 @@
 .bell {
   position: relative;
 
+  width: 40px;
+  height: 40px;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  font-size: 1.3rem;
-
-  cursor: pointer;
+  border-radius: 50%;
 
   transition: var(--transition);
 }
 
 .bell:hover {
+  background: rgba(99, 136, 211, 0.1);
+}
+
+.icon {
+  font-size: 1.35rem;
+
+  transition: var(--transition);
+}
+
+.bell:hover .icon {
   transform: scale(1.1);
 }
 
 .badge {
   position: absolute;
 
-  top: -8px;
-  right: -10px;
+  top: -4px;
+  right: -4px;
 
-  min-width: 20px;
-  height: 20px;
+  min-width: 22px;
+  height: 22px;
 
   padding: 0 0.35rem;
 
@@ -38,4 +49,22 @@
 
   font-size: 0.7rem;
   font-weight: 700;
+
+  box-shadow:
+    0 0 0 3px var(--surface),
+    0 4px 12px rgba(0, 0, 0, 0.15);
+
+  animation: popIn 0.2s ease;
+}
+
+@keyframes popIn {
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }

@@ -96,29 +96,48 @@ function CreateOffer() {
 
   return (
     <div className={`formCard ${styles.container}`}>
-      <h1>Ajánlat küldése</h1>
+      <div className={styles.header}>
+        <h1>Ajánlat küldése</h1>
 
-      <p>
-        Válaszd ki azokat a saját termékeidet, amelyeket felajánlasz cserére.
-      </p>
+        <p>
+          Válaszd ki azokat a saját termékeidet, amelyeket felajánlasz cserére.
+        </p>
+      </div>
 
       <div className={styles.checkboxGroup}>
         {myItems.map((item) => (
-          <label key={item.id} className={styles.checkbox}>
+          <label
+            key={item.id}
+            className={`${styles.checkbox} ${
+              selectedItems.includes(item.id) ? styles.selected : ""
+            }`}
+          >
             <input
               type="checkbox"
               checked={selectedItems.includes(item.id)}
               onChange={() => handleItemToggle(item.id)}
             />
 
-            {item.title}
+            <div className={styles.itemInfo}>
+              <span className={styles.itemTitle}>{item.title}</span>
+
+              <small>
+                {item.type === "book" ? "📚 Könyv" : "🎲 Társasjáték"}
+              </small>
+            </div>
           </label>
         ))}
       </div>
 
-      <button className="button buttonSuccess" onClick={handleSubmit}>
-        Ajánlat küldése
-      </button>
+      <div className={styles.footer}>
+        <p className={styles.counter}>
+          {selectedItems.length} termék kiválasztva
+        </p>
+
+        <button className="button buttonSuccess" onClick={handleSubmit}>
+          Ajánlat küldése
+        </button>
+      </div>
     </div>
   );
 }

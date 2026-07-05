@@ -42,13 +42,24 @@ function PublicUserItems() {
   }, [id, navigate]);
 
   return (
-    <div className={styles.page}>
-      <h1 className={styles.title}>Felhasználó termékei</h1>
+    <div className={`page ${styles.page}`}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Felhasználó termékei</h1>
+
+        <p className={styles.subtitle}>{items.length} aktív termék</p>
+      </div>
 
       {items.length === 0 ? (
-        <p>Nincsenek aktív termékei.</p>
+        <div className={`panel ${styles.empty}`}>
+          <h3>Nincsenek aktív termékek</h3>
+
+          <p>
+            Ez a felhasználó jelenleg nem töltött fel cserére elérhető könyvet
+            vagy társasjátékot.
+          </p>
+        </div>
       ) : (
-        <div className={styles.grid}>
+        <div className="grid">
           {items.map((item) => (
             <ItemCard key={item.id} item={item} isOwner={false} />
           ))}

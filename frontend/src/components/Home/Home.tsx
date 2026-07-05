@@ -30,7 +30,7 @@ function Home() {
         alert(
           error instanceof Error
             ? error.message
-            : "Nem sikerült betölteni a terméket.",
+            : "Nem sikerült betölteni a termékeket.",
         );
       }
     };
@@ -41,13 +41,17 @@ function Home() {
   return (
     <div className={`page ${styles.page}`}>
       <section className={styles.hero}>
-        <h1>
-          <img src="../../public/bb_xchange_logo.png" alt="B-B Xchange" />
-        </h1>
+        <img
+          className={styles.logo}
+          src="/bb_xchange_logo.png"
+          alt="BB-XChange"
+        />
 
-        <p>
-          Cserélj könyveket és társasjátékokat egyszerűen, biztonságosan és
-          teljesen ingyen.
+        <h1 className={styles.title}>Cserélj könyveket és társasjátékokat</h1>
+
+        <p className={styles.subtitle}>
+          Egyszerűen, biztonságosan és teljesen ingyen. Találd meg a következő
+          kedvenc könyvedet vagy társasjátékodat a közösség segítségével.
         </p>
 
         <div className={styles.heroButtons}>
@@ -55,7 +59,7 @@ function Home() {
             Marketplace
           </Link>
 
-          <Link className="button buttonPrimary" to="/items">
+          <Link className="button buttonSecondary" to="/items">
             Saját termékeim
           </Link>
         </div>
@@ -65,20 +69,20 @@ function Home() {
         <h2>Hogyan működik?</h2>
 
         <div className={styles.steps}>
-          <div className={`panel ${styles.step}`}>
+          <article className={`panel ${styles.step}`}>
             <h3>1.</h3>
             <p>Tölts fel egy könyvet vagy társasjátékot.</p>
-          </div>
+          </article>
 
-          <div className={`panel ${styles.step}`}>
+          <article className={`panel ${styles.step}`}>
             <h3>2.</h3>
             <p>Böngéssz mások termékei között.</p>
-          </div>
+          </article>
 
-          <div className={`panel ${styles.step}`}>
+          <article className={`panel ${styles.step}`}>
             <h3>3.</h3>
             <p>Küldj csereajánlatot és cseréljetek.</p>
-          </div>
+          </article>
         </div>
       </section>
 
@@ -86,9 +90,9 @@ function Home() {
         <h2>Legfrissebb termékek</h2>
 
         {latestItems.length === 0 ? (
-          <p>Még nincsenek feltöltött termékek.</p>
+          <p className={styles.empty}>Még nincsenek feltöltött termékek.</p>
         ) : (
-          <div className={styles.grid}>
+          <div className="grid">
             {latestItems.map((item) => (
               <ItemCard key={item.id} item={item} />
             ))}

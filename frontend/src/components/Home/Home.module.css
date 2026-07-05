@@ -1,38 +1,41 @@
 .page {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 1rem 4rem;
 }
 
 .hero {
-  padding: 1.5rem;
+  padding: 4rem 2rem;
+
   text-align: center;
 
-  background: linear-gradient(to bottom, rgba(37, 100, 235, 0.25), transparent);
+  border-radius: var(--radius-lg);
 
-  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at top, rgba(99, 136, 211, 0.18), transparent 70%),
+    linear-gradient(to bottom, rgba(99, 136, 211, 0.08), transparent);
 }
 
-.hero h1 {
+.logo {
+  width: min(100%, 450px);
+
+  margin: 0 auto 1rem;
+}
+
+.title {
   margin-bottom: 1rem;
-  font-size: 3.5rem;
-  display: flex;
-  justify-content: center;
+
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.2;
 }
 
-.hero h1 img {
-  border-radius: 80%;
-  max-width: 600px;
-}
-
-.hero p {
+.subtitle {
   max-width: 700px;
-  margin: 0 auto 2rem;
 
-  font-size: 1.2rem;
-  line-height: 1.7;
+  margin: 0 auto 2.5rem;
 
-  color: var(--color-text-light);
+  color: var(--text-light);
+
+  font-size: 1.15rem;
+  line-height: 1.8;
 }
 
 .heroButtons {
@@ -43,59 +46,105 @@
 }
 
 .howItWorks {
-  margin-top: 2.5rem;
+  margin-top: 5rem;
 }
 
-.howItWorks h2 {
-  margin: 1rem;
+.howItWorks h2,
+.latest h2 {
+  margin-bottom: 2rem;
+
   text-align: center;
+
+  font-size: 2rem;
 }
 
 .steps {
   display: grid;
-  gap: 1rem;
+  gap: 1.5rem;
+
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
 .step {
   text-align: center;
-  border: 2px solid #427fa5 !important;
-  background: linear-gradient(to top, rgba(37, 99, 235, 0.5), transparent);
+
+  border: 1px solid rgba(99, 136, 211, 0.25);
+
+  background: linear-gradient(to top, rgba(99, 136, 211, 0.08), transparent);
 }
 
 .step h3 {
   margin-bottom: 1rem;
+
+  color: var(--primary);
+
   font-size: 2rem;
 }
 
+.step p {
+  color: var(--text-light);
+}
+
 .latest {
-  margin-top: 2.5rem;
+  margin-top: 5rem;
 }
 
-.latest h2 {
-  margin: 1rem;
+.empty {
   text-align: center;
-}
-
-.grid {
-  display: grid;
-  gap: 2rem;
-
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  color: var(--text-light);
 }
 
 .marketplaceLink {
-  display: inline-block;
-  margin-top: 2rem;
+  display: block;
 
-  color: var(--color-primary);
+  width: fit-content;
+
+  margin: 2rem auto 0;
+
+  color: var(--primary);
 
   font-weight: 600;
-  text-decoration: none;
 
   transition: var(--transition);
 }
 
 .marketplaceLink:hover {
-  text-decoration: underline;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .howItWorks,
+  .latest {
+    margin-top: 4rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .page {
+    padding: 1rem 0 3rem;
+  }
+
+  .hero {
+    padding: 2.5rem 1rem;
+  }
+
+  .heroButtons {
+    flex-direction: column;
+  }
+
+  .heroButtons a {
+    width: 100%;
+  }
 }

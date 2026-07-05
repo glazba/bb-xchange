@@ -100,79 +100,100 @@ function ReceivedOffers() {
 
   return (
     <div className={`page ${styles.container}`}>
-      <h1 className={styles.title}>Beérkezett ajánlatok</h1>
+      <header className={styles.header}>
+        <h1>Beérkezett ajánlatok</h1>
 
-      {offers.length === 0 && <p>Még nem kaptál csereajánlatot.</p>}
+        <p className={styles.subtitle}>
+          Kezeld a más felhasználóktól kapott csereajánlatokat.
+        </p>
+      </header>
 
-      {offers.map((offer) => (
-        <div
-          key={offer.id}
-          className={`panel ${styles.card} ${styles[offer.status]}`}
-        >
-          <h3>Csereajánlat</h3>
+      {offers.length === 0 ? (
+        <div className={styles.empty}>
+          <h3>Még nem kaptál ajánlatot</h3>
 
-          <div className={styles.info}>
-            <p>
-              <strong>Kért termék:</strong> {offer.target_title}
-            </p>
-
-            <p>
-              <strong>Ajánlatot tette:</strong>{" "}
-              {offer.requester_id ? (
-                <Link to={`/users/${offer.requester_id}`}>
-                  {offer.requester_name}
-                </Link>
-              ) : (
-                (offer.requester_name ?? "Ismeretlen.")
-              )}
-            </p>
-
-            <p>
-              <strong>Felajánlott termék(ek):</strong>
-            </p>
-
-            <ul className={styles.itemList}>
-              {offer.offered_items.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-
-            <p>
-              <strong>Státusz:</strong> {offerStatusLabels[offer.status]}
-            </p>
-
-            <p>
-              <strong>Létrehozva:</strong>{" "}
-              {new Date(offer.created_at).toLocaleDateString("hu-HU")}
-            </p>
-
-            <Link
-              className="button buttonPrimary"
-              to={`/messages/${offer.requester_id}`}
-            >
-              Beszélgetés
-            </Link>
-          </div>
-
-          {offer.status === "pending" && (
-            <div className={styles.buttons}>
-              <button
-                className="button buttonSuccess"
-                onClick={() => handleAccept(offer.id)}
-              >
-                Elfogadom
-              </button>
-
-              <button
-                className="button buttonDanger"
-                onClick={() => handleReject(offer.id)}
-              >
-                Elutasítom
-              </button>
-            </div>
-          )}
+          <p>
+            Ha valaki érdeklődik a termékeid iránt, itt fognak megjelenni a
+            csereajánlatok.
+          </p>
         </div>
-      ))}
+      ) : (
+        <div className={styles.list}>
+          {offers.map((offer) => (
+            <div
+              key={offer.id}
+              className={`panel ${styles.card} ${styles[offer.status]}`}
+            >
+              <div className={styles.cardHeader}>
+                <h3>Csereajánlat</h3>
+
+                <span className={styles.statusBadge}>
+                  {offerStatusLabels[offer.status]}
+                </span>
+              </div>
+
+              <div className={styles.info}>
+                <p>
+                  <strong>Kért termék:</strong> {offer.target_title}
+                </p>
+
+                <p>
+                  <strong>Ajánlatot tette:</strong>{" "}
+                  {offer.requester_id ? (
+                    <Link to={`/users/${offer.requester_id}`}>
+                      {offer.requester_name}
+                    </Link>
+                  ) : (
+                    (offer.requester_name ?? "Ismeretlen")
+                  )}
+                </p>
+
+                <div>
+                  <strong>Felajánlott termékek:</strong>
+
+                  <ul className={styles.itemList}>
+                    {offer.offered_items.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <p>
+                  <strong>Létrehozva:</strong>{" "}
+                  {new Date(offer.created_at).toLocaleDateString("hu-HU")}
+                </p>
+              </div>
+
+              <div className={styles.actions}>
+                <Link
+                  className="button buttonPrimary"
+                  to={`/messages/${offer.requester_id}`}
+                >
+                  Beszélgetés
+                </Link>
+
+                {offer.status === "pending" && (
+                  <>
+                    <button
+                      className="button buttonSuccess"
+                      onClick={() => handleAccept(offer.id)}
+                    >
+                      Elfogadom
+                    </button>
+
+                    <button
+                      className="button buttonDanger"
+                      onClick={() => handleReject(offer.id)}
+                    >
+                      Elutasítom
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

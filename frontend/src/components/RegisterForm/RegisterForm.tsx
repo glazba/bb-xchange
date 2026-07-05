@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { registerUser } from "../../api/authApi";
 
 import { allInterests } from "../../utils/interests";
@@ -35,7 +36,6 @@ function RegisterForm() {
 
     if (password.length < 8) {
       alert("A jelszónak legalább 8 karakterből kell állnia.");
-
       return;
     }
 
@@ -61,61 +61,79 @@ function RegisterForm() {
 
   return (
     <form className={`formCard ${styles.form}`} onSubmit={handleSubmit}>
-      <h1 className={styles.title}>Regisztráció</h1>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Csatlakozz a közösséghez!</h1>
 
-      <input
-        className="input"
-        type="text"
-        placeholder="Felhasználónév"
-        value={username}
-        onChange={(event) => setUsername(event.target.value)}
-      />
+        <p className={styles.subtitle}>
+          Hozd létre a profilodat, és kezdj el könyveket és társasjátékokat
+          cserélni.
+        </p>
+      </header>
 
-      <input
-        className="input"
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(event) => setEmail(event.target.value)}
-      />
+      <div className={styles.fields}>
+        <input
+          className="input"
+          type="text"
+          placeholder="Felhasználónév"
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+        />
 
-      <input
-        className="input"
-        type="password"
-        placeholder="Jelszó"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-      />
+        <input
+          className="input"
+          type="email"
+          placeholder="Email cím"
+          value={email}
+          onChange={(event) => setEmail(event.target.value)}
+        />
 
-      <input
-        className="input"
-        type="text"
-        placeholder="Város"
-        value={city}
-        onChange={(event) => setCity(event.target.value)}
-      />
+        <input
+          className="input"
+          type="password"
+          placeholder="Jelszó"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+        />
 
-      <textarea
-        className="textarea"
-        placeholder="Bemutatkozás"
-        value={bio}
-        onChange={(event) => setBio(event.target.value)}
-      />
-      <h3 className={styles.subtitle}>Érdeklődési körök</h3>
+        <input
+          className="input"
+          type="text"
+          placeholder="Város"
+          value={city}
+          onChange={(event) => setCity(event.target.value)}
+        />
 
-      <div className={styles.checkboxGroup}>
-        {allInterests.map((interest) => (
-          <label key={interest} className={styles.checkbox}>
-            <input
-              type="checkbox"
-              checked={selectedInterests.includes(interest)}
-              onChange={() => handleInterestToggle(interest)}
-            />
-            {interest}
-          </label>
-        ))}
+        <textarea
+          className="textarea"
+          placeholder="Bemutatkozás (nem kötelező)"
+          value={bio}
+          onChange={(event) => setBio(event.target.value)}
+        />
       </div>
-      <button className="button buttonPrimary" type="submit">
+
+      <section className={styles.interestsSection}>
+        <h3 className={styles.sectionTitle}>Érdeklődési körök</h3>
+
+        <p className={styles.sectionDescription}>
+          Válaszd ki, mi érdekel leginkább.
+        </p>
+
+        <div className="checkboxGroup">
+          {allInterests.map((interest) => (
+            <label key={interest} className="checkbox">
+              <input
+                type="checkbox"
+                checked={selectedInterests.includes(interest)}
+                onChange={() => handleInterestToggle(interest)}
+              />
+
+              {interest}
+            </label>
+          ))}
+        </div>
+      </section>
+
+      <button className={`button buttonPrimary ${styles.button}`} type="submit">
         Regisztráció
       </button>
     </form>

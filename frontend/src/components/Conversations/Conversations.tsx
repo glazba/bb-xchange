@@ -38,15 +38,24 @@ function Conversations() {
   }, [token]);
 
   return (
-    <div className={styles.container}>
+    <div className={`page ${styles.page}`}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>Beszélgetések</h1>
 
-      <h1 className={styles.title}>Beszélgetések</h1>
+        <p className={styles.subtitle}>{conversations.length} beszélgetés</p>
+      </div>
 
       {conversations.length === 0 ? (
-        <p>Még nincsenek beszélgetéseid.</p>
+        <div className={`panel ${styles.empty}`}>
+          <h3>Még nincsenek beszélgetéseid</h3>
+
+          <p>
+            Ha kapcsolatba lépsz más felhasználókkal vagy ajánlatot küldtök
+            egymásnak, itt fognak megjelenni a beszélgetések.
+          </p>
+        </div>
       ) : (
         <div className={styles.list}>
-
           {conversations.map((conversation) => (
             <Link
               key={conversation.user_id}
@@ -65,15 +74,17 @@ function Conversations() {
               </div>
 
               <div className={styles.info}>
-                <h3>{conversation.username}</h3>
+                <div className={styles.topRow}>
+                  <h3>{conversation.username}</h3>
+
+                  <small>
+                    {new Date(conversation.last_message_at).toLocaleDateString(
+                      "hu-HU",
+                    )}
+                  </small>
+                </div>
 
                 <p>{conversation.last_message}</p>
-
-                <small>
-                  {new Date(conversation.last_message_at).toLocaleDateString(
-                    "hu-HU",
-                  )}
-                </small>
               </div>
 
               {conversation.unread_count > 0 && (

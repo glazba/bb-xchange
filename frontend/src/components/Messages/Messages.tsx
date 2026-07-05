@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
@@ -27,6 +27,8 @@ function Messages() {
   const [content, setContent] = useState("");
 
   const currentUserId = token ? jwtDecode<JwtPayload>(token).userId : null;
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!token || !userId) {
@@ -58,6 +60,12 @@ function Messages() {
     return () => clearInterval(interval);
   }, [token, userId]);
 
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [messages]);
+
   const handleSend = async () => {
     if (!token || !userId) {
       return;
@@ -85,43 +93,58 @@ function Messages() {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Beszélgetés</h1>
+    <div className={`page ${styles.page}`}>
+      <div className={`panel ${styles.chatCard}`}>
+        <div className={styles.header}>
+          <h1 className={styles.title}>Beszélgetés</h1>
 
-      <div className={styles.messages}>
-        {messages.length === 0 ? (
-          <p>Még nincsenek üzenetek.</p>
-        ) : (
-          messages.map((message) => (
-            <div
-              key={message.id}
-              className={`${styles.message} ${
-                message.sender_id === currentUserId ? styles.own : styles.other
-              }`}
-            >
-              <p className={styles.sender}>{message.sender_name}</p>
+          <p className={styles.subtitle}>
+            Írj üzenetet és beszélgess a felhasználóval.
+          </p>
+        </div>
 
-              <p className={styles.content}>{message.content}</p>
+        <div className={styles.messages}>
+          {messages.length === 0 ? (
+            <div className={styles.empty}>
+              <h3>Még nincsenek üzenetek</h3>
 
-              <small className={styles.date}>
-                {new Date(message.created_at).toLocaleString("hu-HU")}
-              </small>
+              <p>Írd meg az első üzenetet!</p>
             </div>
-          ))
-        )}
-      </div>
+          ) : (
+            messages.map((message) => (
+              <div
+                key={message.id}
+                className={`${styles.message} ${
+                  message.sender_id === currentUserId
+                    ? styles.own
+                    : styles.other
+                }`}
+              >
+                <p className={styles.sender}>{message.sender_name}</p>
 
-      <div className={styles.form}>
-        <textarea
-          className={styles.textarea}
-          placeholder="Írj egy üzenetet..."
-          value={content}
-          onChange={(event) => setContent(event.target.value)}
-        />
+                <p className={styles.content}>{message.content}</p>
 
-        <button className="button buttonPrimary" onClick={handleSend}>
-          Küldés
-        </button>
+                <small className={styles.date}>
+                  {new Date(message.created_at).toLocaleString("hu-HU")}
+                </small>
+              </div>
+            ))
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <div className={styles.form}>
+          <textarea
+            className="textarea"
+            placeholder="Írj egy üzenetet..."
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
+          />
+
+          <button className="button buttonPrimary" onClick={handleSend}>
+            Küldés
+          </button>
+        </div>
       </div>
     </div>
   );

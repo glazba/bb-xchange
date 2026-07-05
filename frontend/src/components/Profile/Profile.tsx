@@ -170,92 +170,102 @@ function Profile() {
   return (
     <div className={styles.container}>
       <div className={`panel ${styles.card}`}>
-        <div className={styles.avatar}>
-          {profile.avatar ? (
-            <img
-              src={`${API_URL}/uploads/${profile.avatar}`}
-              alt="Profilkép"
-              className={styles.avatarImage}
-            />
-          ) : (
-            "👤"
-          )}
-        </div>
+        <header className={styles.header}>
+          <div className={styles.avatar}>
+            {profile.avatar ? (
+              <img
+                src={`${API_URL}/uploads/${profile.avatar}`}
+                alt="Profilkép"
+                className={styles.avatarImage}
+              />
+            ) : (
+              "👤"
+            )}
+          </div>
 
-        <input
-          id="avatar-upload"
-          type="file"
-          accept="image/*"
-          className={styles.hiddenInput}
-          onChange={(event) =>
-            setSelectedAvatar(event.target.files?.[0] ?? null)
-          }
-        />
+          <h1>{profile.username}</h1>
 
-        <label
-          htmlFor="avatar-upload"
-          className={`button buttonPrimary ${styles.uploadButton}`}
-        >
-          📷 Profilkép kiválasztása
-        </label>
+          <p className={styles.memberSince}>
+            Tag: {new Date(profile.created_at).toLocaleDateString("hu-HU")}
+          </p>
 
-        {selectedAvatar && (
-          <p className={styles.fileName}>{selectedAvatar.name}</p>
-        )}
+          <input
+            id="avatar-upload"
+            type="file"
+            accept="image/*"
+            className={styles.hiddenInput}
+            onChange={(event) =>
+              setSelectedAvatar(event.target.files?.[0] ?? null)
+            }
+          />
 
-        {selectedAvatar && (
-          <button
-            className={`button buttonPrimary ${styles.button}`}
-            onClick={handleAvatarUpload}
+          <label
+            htmlFor="avatar-upload"
+            className={`button buttonPrimary ${styles.uploadButton}`}
           >
-            Feltöltés
-          </button>
-        )}
+            📷 Profilkép kiválasztása
+          </label>
 
-        <h1>{profile.username}</h1>
+          {selectedAvatar && (
+            <>
+              <p className={styles.fileName}>{selectedAvatar.name}</p>
+
+              <button
+                className={`button buttonPrimary ${styles.avatarButton}`}
+                onClick={handleAvatarUpload}
+              >
+                Feltöltés
+              </button>
+            </>
+          )}
+        </header>
 
         {!isEditing ? (
-          <div className={styles.info}>
-            <p>
-              <strong>Email:</strong> {profile.email}
-            </p>
+          <section className={styles.info}>
+            <div className={styles.infoCard}>
+              <strong>Email</strong>
+              <span>{profile.email}</span>
+            </div>
 
-            <p>
-              <strong>Város:</strong> {profile.city}
-            </p>
+            <div className={styles.infoCard}>
+              <strong>Város</strong>
+              <span>{profile.city}</span>
+            </div>
 
-            <p>
-              <strong>Bemutatkozás:</strong>
-            </p>
+            <div className={styles.bioBox}>
+              <h3>Bemutatkozás</h3>
 
-            <p className={styles.bio}>{profile.bio || "Nincs bemutatkozás."}</p>
+              <p className={styles.bio}>
+                {profile.bio || "Nincs bemutatkozás."}
+              </p>
+            </div>
 
-            <p>
-              <strong>Érdeklődési körök:</strong>
-            </p>
+            <div className={styles.interestsBox}>
+              <h3>Érdeklődési körök</h3>
 
-            {profile.interests.length > 0 ? (
-              <ul className={styles.interests}>
-                {profile.interests.map((interest) => (
-                  <li key={interest}>{interest}</li>
-                ))}
-              </ul>
-            ) : (
-              <p>Még nem adtál meg érdeklődési köröket.</p>
-            )}
+              {profile.interests.length > 0 ? (
+                <div className={styles.tags}>
+                  {profile.interests.map((interest) => (
+                    <span key={interest} className={styles.tag}>
+                      {interest}
+                    </span>
+                  ))}
+                </div>
+              ) : (
+                <p>Még nem adtál meg érdeklődési köröket.</p>
+              )}
+            </div>
 
-            <p>
-              <strong>Regisztráció:</strong>{" "}
-              {new Date(profile.created_at).toLocaleDateString("hu-HU")}
-            </p>
+            <div className={styles.infoCard}>
+              <strong>Utolsó módosítás</strong>
 
-            <p>
-              <strong>Utolsó módosítás:</strong>{" "}
-              {new Date(profile.updated_at).toLocaleDateString("hu-HU")}
-            </p>
-          </div>
+              <span>
+                {new Date(profile.updated_at).toLocaleDateString("hu-HU")}
+              </span>
+            </div>
+          </section>
         ) : (
-          <div className={styles.editForm}>
+          <section className={styles.editForm}>
             <input
               className="input"
               value={username}
@@ -299,7 +309,7 @@ function Profile() {
             >
               Mentés
             </button>
-          </div>
+          </section>
         )}
 
         <button
@@ -310,10 +320,10 @@ function Profile() {
         </button>
 
         {!isEditing && (
-          <>
-            <hr />
-
+          <section className={styles.dangerZone}>
             <h3>Fiók törlése</h3>
+
+            <p>Ez a művelet nem vonható vissza.</p>
 
             <input
               className="input"
@@ -329,7 +339,7 @@ function Profile() {
             >
               Fiók törlése
             </button>
-          </>
+          </section>
         )}
       </div>
     </div>

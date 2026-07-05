@@ -45,14 +45,20 @@ function NotificationBell() {
 
     return () => {
       clearInterval(interval);
+
       window.removeEventListener("notifications-read", refresh);
     };
   }, [token]);
 
   return (
-    <Link to="/notifications" className={styles.bell}>
-      🔔
-      {unreadCount > 0 && <span className={styles.badge}>{unreadCount}</span>}
+    <Link to="/notifications" className={styles.bell} aria-label="Értesítések">
+      <span className={styles.icon}>🔔</span>
+
+      {unreadCount > 0 && (
+        <span className={styles.badge}>
+          {unreadCount > 99 ? "99+" : unreadCount}
+        </span>
+      )}
     </Link>
   );
 }

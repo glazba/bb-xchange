@@ -97,174 +97,203 @@ function CreateItemForm() {
 
   return (
     <form className={`formCard ${styles.form}`} onSubmit={handleSubmit}>
-      <h1 className={styles.title}>Termék hozzáadása</h1>
+      <header className={styles.header}>
+        <h1 className={styles.title}>Új termék hozzáadása</h1>
 
-      <input
-        className="input"
-        type="text"
-        placeholder="Cím"
-        value={title}
-        onChange={(event) => setTitle(event.target.value)}
-      />
+        <p className={styles.subtitle}>
+          Töltsd fel a könyvedet vagy társasjátékodat, és találd meg a tökéletes
+          cserét.
+        </p>
+      </header>
 
-      <input
-        className="input"
-        type="text"
-        placeholder="Leírás"
-        value={description}
-        onChange={(event) => setDescription(event.target.value)}
-      />
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>Alapadatok</h3>
 
-      <select
-        className="input"
-        value={itemCondition}
-        onChange={(event) => setItemCondition(event.target.value)}
-      >
-        <option value="">Állapot</option>
-
-        {conditions.map(([value, label]) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </select>
-
-      <select
-        className="input"
-        value={type}
-        onChange={(event) => setType(event.target.value)}
-      >
-        <option value="">Típus</option>
-        <option value="book">Könyv</option>
-        <option value="boardgame">Társasjáték</option>
-      </select>
-
-      {type === "book" && (
-        <>
+        <div className={styles.fields}>
           <input
             className="input"
             type="text"
-            placeholder="Szerző"
-            value={author}
-            onChange={(event) => setAuthor(event.target.value)}
+            placeholder="Cím"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+          />
+
+          <textarea
+            className="textarea"
+            placeholder="Leírás"
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
           />
 
           <select
             className="input"
-            value={genre}
-            onChange={(event) => setGenre(event.target.value)}
+            value={itemCondition}
+            onChange={(event) => setItemCondition(event.target.value)}
           >
-            <option value="">Műfaj</option>
+            <option value="">Állapot</option>
 
-            {genres.map((itemGenre) => (
-              <option key={itemGenre} value={itemGenre}>
-                {itemGenre}
+            {conditions.map(([value, label]) => (
+              <option key={value} value={value}>
+                {label}
               </option>
             ))}
           </select>
 
-          <input
+          <select
             className="input"
-            type="number"
-            placeholder="Oldalszám"
-            value={pageCount}
-            onChange={(event) => setPageCount(event.target.value)}
-          />
-          <input
-            className="input"
-            type="number"
-            placeholder="Kiadás éve"
-            value={publishedYear}
-            onChange={(event) => setPublishedYear(event.target.value)}
-          />
-          <input
-            className="input"
-            type="text"
-            placeholder="ISBN szám"
-            value={isbn}
-            onChange={(event) => setIsbn(event.target.value)}
-          />
-        </>
+            value={type}
+            onChange={(event) => setType(event.target.value)}
+          >
+            <option value="">Típus</option>
+            <option value="book">Könyv</option>
+            <option value="boardgame">Társasjáték</option>
+          </select>
+        </div>
+      </section>
+
+      {type === "book" && (
+        <section className={styles.section}>
+          <h3 className={styles.sectionTitle}>Könyv adatai</h3>
+
+          <div className={styles.fields}>
+            <input
+              className="input"
+              type="text"
+              placeholder="Szerző"
+              value={author}
+              onChange={(event) => setAuthor(event.target.value)}
+            />
+
+            <select
+              className="input"
+              value={genre}
+              onChange={(event) => setGenre(event.target.value)}
+            >
+              <option value="">Műfaj</option>
+
+              {genres.map((itemGenre) => (
+                <option key={itemGenre} value={itemGenre}>
+                  {itemGenre}
+                </option>
+              ))}
+            </select>
+
+            <input
+              className="input"
+              type="number"
+              placeholder="Oldalszám"
+              value={pageCount}
+              onChange={(event) => setPageCount(event.target.value)}
+            />
+
+            <input
+              className="input"
+              type="number"
+              placeholder="Kiadás éve"
+              value={publishedYear}
+              onChange={(event) => setPublishedYear(event.target.value)}
+            />
+
+            <input
+              className="input"
+              type="text"
+              placeholder="ISBN szám"
+              value={isbn}
+              onChange={(event) => setIsbn(event.target.value)}
+            />
+          </div>
+        </section>
       )}
 
       {type === "boardgame" && (
-        <>
-          <select
-            className="input"
-            value={genre}
-            onChange={(event) => setGenre(event.target.value)}
-          >
-            <option value="">Műfaj</option>
+        <section className={styles.section}>
+          <h3 className={styles.sectionTitle}>Társasjáték adatai</h3>
 
-            {genres.map((itemGenre) => (
-              <option key={itemGenre} value={itemGenre}>
-                {itemGenre}
-              </option>
+          <div className={styles.fields}>
+            <select
+              className="input"
+              value={genre}
+              onChange={(event) => setGenre(event.target.value)}
+            >
+              <option value="">Műfaj</option>
+
+              {genres.map((itemGenre) => (
+                <option key={itemGenre} value={itemGenre}>
+                  {itemGenre}
+                </option>
+              ))}
+            </select>
+
+            <input
+              className="input"
+              type="number"
+              placeholder="Minimum játékos"
+              value={minPlayers}
+              onChange={(event) => setMinPlayers(event.target.value)}
+            />
+
+            <input
+              className="input"
+              type="number"
+              placeholder="Maximum játékos"
+              value={maxPlayers}
+              onChange={(event) => setMaxPlayers(event.target.value)}
+            />
+
+            <input
+              className="input"
+              type="number"
+              placeholder="Ajánlott életkor"
+              value={recommendedAge}
+              onChange={(event) => setRecommendedAge(event.target.value)}
+            />
+
+            <input
+              className="input"
+              type="number"
+              placeholder="Játékidő percben"
+              value={playTime}
+              onChange={(event) => setPlayTime(event.target.value)}
+            />
+          </div>
+        </section>
+      )}
+
+      <section className={styles.section}>
+        <h3 className={styles.sectionTitle}>Termék képei</h3>
+
+        <input
+          id="item-images"
+          type="file"
+          accept="image/*"
+          multiple
+          className={styles.hiddenInput}
+          onChange={handleImagesChange}
+        />
+
+        <label
+          htmlFor="item-images"
+          className={`button buttonSecondary ${styles.uploadButton}`}
+        >
+          📷 Képek kiválasztása
+        </label>
+
+        {selectedImages.length > 0 && (
+          <ul className={styles.imageList}>
+            {selectedImages.map((image) => (
+              <li key={image.name}>{image.name}</li>
             ))}
-          </select>
+          </ul>
+        )}
 
-          <input
-            className="input"
-            type="number"
-            placeholder="Minimum játékos"
-            value={minPlayers}
-            onChange={(event) => setMinPlayers(event.target.value)}
-          />
-          <input
-            className="input"
-            type="number"
-            placeholder="Maximum játékos"
-            value={maxPlayers}
-            onChange={(event) => setMaxPlayers(event.target.value)}
-          />
-          <input
-            className="input"
-            type="number"
-            placeholder="Ajánlott életkor"
-            value={recommendedAge}
-            onChange={(event) => setRecommendedAge(event.target.value)}
-          />
-          <input
-            className="input"
-            type="number"
-            placeholder="Játékidő percben"
-            value={playTime}
-            onChange={(event) => setPlayTime(event.target.value)}
-          />
-        </>
-      )}
+        <p className={styles.counter}>
+          {selectedImages.length} / 5 kép kiválasztva
+        </p>
+      </section>
 
-      <h3>Termék képei</h3>
-
-      <input
-        id="item-images"
-        type="file"
-        accept="image/*"
-        multiple
-        className={styles.hiddenInput}
-        onChange={handleImagesChange}
-      />
-
-      <label
-        htmlFor="item-images"
-        className={`button buttonSecondary ${styles.uploadButton}`}
-      >
-        📷 Képek kiválasztása
-      </label>
-
-      {selectedImages.length > 0 && (
-        <ul className={styles.imageList}>
-          {selectedImages.map((image) => (
-            <li key={image.name}>{image.name}</li>
-          ))}
-        </ul>
-      )}
-
-      <p className={styles.counter}>
-        {selectedImages.length} / 5 kép kiválasztva
-      </p>
-
-      <button className="button buttonPrimary">Hozzáadás</button>
+      <button className={`button buttonPrimary ${styles.submitButton}`}>
+        Hozzáadás
+      </button>
     </form>
   );
 }
