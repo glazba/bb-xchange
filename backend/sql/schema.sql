@@ -211,3 +211,53 @@ ALTER TABLE messages MODIFY offer_id INT NULL CREATE INDEX idx_messages_offer ON
 CREATE INDEX idx_messages_receiver ON messages (receiver_id);
 
 CREATE INDEX idx_messages_sender ON messages (sender_id);
+
+-- =========================
+-- ITEMS.STATUS
+-- =========================
+
+ALTER TABLE items
+MODIFY COLUMN status
+ENUM (
+    'active',
+    'reserved',
+    'traded'
+)
+NOT NULL
+DEFAULT 'active';
+
+
+-- =========================
+-- TRADE_OFFERS.STATUS
+-- =========================
+
+ALTER TABLE trade_offers
+MODIFY COLUMN status
+ENUM (
+    'pending',
+    'accepted',
+    'completed',
+    'rejected',
+    'cancelled',
+    'revoked'
+)
+NOT NULL
+DEFAULT 'pending';
+
+
+-- =========================
+-- NOTIFICATIONS.TYPE
+-- =========================
+
+ALTER TABLE notifications
+MODIFY COLUMN type
+ENUM (
+    'new_offer',
+    'offer_accepted',
+    'offer_completed',
+    'offer_rejected',
+    'offer_cancelled',
+    'offer_revoked',
+    'message'
+)
+NOT NULL;

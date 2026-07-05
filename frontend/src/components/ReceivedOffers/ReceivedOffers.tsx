@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Link } from "react-router-dom";
 
-import { getReceivedOffers, updateOfferStatus } from "../../api/tradeOfferApi";
+import {
+  getReceivedOffers,
+  updateOfferStatus,
+  completeOffer,
+  cancelAcceptedOffer,
+} from "../../api/tradeOfferApi";
 
 import type { TradeOffer } from "../../types/TradeOffer";
 import { offerStatusLabels } from "../../utils/itemLabels";
@@ -100,6 +105,58 @@ function ReceivedOffers() {
     }
   };
 
+  const handleComplete = async (offerId: number) => {
+    if (!token) {
+      return;
+    }
+
+    const confirmed = window.confirm("Biztosan lezártnak jelölöd a cserét?");
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await completeOffer(token, offerId);
+
+      toast.success("A csere sikeresen lezárult.");
+
+      await fetchOffers();
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Nem sikerült lezárni a cserét.",
+      );
+    }
+  };
+
+  const handleCancelAccepted = async (offerId: number) => {
+    if (!token) {
+      return;
+    }
+
+    const confirmed = window.confirm("Biztosan meghiúsult a csere?");
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await cancelAcceptedOffer(token, offerId);
+
+      toast.success("A csere visszaállítva.");
+
+      await fetchOffers();
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Nem sikerült visszaállítani a cserét.",
+      );
+    }
+  };
+
   return (
     <div className={`page ${styles.container}`}>
       <header className={styles.header}>
@@ -187,6 +244,24 @@ function ReceivedOffers() {
                       Elutasítom
                     </button>
                   </>
+                )}
+
+                {offer.status === "accepted" && (
+                  <div className={styles.buttons}>
+                    <button
+                      className="button buttonSuccess"
+                      onClick={() => handleComplete(offer.id)}
+                    >
+                      Csere lezárása
+                    </button>
+
+                    <button
+                      className="button buttonSecondary"
+                      onClick={() => handleCancelAccepted(offer.id)}
+                    >
+                      Csere meghiúsult
+                    </button>
+                  </div>
                 )}
               </div>
             </div>

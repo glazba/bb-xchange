@@ -13,14 +13,15 @@ export const itemConditionLabels: Record<string, string> = {
 
 export const itemStatusLabels: Record<string, string> = {
     active: "Elérhető",
-    pending: "Folyamatban",
+    reserved: "Foglalás alatt",
     traded: "Elcserélve"
 };
 
 export const offerStatusLabels: Record<string, string> = {
-    pending: "Folyamatban",
-    accepted: "Elfogadva",
-    rejected: "Elutasítva",
-    cancelled: "Törölve",
-    revoked: "Visszavonva"
+    pending: "Csere folyamatban",
+    accepted: "Csere egyeztetés alatt",
+    rejected: "Csere elutasítva",
+    cancelled: "Csere törölve",
+    revoked: "Csere visszavonva",
+    completed: "Csere lezárva"
 };

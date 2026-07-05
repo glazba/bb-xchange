@@ -1,3 +1,4 @@
+import { RequestOptions } from "node:http";
 import { pool } from "../db/connections";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 
@@ -351,3 +352,17 @@ export const getOfferParticipants = async (
 
     return rows[0];
 };
+
+export const completeOffer = async (
+    offerId: number
+) => {
+    await pool.query(
+        `
+        UPDATE trade_offers
+        SET status = 'completed'
+        WHERE id = ?
+        `,
+        [offerId]
+    );
+};
+

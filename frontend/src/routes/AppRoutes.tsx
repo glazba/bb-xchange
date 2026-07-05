@@ -24,12 +24,16 @@ import NotFound from "../components/NotFound/NotFound";
 import ServerError from "../components/ServerError/ServerError";
 
 import ErrorBoundary from "../components/ErrorBoundary/ErrorBoundary";
+
+import ScrollToTop from "../components/ScrollToTop/ScrollToTop";
 import { Toaster } from "react-hot-toast";
 
 function AppRoutes() {
   return (
     <ErrorBoundary>
       <BrowserRouter>
+        <ScrollToTop />
+
         <Routes>
           <Route element={<MainLayout />}>
             <Route path="/" element={<HomePage />} />

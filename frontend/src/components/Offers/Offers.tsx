@@ -169,6 +169,18 @@ function Offers() {
                     Ajánlat visszavonása
                   </button>
                 )}
+
+                {offer.status === "accepted" && (
+                  <p className={styles.waiting}>
+                    A másik féllel történő csere véglegesítésre vár.
+                  </p>
+                )}
+
+                {offer.status === "completed" && (
+                  <p className={styles.completed}>
+                    ✅ A csere sikeresen lezárult.{" "}
+                  </p>
+                )}
               </div>
             </div>
           ))}

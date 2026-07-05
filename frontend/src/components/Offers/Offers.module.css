@@ -63,6 +63,17 @@
   border-left: 6px solid #9ca3af;
 }
 
+.waiting {
+  margin-top: 1rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+.completed {
+  color: #2563eb;
+  font-weight: 600;
+}
+
 .info {
   display: flex;
   flex-direction: column;

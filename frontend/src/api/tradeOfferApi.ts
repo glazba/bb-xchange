@@ -143,3 +143,53 @@ export const revokeOffer = async (
 
     return data;
 };
+
+export const completeOffer = async (
+    token: string,
+    offerId: number
+) => {
+    const response = await fetch(
+        `${API_URL}/offers/${offerId}/complete`,
+        {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message);
+    }
+
+    return data;
+};
+
+export const cancelAcceptedOffer =
+  async (
+    token: string,
+    offerId: number
+  ) => {
+    const response = await fetch(
+      `${API_URL}/offers/${offerId}/cancel`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data.message
+      );
+    }
+
+    return data;
+  };
