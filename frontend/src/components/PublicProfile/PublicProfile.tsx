@@ -7,8 +7,8 @@ import { getPublicProfile } from "../../api/userApi";
 
 import styles from "./PublicProfile.module.css";
 import { API_URL } from "../../api/apiConfig";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import { handleApiError } from "../../utils/handleApiError";
+import EmptyState from "../EmptyState/EmptyState";
 
 function PublicProfile() {
   const { id } = useParams();
@@ -37,7 +37,13 @@ function PublicProfile() {
   }, [id, navigate]);
 
   if (!profile) {
-    return <LoadingSpinner />;
+    return (
+      <EmptyState
+        icon="👤"
+        title="A felhasználó nem található"
+        description="Lehet, hogy a profil törlésre került."
+      />
+    );
   }
 
   return (

@@ -12,9 +12,9 @@ import {
 
 import styles from "./ItemDetails.module.css";
 import { API_URL } from "../../api/apiConfig";
-import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import toast from "react-hot-toast";
 import { handleApiError } from "../../utils/handleApiError";
+import EmptyState from "../EmptyState/EmptyState";
 
 function ItemDetails() {
   const { id } = useParams();
@@ -66,7 +66,18 @@ function ItemDetails() {
   }, []);
 
   if (!item) {
-    return <LoadingSpinner />;
+    return (
+      <EmptyState
+        icon="🔍"
+        title="A termék nem található"
+        description="Lehet, hogy törölték, vagy a hivatkozás hibás."
+        action={
+          <Link className="button buttonPrimary" to="/marketplace">
+            Marketplace
+          </Link>
+        }
+      />
+    );
   }
 
   return (

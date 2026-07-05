@@ -14,6 +14,7 @@ import {
 
 import styles from "./Notifications.module.css";
 import { handleApiError } from "../../utils/handleApiError";
+import EmptyState from "../EmptyState/EmptyState";
 
 function Notifications() {
   const { token } = useAuth();
@@ -80,14 +81,11 @@ function Notifications() {
       </div>
 
       {notifications.length === 0 ? (
-        <div className={`panel ${styles.empty}`}>
-          <h3>Nincsenek értesítéseid</h3>
-
-          <p>
-            Az új ajánlatokkal, elfogadásokkal és egyéb eseményekkel kapcsolatos
-            értesítések itt fognak megjelenni.
-          </p>
-        </div>
+        <EmptyState
+          icon="🔔"
+          title="Nincsenek értesítéseid"
+          description="Amint történik valami a fiókodban, itt fogod látni."
+        />
       ) : (
         <div className={styles.list}>
           {notifications.map((notification) => (

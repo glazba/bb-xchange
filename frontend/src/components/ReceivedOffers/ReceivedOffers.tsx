@@ -9,6 +9,7 @@ import { offerStatusLabels } from "../../utils/itemLabels";
 
 import styles from "./ReceivedOffers.module.css";
 import toast from "react-hot-toast";
+import EmptyState from "../EmptyState/EmptyState";
 
 function ReceivedOffers() {
   const { token } = useAuth();
@@ -110,14 +111,11 @@ function ReceivedOffers() {
       </header>
 
       {offers.length === 0 ? (
-        <div className={styles.empty}>
-          <h3>Még nem kaptál ajánlatot</h3>
-
-          <p>
-            Ha valaki érdeklődik a termékeid iránt, itt fognak megjelenni a
-            csereajánlatok.
-          </p>
-        </div>
+        <EmptyState
+          icon="📥"
+          title="Még nem kaptál csereajánlatot"
+          description="Ha valaki érdeklődik valamelyik terméked iránt, itt fogod látni a beérkező ajánlatokat."
+        />
       ) : (
         <div className={styles.list}>
           {offers.map((offer) => (

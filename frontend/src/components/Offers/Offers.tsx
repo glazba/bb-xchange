@@ -9,6 +9,7 @@ import { offerStatusLabels } from "../../utils/itemLabels";
 
 import styles from "./Offers.module.css";
 import toast from "react-hot-toast";
+import EmptyState from "../EmptyState/EmptyState";
 
 function Offers() {
   const { token } = useAuth();
@@ -94,14 +95,16 @@ function Offers() {
       </header>
 
       {offers.length === 0 ? (
-        <div className={styles.empty}>
-          <h3>Még nem küldtél ajánlatot</h3>
-
-          <p>
-            Böngéssz a Marketplace-en, és küldj csereajánlatot más
-            felhasználóknak.
-          </p>
-        </div>
+        <EmptyState
+          icon="🤝"
+          title="Még nem küldtél csereajánlatot"
+          description="Böngéssz a Marketplace-en, és küldj ajánlatot egy számodra érdekes termékre."
+          action={
+            <Link className="button buttonPrimary" to="/marketplace">
+              Marketplace
+            </Link>
+          }
+        />
       ) : (
         <div className={styles.list}>
           {offers.map((offer) => (

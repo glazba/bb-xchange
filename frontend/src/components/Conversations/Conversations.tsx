@@ -10,6 +10,7 @@ import { getConversations } from "../../api/messageApi";
 import { API_URL } from "../../api/apiConfig";
 
 import styles from "./Conversations.module.css";
+import EmptyState from "../EmptyState/EmptyState";
 
 function Conversations() {
   const { token } = useAuth();
@@ -47,14 +48,11 @@ function Conversations() {
       </div>
 
       {conversations.length === 0 ? (
-        <div className={`panel ${styles.empty}`}>
-          <h3>Még nincsenek beszélgetéseid</h3>
-
-          <p>
-            Ha kapcsolatba lépsz más felhasználókkal vagy ajánlatot küldtök
-            egymásnak, itt fognak megjelenni a beszélgetések.
-          </p>
-        </div>
+        <EmptyState
+          icon="💬"
+          title="Még nincsenek beszélgetéseid"
+          description="Ha valakivel kapcsolatba lépsz egy csereajánlat miatt, itt fogod látni az üzeneteiteket."
+        />
       ) : (
         <div className={styles.list}>
           {conversations.map((conversation) => (

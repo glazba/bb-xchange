@@ -14,6 +14,7 @@ import {
 
 import styles from "./Messages.module.css";
 import toast from "react-hot-toast";
+import EmptyState from "../EmptyState/EmptyState";
 
 interface JwtPayload {
   userId: number;
@@ -106,11 +107,11 @@ function Messages() {
 
         <div className={styles.messages}>
           {messages.length === 0 ? (
-            <div className={styles.empty}>
-              <h3>Még nincsenek üzenetek</h3>
-
-              <p>Írd meg az első üzenetet!</p>
-            </div>
+            <EmptyState
+              icon="💬"
+              title="Még nincsenek üzenetek"
+              description="Ha valakivel kapcsolatba lépsz egy csereajánlat miatt, itt fogod látni az üzeneteiteket."
+            />
           ) : (
             messages.map((message) => (
               <div

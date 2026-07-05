@@ -12,6 +12,7 @@ import ItemCard from "../ItemCard/ItemCard";
 import styles from "./Marketplace.module.css";
 import { itemConditionLabels } from "../../utils/itemLabels";
 import toast from "react-hot-toast";
+import EmptyState from "../EmptyState/EmptyState";
 
 function Marketplace() {
   const { token } = useAuth();
@@ -290,11 +291,11 @@ function Marketplace() {
       </section>
 
       {filteredItems.length === 0 ? (
-        <div className={styles.empty}>
-          <h3>Nincs találat</h3>
-
-          <p>Próbálj meg más szűrőket használni.</p>
-        </div>
+        <EmptyState
+          icon="🔍"
+          title="Nincs találat"
+          description="Próbálj meg más szűrőket vagy keresési feltételeket használni."
+        />
       ) : (
         <div className="grid">
           {filteredItems.map((item) => (

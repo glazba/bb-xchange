@@ -1,0 +1,32 @@
+.container {
+  max-width: 650px;
+
+  margin: 2rem auto;
+  padding: 3rem 2rem;
+
+  text-align: center;
+}
+
+.icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.title {
+  margin-bottom: 0.75rem;
+}
+
+.description {
+  color: var(--text-light);
+  line-height: 1.6;
+
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.action {
+  margin-top: 2rem;
+
+  display: flex;
+  justify-content: center;
+}

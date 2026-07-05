@@ -9,6 +9,7 @@ import ItemCard from "../ItemCard/ItemCard";
 
 import styles from "./PublicUserItems.module.css";
 import { handleApiError } from "../../utils/handleApiError";
+import EmptyState from "../EmptyState/EmptyState";
 
 function PublicUserItems() {
   const { id } = useParams();
@@ -45,14 +46,11 @@ function PublicUserItems() {
       </div>
 
       {items.length === 0 ? (
-        <div className={`panel ${styles.empty}`}>
-          <h3>Nincsenek aktív termékek</h3>
-
-          <p>
-            Ez a felhasználó jelenleg nem töltött fel cserére elérhető könyvet
-            vagy társasjátékot.
-          </p>
-        </div>
+        <EmptyState
+          icon="📦"
+          title="Nincsenek aktív termékei"
+          description="A felhasználó jelenleg nem kínál cserére semmit."
+        />
       ) : (
         <div className="grid">
           {items.map((item) => (

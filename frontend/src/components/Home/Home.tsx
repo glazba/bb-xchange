@@ -8,6 +8,7 @@ import ItemCard from "../ItemCard/ItemCard";
 
 import styles from "./Home.module.css";
 import toast from "react-hot-toast";
+import EmptyState from "../EmptyState/EmptyState";
 
 function Home() {
   const [latestItems, setLatestItems] = useState<Item[]>([]);
@@ -91,7 +92,11 @@ function Home() {
         <h2>Legfrissebb termékek</h2>
 
         {latestItems.length === 0 ? (
-          <p className={styles.empty}>Még nincsenek feltöltött termékek.</p>
+          <EmptyState
+            icon="📚"
+            title="Még nincsenek feltöltött termékek"
+            description="Légy te az első, aki könyvet vagy társasjátékot tölt fel!"
+          />
         ) : (
           <div className="grid">
             {latestItems.map((item) => (

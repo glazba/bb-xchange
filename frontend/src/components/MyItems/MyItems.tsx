@@ -9,6 +9,7 @@ import type { Item } from "../../types/Item";
 import ItemCard from "../../components/ItemCard/ItemCard";
 import styles from "./MyItems.module.css";
 import toast from "react-hot-toast";
+import EmptyState from "../EmptyState/EmptyState";
 
 function MyItems() {
   const { token } = useAuth();
@@ -60,25 +61,28 @@ function MyItems() {
   }, [token]);
 
   return (
-    <div className={`page ${styles.page}`}>
+    <div className={`page ${styles.container}`}>
       <header className={styles.header}>
-        <div>
-          <h1>Termékeim</h1>
+        <h1>Termékeim</h1>
 
-          <p className={styles.subtitle}>
-            Kezeld a feltöltött könyveidet és társasjátékaidat.
-          </p>
-        </div>
+        <p className={styles.subtitle}>
+          Kezeld a feltöltött könyveidet és társasjátékaidat.
+        </p>
 
         <p className={styles.counter}>{items.length} termék</p>
       </header>
 
       {items.length === 0 ? (
-        <div className={styles.empty}>
-          <h3>Még nincsenek termékeid</h3>
-
-          <p>Tölts fel egy könyvet vagy társasjátékot, és kezdd el a cserét!</p>
-        </div>
+        <EmptyState
+          icon="📚"
+          title="Még nincsenek termékeid"
+          description="Tölts fel egy könyvet vagy társasjátékot, és kezdj el cserélni."
+          action={
+            <Link className="button buttonPrimary" to="/create-item">
+              Termék hozzáadása
+            </Link>
+          }
+        />
       ) : (
         <div className="grid">
           {items.map((item) => (
