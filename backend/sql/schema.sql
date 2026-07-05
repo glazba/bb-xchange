@@ -1,3 +1,8 @@
+-- =====================================================
+-- BB-XChange Database Schema
+-- Author: Tamás Szabados
+-- Version: 1.0
+-- =====================================================
 DROP DATABASE IF EXISTS bb_xchange;
 
 CREATE DATABASE bb_xchange CHARACTER
@@ -6,6 +11,9 @@ SET
 
 USE bb_xchange;
 
+-- ============================================
+-- USERS
+-- ============================================
 CREATE TABLE
     users (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -19,6 +27,9 @@ CREATE TABLE
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
 
+-- ============================================
+-- INTERESTS
+-- ============================================
 CREATE TABLE
     interests (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -30,14 +41,14 @@ CREATE TABLE
         user_id INT NOT NULL,
         interest_id INT NOT NULL,
         PRIMARY KEY (user_id, interest_id),
-        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
-        FOREIGN KEY (interest_id) REFERENCES interests (id) ON DELETE CASCADE
+        CONSTRAINT fk_user_interests_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+        CONSTRAINT fk_user_interests_interest FOREIGN KEY (interest_id) REFERENCES interests (id) ON DELETE CASCADE
     );
 
 INSERT INTO
     interests (name)
 VALUES
-    ('fantasy'),
+    ('Fantasy'),
     ('Sci-Fi'),
     ('Horror'),
     ('Thriller'),
@@ -51,8 +62,9 @@ VALUES
     ('Kártyajátékok'),
     ('Táblajátékok');
 
-USE bb_xchange;
-
+-- ============================================
+-- ITEMS
+-- ============================================
 CREATE TABLE
     items (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -61,22 +73,28 @@ CREATE TABLE
         title VARCHAR(255) NOT NULL,
         description TEXT NOT NULL,
         item_condition ENUM ('new', 'excellent', 'good', 'used', 'damaged') NOT NULL,
-        status ENUM ('active', 'traded') DEFAULT 'active',
-        created_at TIMESTAMP DEFAULT current_timestamp,
-        updated_at TIMESTAMP DEFAULT current_timestamp ON UPDATE current_timestamp,
+        status ENUM ('active', 'reserved', 'traded') NOT NULL DEFAULT 'active',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         CONSTRAINT fk_items_owner FOREIGN KEY (owner_id) REFERENCES users (id) ON DELETE CASCADE
     );
 
+-- ============================================
+-- ITEM IMAGES
+-- ============================================
 CREATE TABLE
     item_images (
-        id INT auto_increment PRIMARY KEY,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         item_id INT NOT NULL,
         image_url VARCHAR(255) NOT NULL,
         is_cover BOOLEAN DEFAULT FALSE,
-        created_at timestamp DEFAULT current_timestamp,
-        constraint fk_item_images_item foreign key (item_id) REFERENCES items (id) ON DELETE CASCADE
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT fk_item_images_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
     );
 
+-- ============================================
+-- BOOK DETAILS
+-- ============================================
 CREATE TABLE
     book_details (
         item_id INT PRIMARY KEY,
@@ -85,9 +103,12 @@ CREATE TABLE
         page_count INT,
         published_year INT,
         isbn VARCHAR(50),
-        constraint fk_book_item foreign key (item_id) REFERENCES items (id) ON DELETE CASCADE
+        CONSTRAINT fk_book_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
     );
 
+-- ============================================
+-- BOARDGAME DETAILS
+-- ============================================
 CREATE TABLE
     boardgame_details (
         item_id INT PRIMARY KEY,
@@ -100,31 +121,47 @@ CREATE TABLE
         CONSTRAINT fk_boardgame_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
     );
 
+-- ============================================
+-- TRADE OFFERS
+-- ============================================
 CREATE TABLE
     trade_offers (
-        id INT auto_increment PRIMARY KEY,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         requester_id INT NOT NULL,
         target_item_id INT NOT NULL,
-        status ENUM ('pending', 'accepted', 'rejected', 'cancelled') DEFAULT 'pending',
-        created_at TIMESTAMP DEFAULT current_timestamp,
-        updated_at TIMESTAMP DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+        status ENUM (
+            'pending',
+            'accepted',
+            'completed',
+            'rejected',
+            'cancelled',
+            'revoked'
+        ) NOT NULL DEFAULT 'pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         CONSTRAINT fk_trade_offer_requester FOREIGN KEY (requester_id) REFERENCES users (id) ON DELETE CASCADE,
         CONSTRAINT fk_trade_offer_target_item FOREIGN KEY (target_item_id) REFERENCES items (id) ON DELETE CASCADE
     );
 
+-- ============================================
+-- OFFER ITEMS
+-- ============================================
 CREATE TABLE
     offer_items (
-        id INT auto_increment PRIMARY KEY,
+        id INT AUTO_INCREMENT PRIMARY KEY,
         offer_id INT NOT NULL,
         item_id INT NOT NULL,
         CONSTRAINT fk_offer_items_offer FOREIGN KEY (offer_id) REFERENCES trade_offers (id) ON DELETE CASCADE,
         CONSTRAINT fk_offer_items_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
     );
 
+-- ============================================
+-- MESSAGES
+-- ============================================
 CREATE TABLE
     messages (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        offer_id INT NOT NULL,
+        offer_id INT NULL,
         sender_id INT NOT NULL,
         receiver_id INT NOT NULL,
         content TEXT NOT NULL,
@@ -135,13 +172,17 @@ CREATE TABLE
         CONSTRAINT fk_message_receiver FOREIGN KEY (receiver_id) REFERENCES users (id) ON DELETE CASCADE
     );
 
+-- ============================================
+-- NOTIFICATIONS
+-- ============================================
 CREATE TABLE
     notifications (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT NOT NULL,
         type ENUM (
-            'offer_received',
+            'new_offer',
             'offer_accepted',
+            'offer_completed',
             'offer_rejected',
             'offer_cancelled',
             'offer_revoked',
@@ -151,34 +192,12 @@ CREATE TABLE
         link VARCHAR(255),
         is_read BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+        CONSTRAINT fk_notifications_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
     );
 
-CREATE TABLE notifications (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    type ENUM (
-        'new_offer',
-        'offer_accepted',
-        'offer_rejected'
-    ) NOT NULL,
-    message VARCHAR(255) NOT NULL,
-    link VARCHAR(255),
-    is_read BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_notifications_user
-        FOREIGN KEY (user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE
-);
-
-CREATE INDEX idx_notifications_user
-ON notifications(user_id);
-
-CREATE INDEX idx_notifications_read
-ON notifications(is_read);
-
+-- ============================================
+-- INDEXES
+-- ============================================
 CREATE INDEX idx_items_title ON items (title);
 
 CREATE INDEX idx_items_type ON items (type);
@@ -195,69 +214,10 @@ CREATE INDEX idx_trade_offers_status ON trade_offers (status);
 
 CREATE INDEX idx_messages_offer ON messages (offer_id);
 
-/* Add pending to item.status */
-ALTER TABLE items MODIFY COLUMN status ENUM ('active', 'pending', 'traded') DEFAULT 'active';
-
-ALTER TABLE trade_offers MODIFY COLUMN status ENUM (
-    'pending',
-    'accepted',
-    'rejected',
-    'cancelled',
-    'revoked'
-) NOT NULL DEFAULT 'pending';
-
-ALTER TABLE messages MODIFY offer_id INT NULL CREATE INDEX idx_messages_offer ON messages (offer_id);
+CREATE INDEX idx_messages_sender ON messages (sender_id);
 
 CREATE INDEX idx_messages_receiver ON messages (receiver_id);
 
-CREATE INDEX idx_messages_sender ON messages (sender_id);
+CREATE INDEX idx_notifications_user ON notifications (user_id);
 
--- =========================
--- ITEMS.STATUS
--- =========================
-
-ALTER TABLE items
-MODIFY COLUMN status
-ENUM (
-    'active',
-    'reserved',
-    'traded'
-)
-NOT NULL
-DEFAULT 'active';
-
-
--- =========================
--- TRADE_OFFERS.STATUS
--- =========================
-
-ALTER TABLE trade_offers
-MODIFY COLUMN status
-ENUM (
-    'pending',
-    'accepted',
-    'completed',
-    'rejected',
-    'cancelled',
-    'revoked'
-)
-NOT NULL
-DEFAULT 'pending';
-
-
--- =========================
--- NOTIFICATIONS.TYPE
--- =========================
-
-ALTER TABLE notifications
-MODIFY COLUMN type
-ENUM (
-    'new_offer',
-    'offer_accepted',
-    'offer_completed',
-    'offer_rejected',
-    'offer_cancelled',
-    'offer_revoked',
-    'message'
-)
-NOT NULL;
+CREATE INDEX idx_notifications_read ON notifications (is_read);
