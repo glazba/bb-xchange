@@ -20,6 +20,7 @@ function ItemDetails() {
 
   const [item, setItem] = useState<Item | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>("");
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -53,6 +54,20 @@ function ItemDetails() {
     fetchItem();
   }, [id, navigate]);
 
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsLightboxOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleEscape);
+
+    return () => {
+      window.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
   if (!item) {
     return <p>Betöltés...</p>;
   }
@@ -61,7 +76,12 @@ function ItemDetails() {
     <div className={`panel ${styles.container}`}>
       <div className={styles.image}>
         {selectedImage ? (
-          <img src={`${API_URL}/uploads/${selectedImage}`} alt={item.title} />
+          <img
+            src={`${API_URL}/uploads/${selectedImage}`}
+            alt={item.title}
+            className={styles.mainImage}
+            onClick={() => setIsLightboxOpen(true)}
+          />
         ) : (
           <span>{item.type === "book" ? "📚" : "🎲"}</span>
         )}
@@ -181,6 +201,30 @@ function ItemDetails() {
           </Link>
         )}
       </div>
+
+      {isLightboxOpen && (
+        <div
+          className={styles.lightbox}
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <button
+            className={styles.closeButton}
+            onClick={(event) => {
+              event.stopPropagation();
+              setIsLightboxOpen(false);
+            }}
+          >
+            X
+          </button>
+
+          <img
+            src={`${API_URL}/uploads/${selectedImage}`}
+            alt={item.title}
+            className={styles.lighboxImage}
+            onClick={(event) => event.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }
