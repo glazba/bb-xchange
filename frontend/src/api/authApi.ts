@@ -20,13 +20,13 @@ export const loginUser = async (
         }
     );
 
-    console.log(response.status);
-
-
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -63,7 +63,10 @@ export const registerUser = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;

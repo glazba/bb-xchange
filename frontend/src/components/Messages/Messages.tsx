@@ -13,6 +13,7 @@ import {
 } from "../../api/messageApi";
 
 import styles from "./Messages.module.css";
+import toast from "react-hot-toast";
 
 interface JwtPayload {
   userId: number;
@@ -45,7 +46,7 @@ function Messages() {
 
         window.dispatchEvent(new Event("messages-read"));
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni az üzeneteket.",
@@ -81,10 +82,10 @@ function Messages() {
       setContent("");
 
       const data = await getMessages(token, Number(userId));
-      console.log("Messages after send:", data);
+
       setMessages(data);
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Nem sikerült elküldeni az üzenetet.",

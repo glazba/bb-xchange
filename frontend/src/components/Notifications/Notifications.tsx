@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import toast from "react-hot-toast";
+
 import { useAuth } from "../../hooks/useAuth";
 
 import type { Notification } from "../../types/Notification";
@@ -11,6 +13,7 @@ import {
 } from "../../api/notificationApi";
 
 import styles from "./Notifications.module.css";
+import { handleApiError } from "../../utils/handleApiError";
 
 function Notifications() {
   const { token } = useAuth();
@@ -30,11 +33,7 @@ function Notifications() {
 
         setNotifications(data);
       } catch (error) {
-        alert(
-          error instanceof Error
-            ? error.message
-            : "Nem sikerült betölteni az értesítéseket.",
-        );
+        handleApiError(error, navigate);
       }
     };
 
@@ -68,7 +67,7 @@ function Notifications() {
         navigate(notification.link);
       }
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Hiba történt.");
+      toast.error(error instanceof Error ? error.message : "Hiba történt.");
     }
   };
 

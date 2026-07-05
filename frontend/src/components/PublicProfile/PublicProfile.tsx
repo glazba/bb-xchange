@@ -7,6 +7,8 @@ import { getPublicProfile } from "../../api/userApi";
 
 import styles from "./PublicProfile.module.css";
 import { API_URL } from "../../api/apiConfig";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { handleApiError } from "../../utils/handleApiError";
 
 function PublicProfile() {
   const { id } = useParams();
@@ -27,13 +29,7 @@ function PublicProfile() {
 
         setProfile(data);
       } catch (error) {
-        alert(
-          error instanceof Error
-            ? error.message
-            : "Nem sikerült betölteni a profilt.",
-        );
-
-        navigate("/");
+        handleApiError(error, navigate);
       }
     };
 
@@ -41,7 +37,7 @@ function PublicProfile() {
   }, [id, navigate]);
 
   if (!profile) {
-    return <p>Betöltés...</p>;
+    return <LoadingSpinner />;
   }
 
   return (

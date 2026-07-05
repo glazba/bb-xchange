@@ -5,6 +5,7 @@ import { loginUser } from "../../api/authApi";
 import { useAuth } from "../../hooks/useAuth";
 
 import styles from "./LoginForm.module.css";
+import toast from "react-hot-toast";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ function LoginForm() {
     event.preventDefault();
 
     if (!email.trim() || !password.trim()) {
-      alert("Add meg az email címet és a jelszót!");
+      toast("Add meg az email címet és a jelszót!");
       return;
     }
 
@@ -27,11 +28,11 @@ function LoginForm() {
 
       login(data.token);
 
-      alert("Sikeres bejelentkezés!");
+      toast.success("Sikeres bejelentkezés!");
 
       navigate("/");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error ? error.message : "Sikertelen bejelentkezés.",
       );
     }

@@ -17,6 +17,8 @@ import { bookGenres, boardgameGenres } from "../../utils/itemGenres";
 
 import styles from "./EditItemForm.module.css";
 import { API_URL } from "../../api/apiConfig";
+import toast from "react-hot-toast";
+import { handleApiError } from "../../utils/handleApiError";
 
 function EditItemForm() {
   const { token } = useAuth();
@@ -71,7 +73,7 @@ function EditItemForm() {
     const files = Array.from(event.target.files ?? []);
 
     if (itemImages.length + files.length > 5) {
-      alert("Maximum 5 kép tölthető fel.");
+      toast("Maximum 5 kép tölthető fel.");
 
       return;
     }
@@ -95,9 +97,9 @@ function EditItemForm() {
 
       setItemImages((prev) => prev.filter((image) => image.id !== imageId));
 
-      alert("Kép sikeresen törölve.");
+      toast.success("Kép sikeresen törölve.");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error ? error.message : "A kép törlése sikertelen.",
       );
     }
@@ -118,9 +120,9 @@ function EditItemForm() {
         })),
       );
 
-      alert("Borítókép módosítva.");
+      toast.success("Borítókép módosítva.");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "A borítókép módosítása sikertelen.",
@@ -136,13 +138,13 @@ function EditItemForm() {
     }
 
     if (!id) {
-      alert("A termék nem található.");
+      toast("A termék nem található.");
       navigate("/items");
       return;
     }
 
     if (!type || !title.trim() || !itemCondition) {
-      alert("Tölts ki minden mezőt!");
+      toast("Tölts ki minden mezőt!");
       return;
     }
 
@@ -153,11 +155,11 @@ function EditItemForm() {
         await uploadItemImages(token, Number(id), selectedImages);
       }
 
-      alert("Termék sikeresen módosítva.");
+      toast.success("Termék sikeresen módosítva.");
 
       navigate("/items");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "A terméket nem sikerült módosítani.",
@@ -196,13 +198,7 @@ function EditItemForm() {
         );
         setPlayTime(item.playtime ? String(item.playtime) : "");
       } catch (error) {
-        alert(
-          error instanceof Error
-            ? error.message
-            : "Nem sikerült betölteni a terméket.",
-        );
-
-        navigate("/items");
+        handleApiError(error, navigate);
       }
     };
     fetchItem();

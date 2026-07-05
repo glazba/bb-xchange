@@ -8,6 +8,7 @@ import type { TradeOffer } from "../../types/TradeOffer";
 import { offerStatusLabels } from "../../utils/itemLabels";
 
 import styles from "./ReceivedOffers.module.css";
+import toast from "react-hot-toast";
 
 function ReceivedOffers() {
   const { token } = useAuth();
@@ -24,7 +25,7 @@ function ReceivedOffers() {
 
       setOffers(data);
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Nem sikerült betölteni az ajánlatokat.",
@@ -45,7 +46,7 @@ function ReceivedOffers() {
 
         setOffers(data);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni az ajánlatokat.",
@@ -66,11 +67,11 @@ function ReceivedOffers() {
     try {
       await updateOfferStatus(token, offerId, "accepted");
 
-      alert("Az ajánlat elfogadva.");
+      toast.success("Az ajánlat elfogadva.");
 
       await fetchOffers();
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Nem sikerült elfogadni az ajánlatot.",
@@ -86,11 +87,11 @@ function ReceivedOffers() {
     try {
       await updateOfferStatus(token, offerId, "rejected");
 
-      alert("Az ajánlat elutasítva.");
+      toast.success("Az ajánlat elutasítva.");
 
       await fetchOffers();
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Nem sikerült elutasítani az ajánlatot.",

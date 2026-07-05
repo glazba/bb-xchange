@@ -8,6 +8,7 @@ import { getPublicUserItems } from "../../api/userApi";
 import ItemCard from "../ItemCard/ItemCard";
 
 import styles from "./PublicUserItems.module.css";
+import { handleApiError } from "../../utils/handleApiError";
 
 function PublicUserItems() {
   const { id } = useParams();
@@ -28,13 +29,7 @@ function PublicUserItems() {
 
         setItems(data);
       } catch (error) {
-        alert(
-          error instanceof Error
-            ? error.message
-            : "Nem sikerült betölteni a termékeket.",
-        );
-
-        navigate("/");
+        handleApiError(error, navigate);
       }
     };
 

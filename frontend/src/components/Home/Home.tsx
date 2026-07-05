@@ -7,6 +7,7 @@ import { getAllItems } from "../../api/itemApi";
 import ItemCard from "../ItemCard/ItemCard";
 
 import styles from "./Home.module.css";
+import toast from "react-hot-toast";
 
 function Home() {
   const [latestItems, setLatestItems] = useState<Item[]>([]);
@@ -27,7 +28,7 @@ function Home() {
 
         setLatestItems(latest);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni a termékeket.",

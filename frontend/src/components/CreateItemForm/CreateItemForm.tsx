@@ -9,6 +9,7 @@ import { itemConditionLabels } from "../../utils/itemLabels";
 import { bookGenres, boardgameGenres } from "../../utils/itemGenres";
 
 import styles from "./CreateItemForm.module.css";
+import toast from "react-hot-toast";
 
 function CreateItemForm() {
   const { token } = useAuth();
@@ -41,7 +42,7 @@ function CreateItemForm() {
     const files = Array.from(event.target.files ?? []);
 
     if (files.length > 5) {
-      alert("Maximum 5 kép tölthető fel.");
+      toast("Maximum 5 kép tölthető fel.");
       return;
     }
 
@@ -56,7 +57,7 @@ function CreateItemForm() {
     }
 
     if (!type || !title.trim() || !itemCondition) {
-      alert("Tölts ki minden kötelező mezőt!");
+      toast("Tölts ki minden kötelező mezőt!");
       return;
     }
 
@@ -83,11 +84,11 @@ function CreateItemForm() {
         await uploadItemImages(token, result.itemId, selectedImages);
       }
 
-      alert("Termék sikeresen létrehozva.");
+      toast.success("Termék sikeresen létrehozva.");
 
       navigate("/items");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "A terméket nem sikerült létrehozni.",

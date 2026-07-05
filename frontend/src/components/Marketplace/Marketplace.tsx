@@ -11,6 +11,7 @@ import ItemCard from "../ItemCard/ItemCard";
 
 import styles from "./Marketplace.module.css";
 import { itemConditionLabels } from "../../utils/itemLabels";
+import toast from "react-hot-toast";
 
 function Marketplace() {
   const { token } = useAuth();
@@ -57,7 +58,7 @@ function Marketplace() {
 
         setItems(marketplaceItems);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni a termékeket.",

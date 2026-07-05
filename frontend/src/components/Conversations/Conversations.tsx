@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
@@ -26,7 +27,7 @@ function Conversations() {
 
         setConversations(data);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni a beszélgetéseket.",

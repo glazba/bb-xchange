@@ -8,6 +8,7 @@ import { getMyItems } from "../../api/itemApi";
 import { createOffer } from "../../api/tradeOfferApi";
 
 import styles from "./CreateOffer.module.css";
+import toast from "react-hot-toast";
 
 function CreateOffer() {
   const { itemId } = useParams();
@@ -32,7 +33,7 @@ function CreateOffer() {
         const activeItems = data.filter((item) => item.status === "active");
 
         if (activeItems.length === 0) {
-          alert("Nincs aktív terméked, amit felajánlhatnál.");
+          toast("Nincs aktív terméked, amit felajánlhatnál.");
 
           navigate("/items");
 
@@ -41,7 +42,7 @@ function CreateOffer() {
 
         setMyItems(activeItems);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni a termékeket.",
@@ -66,7 +67,7 @@ function CreateOffer() {
     }
 
     if (!itemId) {
-      alert("A termék nem található.");
+      toast("A termék nem található.");
 
       navigate("/");
 
@@ -74,7 +75,7 @@ function CreateOffer() {
     }
 
     if (selectedItems.length === 0) {
-      alert("Válassz legalább egy terméket!");
+      toast("Válassz legalább egy terméket!");
 
       return;
     }
@@ -82,11 +83,11 @@ function CreateOffer() {
     try {
       await createOffer(token, Number(itemId), selectedItems);
 
-      alert("Ajánlat elküldve.");
+      toast.success("Ajánlat elküldve.");
 
       navigate("/offers");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Az ajánlatot nem sikerült elküldeni.",

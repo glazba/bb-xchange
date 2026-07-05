@@ -22,7 +22,10 @@ export const createItem = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -38,7 +41,10 @@ export const getAllItems = async ()
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -60,7 +66,10 @@ export const getMyItems = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -76,7 +85,10 @@ export const getItemById = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -103,7 +115,10 @@ export const updateItem = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -128,7 +143,10 @@ export const deleteItem = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -164,7 +182,10 @@ export const uploadItemImages = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -188,7 +209,10 @@ export const setItemCoverImage = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -212,7 +236,10 @@ export const deleteItemImage = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;

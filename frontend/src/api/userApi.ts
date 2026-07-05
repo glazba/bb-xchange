@@ -20,7 +20,10 @@ export const getProfile = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
     return data;
 };
@@ -53,7 +56,10 @@ export const updateProfile = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -85,7 +91,10 @@ export const uploadAvatar = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -113,7 +122,10 @@ export const deleteProfile = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -130,7 +142,10 @@ export const getPublicProfile = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message);
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     }
 
     return data;
@@ -147,7 +162,10 @@ export const getPublicUserItems = async (
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.message)
+        const error = new Error(data.message);
+        (error as Error & { status?: number }).status = response.status;
+
+        throw error;
     };
 
     return data;

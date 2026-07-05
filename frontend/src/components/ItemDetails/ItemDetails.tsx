@@ -12,6 +12,9 @@ import {
 
 import styles from "./ItemDetails.module.css";
 import { API_URL } from "../../api/apiConfig";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import toast from "react-hot-toast";
+import { handleApiError } from "../../utils/handleApiError";
 
 function ItemDetails() {
   const { id } = useParams();
@@ -25,7 +28,7 @@ function ItemDetails() {
   useEffect(() => {
     const fetchItem = async () => {
       if (!id) {
-        alert("A termék nem található.");
+        toast("A termék nem található.");
 
         navigate("/items");
 
@@ -41,13 +44,7 @@ function ItemDetails() {
           setSelectedImage(data.images[0].image_url);
         }
       } catch (error) {
-        alert(
-          error instanceof Error
-            ? error.message
-            : "Nem sikerült betölteni a terméket.",
-        );
-
-        navigate("/items");
+        handleApiError(error, navigate);
       }
     };
 
@@ -69,7 +66,7 @@ function ItemDetails() {
   }, []);
 
   if (!item) {
-    return <p>Betöltés...</p>;
+    return <LoadingSpinner />;
   }
 
   return (

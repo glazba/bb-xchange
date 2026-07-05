@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
+
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import toast from "react-hot-toast";
+
 import {
   getProfile,
   updateProfile,
@@ -53,7 +57,7 @@ function Profile() {
         setBio(data.bio ?? "");
         setSelectedInterests(data.interests);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni a profilt.",
@@ -70,7 +74,7 @@ function Profile() {
     }
 
     if (!selectedAvatar) {
-      alert("Válassz ki egy képet!");
+      toast("Válassz ki egy képet!");
 
       return;
     }
@@ -84,9 +88,9 @@ function Profile() {
 
       setSelectedAvatar(null);
 
-      alert("Profilkép sikeresen feltöltve.");
+      toast.success("Profilkép sikeresen feltöltve.");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "A profilkép feltöltése sikertelen.",
@@ -120,9 +124,9 @@ function Profile() {
 
       setIsEditing(false);
 
-      alert("Profil sikeresen frissítve.");
+      toast.success("Profil sikeresen frissítve.");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "A profil módosítása sikertelen.",
@@ -136,7 +140,7 @@ function Profile() {
     }
 
     if (!deletePassword) {
-      alert("Add meg a jelszavad!");
+      toast("Add meg a jelszavad!");
       return;
     }
 
@@ -151,20 +155,20 @@ function Profile() {
     try {
       await deleteProfile(token, deletePassword);
 
-      alert("A profil sikeresen törölve.");
+      toast.success("A profil sikeresen törölve.");
 
       logout();
 
       navigate("/");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error ? error.message : "A profil törlése sikertelen.",
       );
     }
   };
 
   if (!profile) {
-    return <p>Betöltés...</p>;
+    return <LoadingSpinner />;
   }
 
   return (

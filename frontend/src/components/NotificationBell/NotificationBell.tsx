@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { getUnreadNotificationsCount } from "../../api/notificationApi";
 
 import styles from "./NotificationBell.module.css";
+import toast from "react-hot-toast";
 
 function NotificationBell() {
   const { token } = useAuth();
@@ -23,7 +24,7 @@ function NotificationBell() {
 
         setUnreadCount(count);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni az értesítéseket.",

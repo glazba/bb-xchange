@@ -6,6 +6,8 @@ import { registerUser } from "../../api/authApi";
 import { allInterests } from "../../utils/interests";
 
 import styles from "./RegisterForm.module.css";
+import toast from "react-hot-toast";
+import { handleApiError } from "../../utils/handleApiError";
 
 function RegisterForm() {
   const navigate = useNavigate();
@@ -30,12 +32,12 @@ function RegisterForm() {
     event.preventDefault();
 
     if (!username.trim() || !email.trim() || !password.trim() || !city.trim()) {
-      alert("Tölts ki minden kötelező mezőt!");
+      toast("Tölts ki minden kötelező mezőt!");
       return;
     }
 
     if (password.length < 8) {
-      alert("A jelszónak legalább 8 karakterből kell állnia.");
+      toast("A jelszónak legalább 8 karakterből kell állnia.");
       return;
     }
 
@@ -49,13 +51,11 @@ function RegisterForm() {
         selectedInterests,
       );
 
-      alert("Sikeres regisztráció!");
+      toast.success("Sikeres regisztráció!");
 
       navigate("/login");
     } catch (error) {
-      alert(
-        error instanceof Error ? error.message : "Sikertelen regisztráció.",
-      );
+      handleApiError(error, navigate);
     }
   };
 

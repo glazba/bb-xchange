@@ -19,6 +19,10 @@ import PublicUserItemsPage from "../pages/PublicUserItemsPage";
 import MessagesPage from "../pages/MessagesPage";
 import ConversationsPage from "../pages/ConversationsPage";
 import NotificationsPage from "../pages/NotificationsPage";
+import NotFound from "../components/NotFound/NotFound";
+import ServerError from "../components/ServerError/ServerError";
+
+import { Toaster } from "react-hot-toast";
 
 function AppRoutes() {
   return (
@@ -140,8 +144,41 @@ function AppRoutes() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/404" element={<NotFound />} />
+
+          <Route path="/500" element={<ServerError />} />
+
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
+
+      <Toaster
+        position="top-right"
+        gutter={12}
+        toastOptions={{
+          duration: 3500,
+          style: {
+            background: "#ffffff",
+            color: "#1f2937",
+            borderRadius: "16px",
+            padding: "16px",
+            boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+          },
+          success: {
+            iconTheme: {
+              primary: "#16a34a",
+              secondary: "#ffffff",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#dc2626",
+              secondary: "#ffffff",
+            },
+          },
+        }}
+      />
     </BrowserRouter>
   );
 }

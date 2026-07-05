@@ -8,6 +8,7 @@ import type { Item } from "../../types/Item";
 
 import ItemCard from "../../components/ItemCard/ItemCard";
 import styles from "./MyItems.module.css";
+import toast from "react-hot-toast";
 
 function MyItems() {
   const { token } = useAuth();
@@ -24,9 +25,9 @@ function MyItems() {
 
       setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
 
-      alert("A termék sikeresen törölve.");
+      toast.success("A termék sikeresen törölve.");
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "A terméket nem sikerült törölni.",
@@ -45,7 +46,7 @@ function MyItems() {
 
         setItems(data);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni a termékeket.",

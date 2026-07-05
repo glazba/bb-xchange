@@ -8,6 +8,7 @@ import type { TradeOffer } from "../../types/TradeOffer";
 import { offerStatusLabels } from "../../utils/itemLabels";
 
 import styles from "./Offers.module.css";
+import toast from "react-hot-toast";
 
 function Offers() {
   const { token } = useAuth();
@@ -24,7 +25,7 @@ function Offers() {
 
       setOffers(data);
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Nem sikerült betölteni az ajánlatokat.",
@@ -44,7 +45,7 @@ function Offers() {
         const data = await getMyOffers(token);
         setOffers(data);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni az ajánlatokat.",
@@ -74,7 +75,7 @@ function Offers() {
 
       await fetchOffers();
     } catch (error) {
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Nem sikerült visszavonni az ajánlatot.",

@@ -6,6 +6,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { getUnreadMessagesCount } from "../../api/messageApi";
 
 import styles from "./MessageBell.module.css";
+import toast from "react-hot-toast";
 
 function MessageBell() {
   const { token } = useAuth();
@@ -23,7 +24,7 @@ function MessageBell() {
 
         setUnreadCount(count);
       } catch (error) {
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Nem sikerült betölteni az üzeneteket.",
