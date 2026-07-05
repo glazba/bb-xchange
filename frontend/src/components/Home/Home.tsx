@@ -44,6 +44,7 @@ function Home() {
     <div className={`page ${styles.page}`}>
       <section className={styles.hero}>
         <img
+          loading="lazy"
           className={styles.logo}
           src="/bb_xchange_logo.png"
           alt="BB-XChange"

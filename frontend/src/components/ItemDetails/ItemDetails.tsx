@@ -86,6 +86,7 @@ function ItemDetails() {
         <div className={styles.image}>
           {selectedImage ? (
             <img
+              loading="lazy"
               src={`${API_URL}/uploads/${selectedImage}`}
               alt={item.title}
               className={styles.mainImage}
@@ -100,6 +101,7 @@ function ItemDetails() {
           <div className={styles.gallery}>
             {item.images.map((image) => (
               <img
+                loading="lazy"
                 key={image.id}
                 src={`${API_URL}/uploads/${image.image_url}`}
                 alt={item.title}
@@ -241,6 +243,7 @@ function ItemDetails() {
           </button>
 
           <img
+            loading="lazy"
             src={`${API_URL}/uploads/${selectedImage}`}
             alt={item.title}
             className={styles.lightboxImage}

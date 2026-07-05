@@ -57,6 +57,14 @@
   animation: popIn 0.2s ease;
 }
 
+.activeLink {
+  color: var(--primary);
+}
+
+.activeLink::after {
+  width: 100% !important;
+}
+
 @keyframes popIn {
   from {
     transform: scale(0.7);

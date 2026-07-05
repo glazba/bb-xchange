@@ -22,6 +22,7 @@ function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
       <div className={styles.image}>
         {item.cover_image ? (
           <img
+            loading="lazy"
             src={`${API_URL}/uploads/${item.cover_image}`}
             alt={item.title}
           />

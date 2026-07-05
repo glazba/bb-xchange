@@ -53,6 +53,7 @@ function PublicProfile() {
           <div className={styles.avatar}>
             {profile.avatar ? (
               <img
+                loading="lazy"
                 src={`${API_URL}/uploads/${profile.avatar}`}
                 alt={profile.username}
               />

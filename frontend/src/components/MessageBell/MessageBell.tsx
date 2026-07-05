@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -52,14 +52,16 @@ function MessageBell() {
   }, [token]);
 
   return (
-    <Link to="/messages" className={styles.messageLink}>
-      Beszélgetések
-      {unreadCount > 0 && (
-        <span className={styles.badge}>
-          {unreadCount > 99 ? "99+" : unreadCount}
-        </span>
-      )}
-    </Link>
+    <div className={styles.messageLink}>
+      <NavLink
+        to="/messages"
+        className={({ isActive }) => (isActive ? styles.activeLink : undefined)}
+      >
+        Beszélgetések
+      </NavLink>
+
+      {unreadCount > 0 && <span className={styles.badge}>{unreadCount}</span>}
+    </div>
   );
 }
 

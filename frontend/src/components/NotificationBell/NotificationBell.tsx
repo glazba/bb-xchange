@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 
@@ -52,15 +52,19 @@ function NotificationBell() {
   }, [token]);
 
   return (
-    <Link to="/notifications" className={styles.bell} aria-label="Értesítések">
-      <span className={styles.icon}>🔔</span>
-
+    <NavLink
+      to="/notifications"
+      className={({ isActive }) =>
+        `${styles.bell} ${isActive ? styles.activeLink : ""}`
+      }
+    >
+      🔔
       {unreadCount > 0 && (
         <span className={styles.badge}>
           {unreadCount > 99 ? "99+" : unreadCount}
         </span>
       )}
-    </Link>
+    </NavLink>
   );
 }
 

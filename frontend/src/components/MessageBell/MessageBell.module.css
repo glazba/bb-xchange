@@ -35,6 +35,53 @@
   animation: popIn 0.2s ease;
 }
 
+.links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.links a {
+  position: relative;
+
+  color: var(--text);
+  font-weight: 500;
+
+  transition: var(--transition);
+}
+
+.links a:hover {
+  color: var(--primary);
+}
+
+.activeLink {
+  color: var(--primary) !important;
+}
+
+.activeLink::after {
+  width: 100% !important;
+}
+
+.links a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -4px;
+
+  width: 0;
+  height: 2px;
+
+  background: var(--primary);
+
+  transition: var(--transition);
+}
+
+.links a:hover::after {
+  width: 100%;
+}
+
 @keyframes popIn {
   from {
     transform: scale(0.7);

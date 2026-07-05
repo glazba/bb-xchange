@@ -220,7 +220,11 @@ function EditItemForm() {
         <div className={styles.imageGallery}>
           {itemImages.map((image) => (
             <div key={image.id} className={styles.imageCard}>
-              <img src={`${API_URL}/uploads/${image.image_url}`} alt={title} />
+              <img
+                loading="lazy"
+                src={`${API_URL}/uploads/${image.image_url}`}
+                alt={title}
+              />
 
               {image.is_cover ? (
                 <p className={styles.coverBadge}>⭐ Borítókép</p>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 
 import { useAuth } from "../../hooks/useAuth";
@@ -26,7 +26,7 @@ function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.container}>
         <Link to="/" className={styles.logo} onClick={closeMenu}>
-          <img src="/bb_xchange_logo.png" alt="BB-XChange" />
+          <img loading="lazy" src="/bb_xchange_logo.png" alt="BB-XChange" />
         </Link>
 
         <button
@@ -39,46 +39,96 @@ function Navbar() {
         </button>
 
         <div className={`${styles.links} ${isMenuOpen ? styles.open : ""}`}>
-          <Link to="/" onClick={closeMenu}>
+          <NavLink
+            to="/"
+            end
+            className={({ isActive }) =>
+              isActive ? styles.activeLink : undefined
+            }
+            onClick={closeMenu}
+          >
             Home
-          </Link>
+          </NavLink>
 
           {!token ? (
             <>
-              <Link to="/login" onClick={closeMenu}>
+              <NavLink
+                to="/login"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : undefined
+                }
+                onClick={closeMenu}
+              >
                 Bejelentkezés
-              </Link>
+              </NavLink>
 
-              <Link to="/register" onClick={closeMenu}>
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : undefined
+                }
+                onClick={closeMenu}
+              >
                 Regisztráció
-              </Link>
+              </NavLink>
             </>
           ) : (
             <>
-              <Link to="/marketplace" onClick={closeMenu}>
+              <NavLink
+                to="/marketplace"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : undefined
+                }
+                onClick={closeMenu}
+              >
                 Marketplace
-              </Link>
+              </NavLink>
 
-              <Link to="/items" onClick={closeMenu}>
+              <NavLink
+                to="/items"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : undefined
+                }
+                onClick={closeMenu}
+              >
                 Termékeim
-              </Link>
+              </NavLink>
 
-              <Link to="/offers" onClick={closeMenu}>
+              <NavLink
+                to="/offers"
+                end
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : undefined
+                }
+                onClick={closeMenu}
+              >
                 Ajánlataim
-              </Link>
+              </NavLink>
 
-              <Link to="/offers/received" onClick={closeMenu}>
+              <NavLink
+                to="/offers/received"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : undefined
+                }
+                onClick={closeMenu}
+              >
                 Beérkező ajánlatok
-              </Link>
+              </NavLink>
 
               <div className={styles.icons}>
                 <MessageBell />
                 <NotificationBell />
               </div>
 
-              <Link to="/profile" onClick={closeMenu}>
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  isActive ? styles.activeLink : undefined
+                }
+                onClick={closeMenu}
+              >
                 Profil
-              </Link>
+              </NavLink>
 
               <button
                 type="button"

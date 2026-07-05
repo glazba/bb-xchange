@@ -64,6 +64,7 @@ function Conversations() {
               <div className={styles.avatar}>
                 {conversation.avatar ? (
                   <img
+                    loading="lazy"
                     src={`${API_URL}/uploads/${conversation.avatar}`}
                     alt={conversation.username}
                   />

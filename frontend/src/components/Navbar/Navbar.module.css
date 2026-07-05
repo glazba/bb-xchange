@@ -86,6 +86,14 @@
   color: var(--primary);
 }
 
+.activeLink {
+  color: var(--primary) !important;
+}
+
+.activeLink::after {
+  width: 100% !important;
+}
+
 .links a::after {
   content: "";
 

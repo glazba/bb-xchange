@@ -178,6 +178,7 @@ function Profile() {
           <div className={styles.avatar}>
             {profile.avatar ? (
               <img
+                loading="lazy"
                 src={`${API_URL}/uploads/${profile.avatar}`}
                 alt="Profilkép"
                 className={styles.avatarImage}
