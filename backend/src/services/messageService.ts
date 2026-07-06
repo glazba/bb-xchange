@@ -117,7 +117,7 @@ export const getConversations = async (
 
     const [rows] = await pool.query<RowDataPacket[]>(
         `
-        SELECT 
+        SELECT
             users.id AS user_id,
             users.username,
             users.avatar,
@@ -130,7 +130,7 @@ export const getConversations = async (
                 AND unread.receiver_id = ?
                 AND unread.is_read = FALSE
             ) AS unread_count
-        
+
         FROM messages
 
         INNER JOIN users
@@ -147,15 +147,14 @@ export const getConversations = async (
                     WHEN sender_id = ? THEN receiver_id
                     ELSE sender_id
                 END AS other_user_id,
-                MAX(created_at) AS latest_message
+                MAX(id) AS latest_message_id
             FROM messages
             WHERE sender_id = ?
             OR receiver_id = ?
             GROUP BY other_user_id
         ) latest
-            ON latest.other_user_id = users.id
-            AND latest.latest_message = messages.created_at
-        
+            ON latest.latest_message_id = messages.id
+
         WHERE messages.sender_id = ?
         OR messages.receiver_id = ?
 

@@ -1,4 +1,3 @@
-import { RequestOptions } from "node:http";
 import { pool } from "../db/connections";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 

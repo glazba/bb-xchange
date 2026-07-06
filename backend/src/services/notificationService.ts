@@ -1,4 +1,3 @@
-import { ReadOptionsWithBuffer } from "node:fs";
 import { pool } from "../db/connections";
 import { ResultSetHeader, RowDataPacket } from "mysql2";
 

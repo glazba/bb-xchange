@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 
 import { getItemById } from "../../api/itemApi";
@@ -25,13 +25,13 @@ function ItemDetails() {
   const [selectedImage, setSelectedImage] = useState("");
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
-  const images = item?.images ?? [];
+  const images = useMemo(() => item?.images ?? [], [item?.images]);
 
   const currentImageIndex = images.findIndex(
     (image) => image.image_url === selectedImage,
   );
 
-  const showPreviousImage = () => {
+  const showPreviousImage = useCallback(() => {
     if (!images.length) {
       return;
     }
@@ -40,9 +40,9 @@ function ItemDetails() {
       currentImageIndex <= 0 ? images.length - 1 : currentImageIndex - 1;
 
     setSelectedImage(images[previousIndex].image_url);
-  };
+  }, [images, currentImageIndex]);
 
-  const showNextImage = () => {
+  const showNextImage = useCallback(() => {
     if (!images.length) {
       return;
     }
@@ -51,7 +51,7 @@ function ItemDetails() {
       currentImageIndex === images.length - 1 ? 0 : currentImageIndex + 1;
 
     setSelectedImage(images[nextIndex].image_url);
-  };
+  }, [images, currentImageIndex]);
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -104,13 +104,7 @@ function ItemDetails() {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [
-    isLightboxOpen,
-    currentImageIndex,
-    images,
-    showPreviousImage,
-    showNextImage,
-  ]);
+  }, [isLightboxOpen, showPreviousImage, showNextImage]);
 
   if (!item) {
     return (

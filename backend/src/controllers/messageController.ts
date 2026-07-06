@@ -12,8 +12,6 @@ import {
 } from "../services/messageService";
 
 import {
-    canAccessOffer,
-    getOfferParticipants
 } from "../services/tradeOffersService";
 
 export const sendMessage = async (

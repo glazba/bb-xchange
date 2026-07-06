@@ -25,7 +25,7 @@ function Home() {
               new Date(b.created_at ?? "").getTime() -
               new Date(a.created_at ?? "").getTime(),
           )
-          .slice(0, 5);
+          .slice(0, 3);
 
         setLatestItems(latest);
       } catch (error) {
@@ -46,7 +46,7 @@ function Home() {
         <img
           loading="lazy"
           className={styles.logo}
-          src="/bb_xchange_logo.png"
+          src="/bb_xchange_logo_transparent.png"
           alt="BB-XChange"
         />
 
