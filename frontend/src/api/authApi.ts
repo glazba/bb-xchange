@@ -7,7 +7,7 @@ export const loginUser = async (
 ) => {
 
     const response = await fetch(
-        `http://localhost:3000/users/login`,
+        `${API_URL}/users/login`,
         {
             method: "POST",
             headers: {

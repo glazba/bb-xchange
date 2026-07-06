@@ -7,10 +7,10 @@ BB-XChange is a full-stack web application where users can exchange books and bo
 # 🌐 Live Demo
 
 **Frontend:**  
-`Coming soon`
+`bb-xchange.vercel.app`
 
 **Backend API:**  
-`Coming soon`
+`https://bb-xchange-backend.onrender.com`
 
 ---
 
