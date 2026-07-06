@@ -36,6 +36,13 @@ function RegisterForm() {
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email.trim())) {
+      toast.error("Adj meg egy érvényes email címet.");
+      return;
+    }
+
     if (password.length < 8) {
       toast("A jelszónak legalább 8 karakterből kell állnia.");
       return;
@@ -44,7 +51,7 @@ function RegisterForm() {
     try {
       await registerUser(
         username.trim(),
-        email.trim(),
+        email.trim().toLowerCase(),
         password,
         city.trim(),
         bio.trim(),

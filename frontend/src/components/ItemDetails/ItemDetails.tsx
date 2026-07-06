@@ -22,8 +22,36 @@ function ItemDetails() {
   const navigate = useNavigate();
 
   const [item, setItem] = useState<Item | null>(null);
-  const [selectedImage, setSelectedImage] = useState<string>("");
+  const [selectedImage, setSelectedImage] = useState("");
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  const images = item?.images ?? [];
+
+  const currentImageIndex = images.findIndex(
+    (image) => image.image_url === selectedImage,
+  );
+
+  const showPreviousImage = () => {
+    if (!images.length) {
+      return;
+    }
+
+    const previousIndex =
+      currentImageIndex <= 0 ? images.length - 1 : currentImageIndex - 1;
+
+    setSelectedImage(images[previousIndex].image_url);
+  };
+
+  const showNextImage = () => {
+    if (!images.length) {
+      return;
+    }
+
+    const nextIndex =
+      currentImageIndex === images.length - 1 ? 0 : currentImageIndex + 1;
+
+    setSelectedImage(images[nextIndex].image_url);
+  };
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -52,18 +80,37 @@ function ItemDetails() {
   }, [id, navigate]);
 
   useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isLightboxOpen) {
+        return;
+      }
+
       if (event.key === "Escape") {
         setIsLightboxOpen(false);
+        return;
+      }
+
+      if (event.key === "ArrowLeft") {
+        showPreviousImage();
+      }
+
+      if (event.key === "ArrowRight") {
+        showNextImage();
       }
     };
 
-    window.addEventListener("keydown", handleEscape);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener("keydown", handleEscape);
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [
+    isLightboxOpen,
+    currentImageIndex,
+    images,
+    showPreviousImage,
+    showNextImage,
+  ]);
 
   if (!item) {
     return (
@@ -97,9 +144,9 @@ function ItemDetails() {
           )}
         </div>
 
-        {item.images && item.images.length > 1 && (
+        {images.length > 1 && (
           <div className={styles.gallery}>
-            {item.images.map((image) => (
+            {images.map((image) => (
               <img
                 loading="lazy"
                 key={image.id}
@@ -241,6 +288,34 @@ function ItemDetails() {
           >
             ✕
           </button>
+
+          {images.length > 1 && (
+            <>
+              <button
+                className={styles.prevButton}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  showPreviousImage();
+                }}
+              >
+                ❮
+              </button>
+
+              <button
+                className={styles.nextButton}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  showNextImage();
+                }}
+              >
+                ❯
+              </button>
+
+              <div className={styles.counter}>
+                {Math.max(currentImageIndex + 1, 1)} / {images.length}
+              </div>
+            </>
+          )}
 
           <img
             loading="lazy"

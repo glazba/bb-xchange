@@ -141,6 +141,12 @@ function Messages() {
             placeholder="Írj egy üzenetet..."
             value={content}
             onChange={(event) => setContent(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" && !event.shiftKey && content.trim()) {
+                event.preventDefault();
+                handleSend();
+              }
+            }}
           />
 
           <button className="button buttonPrimary" onClick={handleSend}>

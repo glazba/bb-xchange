@@ -149,6 +149,7 @@ function Profile() {
     );
 
     if (!confirmed) {
+      setDeletePassword("");
       return;
     }
 
