@@ -79,12 +79,12 @@ function Home() {
 
           <article className={`panel ${styles.step}`}>
             <h3>2.</h3>
-            <p>Böngéssz mások termékei között.</p>
+            <p>Böngéssz mások termékei között és küldj csereajánlatot.</p>
           </article>
 
           <article className={`panel ${styles.step}`}>
             <h3>3.</h3>
-            <p>Küldj csereajánlatot és cseréljetek.</p>
+            <p>Beszéljétek meg a részleteket és cseréljetek.</p>
           </article>
         </div>
       </section>

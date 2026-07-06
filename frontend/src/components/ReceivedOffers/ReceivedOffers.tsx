@@ -247,7 +247,7 @@ function ReceivedOffers() {
                 )}
 
                 {offer.status === "accepted" && (
-                  <div className={styles.buttons}>
+                  <>
                     <button
                       className="button buttonSuccess"
                       onClick={() => handleComplete(offer.id)}
@@ -261,7 +261,7 @@ function ReceivedOffers() {
                     >
                       Csere meghiúsult
                     </button>
-                  </div>
+                  </>
                 )}
               </div>
             </div>
