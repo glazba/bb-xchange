@@ -40,8 +40,6 @@ You can test the application using the following account:
 ## Home Page
 
 ![Home Page](./screenshots/homepage.png)
-![Home Page](./screenshots/homepage_2.png)
-![Home Page](./screenshots/homepage_3.png)
 
 ---
 
