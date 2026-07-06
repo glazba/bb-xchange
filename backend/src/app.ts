@@ -35,7 +35,7 @@ const apiLimiter = rateLimit({
 app.use(express.json());
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 
@@ -99,8 +99,10 @@ app.get("/protected", authMiddleware, (req: AuthRequest, res) => {
 });
 
 //! Server launch
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
+const PORT = Number(process.env.PORT) || 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
 
 app.use((
