@@ -68,8 +68,8 @@ export const registerUser = async (
             username,
             normalizedEmail,
             password,
-            city,
-            bio ?? ""
+            city.trim(),
+            bio?.trim() ?? ""
         );
 
         await updateUserInterests(
@@ -146,15 +146,17 @@ export const loginUser = async (
             password
         } = req.body;
 
-        const users = await getUserByEmail(
-            email
-        );
-
         if (!email || !password) {
             return res.status(400).json({
                 message: "Email and password are required"
             });
         }
+
+        const normalizedEmail = email.trim().toLowerCase();
+
+        const users = await getUserByEmail(
+            normalizedEmail
+        );
 
         if (users.length === 0) {
             return res.status(401).json({
@@ -303,9 +305,9 @@ export const updateProfile = async (
 
         await updateProfileById(
             req.user!.userId,
-            username,
-            city,
-            bio ?? ""
+            username.trim(),
+            city.trim(),
+            bio?.trim() ?? ""
         );
 
         await updateUserInterests(

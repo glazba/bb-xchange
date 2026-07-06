@@ -14,6 +14,7 @@ import {
 
 import styles from "./Notifications.module.css";
 import { handleApiError } from "../../utils/handleApiError";
+import { timeAgo } from "../../utils/timeAgo";
 import EmptyState from "../EmptyState/EmptyState";
 
 function Notifications() {
@@ -39,7 +40,7 @@ function Notifications() {
     };
 
     loadNotifications();
-  }, [token]);
+  }, [token, navigate]);
 
   const handleClick = async (notification: Notification) => {
     if (!token) {
@@ -72,12 +73,18 @@ function Notifications() {
     }
   };
 
+  const unreadCount = notifications.filter(
+    (notification) => !notification.is_read,
+  ).length;
+
   return (
     <div className={`page ${styles.page}`}>
       <div className={styles.header}>
         <h1 className={styles.title}>Értesítések</h1>
-
-        <p className={styles.subtitle}>{notifications.length} értesítés</p>
+        <p className={styles.subtitle}>
+          {unreadCount} olvasatlan • {notifications.length - unreadCount}{" "}
+          olvasott
+        </p>
       </div>
 
       {notifications.length === 0 ? (
@@ -99,9 +106,7 @@ function Notifications() {
               <div className={styles.content}>
                 <p>{notification.message}</p>
 
-                <small>
-                  {new Date(notification.created_at).toLocaleString("hu-HU")}
-                </small>
+                <small>{timeAgo(notification.created_at)}</small>
               </div>
 
               {!notification.is_read && <span className={styles.dot} />}

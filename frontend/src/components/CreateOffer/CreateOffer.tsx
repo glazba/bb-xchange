@@ -149,7 +149,7 @@ function CreateOffer() {
             </p>
 
             <button className="button buttonSuccess" onClick={handleSubmit}>
-              Ajánlat küldése
+              Ajánlat küldése ({selectedItems.length})
             </button>
           </div>
         </>

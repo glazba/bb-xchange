@@ -24,7 +24,7 @@ function LoginForm() {
     }
 
     try {
-      const data = await loginUser(email.trim(), password);
+      const data = await loginUser(email.trim().toLowerCase(), password);
 
       login(data.token);
 
