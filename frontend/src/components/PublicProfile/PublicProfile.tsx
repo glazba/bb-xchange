@@ -6,9 +6,9 @@ import type { PublicUserProfile } from "../../types/PublicUserProfile";
 import { getPublicProfile } from "../../api/userApi";
 
 import styles from "./PublicProfile.module.css";
-import { API_URL } from "../../api/apiConfig";
 import { handleApiError } from "../../utils/handleApiError";
 import EmptyState from "../EmptyState/EmptyState";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function PublicProfile() {
   const { id } = useParams();
@@ -54,7 +54,7 @@ function PublicProfile() {
             {profile.avatar ? (
               <img
                 loading="lazy"
-                src={`${API_URL}/uploads/${profile.avatar}`}
+                src={getImageUrl(profile.avatar)}
                 alt={profile.username}
               />
             ) : (

@@ -16,8 +16,8 @@ import { itemConditionLabels } from "../../utils/itemLabels";
 import { bookGenres, boardgameGenres } from "../../utils/itemGenres";
 
 import styles from "./EditItemForm.module.css";
-import { API_URL } from "../../api/apiConfig";
 import toast from "react-hot-toast";
+import { getImageUrl } from "../../utils/getImageUrl";
 import { handleApiError } from "../../utils/handleApiError";
 
 function EditItemForm() {
@@ -222,7 +222,7 @@ function EditItemForm() {
             <div key={image.id} className={styles.imageCard}>
               <img
                 loading="lazy"
-                src={`${API_URL}/uploads/${image.image_url}`}
+                src={getImageUrl(image.image_url)}
                 alt={title}
               />
 

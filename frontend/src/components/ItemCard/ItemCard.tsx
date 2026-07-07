@@ -8,7 +8,7 @@ import {
 } from "../../utils/itemLabels";
 
 import styles from "./ItemCard.module.css";
-import { API_URL } from "../../api/apiConfig";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 interface ItemCardProps {
   item: Item;
@@ -23,7 +23,7 @@ function ItemCard({ item, onDelete, isOwner }: ItemCardProps) {
         {item.cover_image ? (
           <img
             loading="lazy"
-            src={`${API_URL}/uploads/${item.cover_image}`}
+            src={getImageUrl(item.cover_image)}
             alt={item.title}
           />
         ) : (

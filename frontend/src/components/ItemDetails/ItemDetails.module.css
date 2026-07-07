@@ -119,6 +119,15 @@
   border-radius: var(--radius-md);
 }
 
+.image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+
+  transition: var(--transition);
+}
+
 .descriptionBox h3 {
   margin-bottom: 1rem;
 }

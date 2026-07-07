@@ -7,10 +7,10 @@ import { useAuth } from "../../hooks/useAuth";
 import type { Conversation } from "../../types/Conversation";
 
 import { getConversations } from "../../api/messageApi";
-import { API_URL } from "../../api/apiConfig";
 
 import styles from "./Conversations.module.css";
 import EmptyState from "../EmptyState/EmptyState";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function Conversations() {
   const { token } = useAuth();
@@ -65,7 +65,7 @@ function Conversations() {
                 {conversation.avatar ? (
                   <img
                     loading="lazy"
-                    src={`${API_URL}/uploads/${conversation.avatar}`}
+                    src={getImageUrl(conversation.avatar)}
                     alt={conversation.username}
                   />
                 ) : (

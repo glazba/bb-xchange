@@ -11,10 +11,10 @@ import {
 } from "../../utils/itemLabels";
 
 import styles from "./ItemDetails.module.css";
-import { API_URL } from "../../api/apiConfig";
 import toast from "react-hot-toast";
 import { handleApiError } from "../../utils/handleApiError";
 import EmptyState from "../EmptyState/EmptyState";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function ItemDetails() {
   const { id } = useParams();
@@ -128,7 +128,7 @@ function ItemDetails() {
           {selectedImage ? (
             <img
               loading="lazy"
-              src={`${API_URL}/uploads/${selectedImage}`}
+              src={getImageUrl(selectedImage)}
               alt={item.title}
               className={styles.mainImage}
               onClick={() => setIsLightboxOpen(true)}
@@ -144,7 +144,7 @@ function ItemDetails() {
               <img
                 loading="lazy"
                 key={image.id}
-                src={`${API_URL}/uploads/${image.image_url}`}
+                src={getImageUrl(image.image_url)}
                 alt={item.title}
                 className={
                   selectedImage === image.image_url
@@ -163,9 +163,7 @@ function ItemDetails() {
 
         <div className={styles.badges}>
           <span>{itemTypeLabels[item.type]}</span>
-
           <span>{itemConditionLabels[item.item_condition]}</span>
-
           <span>{itemStatusLabels[item.status]}</span>
         </div>
 
@@ -176,7 +174,6 @@ function ItemDetails() {
 
         <div className={styles.descriptionBox}>
           <h3>Leírás</h3>
-
           <p>{item.description || "Nincs leírás."}</p>
         </div>
 
@@ -310,14 +307,15 @@ function ItemDetails() {
               </div>
             </>
           )}
-
-          <img
-            loading="lazy"
-            src={`${API_URL}/uploads/${selectedImage}`}
-            alt={item.title}
-            className={styles.lightboxImage}
-            onClick={(event) => event.stopPropagation()}
-          />
+          <div className={styles.image}>
+            <img
+              loading="lazy"
+              src={getImageUrl(selectedImage)}
+              alt={item.title}
+              className={styles.lightboxImage}
+              onClick={(event) => event.stopPropagation()}
+            />
+          </div>
         </div>
       )}
     </div>

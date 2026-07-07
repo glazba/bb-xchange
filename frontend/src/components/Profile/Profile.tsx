@@ -18,7 +18,7 @@ import { allInterests } from "../../utils/interests";
 import type { UserProfile } from "../../types/UserProfile";
 
 import styles from "./Profile.module.css";
-import { API_URL } from "../../api/apiConfig";
+import { getImageUrl } from "../../utils/getImageUrl";
 
 function Profile() {
   const { token, logout } = useAuth();
@@ -180,7 +180,7 @@ function Profile() {
             {profile.avatar ? (
               <img
                 loading="lazy"
-                src={`${API_URL}/uploads/${profile.avatar}`}
+                src={getImageUrl(profile.avatar)}
                 alt="Profilkép"
                 className={styles.avatarImage}
               />
