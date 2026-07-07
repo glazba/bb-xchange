@@ -1,31 +1,6 @@
 import multer from "multer";
-import path from "path";
 
-const storage = multer.diskStorage({
-    destination: (
-        req,
-        file,
-        callback
-    ) => {
-        callback(
-            null, "uploads/avatars"
-        );
-    },
-
-    filename: (
-        req,
-        file,
-        callback
-    ) => {
-        const extension = path.extname(file.originalname);
-
-        const filename = `avatar-${Date.now()}${extension}`;
-
-        callback(
-            null, filename
-        );
-    }
-});
+const storage = multer.memoryStorage();
 
 const fileFilter: multer.Options["fileFilter"] = (
     req,

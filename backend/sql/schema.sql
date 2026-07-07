@@ -27,6 +27,9 @@ CREATE TABLE
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
 
+ALTER TABLE users
+ADD COLUMN avatar_public_id VARCHAR(255) NULL AFTER avatar;
+
 -- ============================================
 -- INTERESTS
 -- ============================================
@@ -91,6 +94,9 @@ CREATE TABLE
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT fk_item_images_item FOREIGN KEY (item_id) REFERENCES items (id) ON DELETE CASCADE
     );
+
+ALTER TABLE item_images
+ADD COLUMN cloudinary_public_id VARCHAR(255) NULL AFTER image_url;
 
 -- ============================================
 -- BOOK DETAILS

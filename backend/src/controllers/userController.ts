@@ -1,12 +1,9 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import fs from "fs";
-import path from "path";
 
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
 
-/* import { messages } from "../utils/messages"; */
 import { handleControllerError } from "../utils/handleControllerErrors";
 
 import {
@@ -25,6 +22,8 @@ import {
 } from "../services/userService";
 
 import { getActiveItemsByOwnerId } from "../services/itemService";
+
+import { uploadImage, deleteImage } from "../utils/cloudinaryHelper";
 
 //! Register
 export const registerUser = async (
@@ -336,6 +335,7 @@ export const uploadAvatar = async (
 ) => {
 
     try {
+
         if (!req.file) {
             return res.status(400).json({
                 message: "Nincs kiválasztott kép."
@@ -346,21 +346,26 @@ export const uploadAvatar = async (
 
         const oldAvatar = await getAvatarById(userId);
 
-        if (oldAvatar?.avatar) {
-            const oldPath = path.join(__dirname, "../../uploads", oldAvatar.avatar);
-
-            if (fs.existsSync(oldPath)) {
-                fs.unlinkSync(oldPath);
-            }
+        if (oldAvatar?.avatar_public_id) {
+            await deleteImage(
+                oldAvatar.avatar_public_id
+            );
         }
 
-        const avatarPath = `avatars/${req.file.filename}`;
+        const uploaded = await uploadImage(
+            req.file,
+            "bb-xchange/avatars"
+        );
 
-        await updateAvatarById(userId, avatarPath);
+        await updateAvatarById(
+            userId,
+            uploaded.secureUrl,
+            uploaded.publicId
+        );
 
         return res.json({
             message: "Profilkép sikeresen feltöltve.",
-            avatar: avatarPath
+            avatar: uploaded.secureUrl
         });
 
     } catch (error) {

@@ -210,7 +210,9 @@ export const getAvatarById = async (
 
     const [rows] = await pool.query<RowDataPacket[]>(
         `
-        SELECT avatar
+        SELECT
+            avatar,
+            avatar_public_id
         FROM users
         WHERE id = ?
         `,
@@ -294,17 +296,21 @@ export const updateUserInterests = async (
 //! Update avatar
 export const updateAvatarById = async (
     userId: number,
-    avatar: string
+    avatar: string,
+    avatarPublicId: string
 ) => {
 
     const [result] = await pool.query<ResultSetHeader>(
         `
         UPDATE users
-        SET avatar = ?
+        SET
+            avatar = ?,
+            avatar_public_id = ?
         WHERE id = ?
         `,
         [
             avatar,
+            avatarPublicId,
             userId
         ]
     );

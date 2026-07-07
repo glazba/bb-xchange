@@ -245,6 +245,7 @@ export const updateItemStatus = async (
 export const createItemImage = async (
     itemId: number,
     imageUrl: string,
+    cloudinaryPublicId: string,
     isCover: boolean
 ) => {
 
@@ -253,13 +254,15 @@ export const createItemImage = async (
         INSERT INTO item_images (
             item_id,
             image_url,
+            cloudinary_public_id,
             is_cover
         )
-        VALUES (?, ?, ?)
+        VALUES (?, ?, ?, ?)
         `,
         [
             itemId,
             imageUrl,
+            cloudinaryPublicId,
             isCover
         ]
     );
@@ -278,6 +281,7 @@ export const getImagesByItemId = async (
             id,
             item_id,
             image_url,
+            cloudinary_public_id,
             is_cover,
             created_at
         FROM item_images
@@ -303,6 +307,7 @@ export const getItemImageById = async (
                 id,
                 item_id,
                 image_url,
+                cloudinary_public_id,
                 is_cover
             FROM item_images
             WHERE id = ?
@@ -394,6 +399,7 @@ export const getOldestImageByItemId = async (
             id,
             item_id,
             image_url,
+            cloudinary_public_id,
             is_cover
         FROM item_images
         WHERE item_id = ?

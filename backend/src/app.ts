@@ -54,10 +54,6 @@ app.use("/books", bookRoutes);
 app.use("/boardgames", boardgameRoutes);
 app.use("/offers", tradeOfferRoutes);
 
-app.use("/uploads", express.static(
-    path.join(__dirname, "../uploads")
-));
-
 app.use("/messages", messageRoutes);
 app.use("/notifications", notificationRoutes);
 

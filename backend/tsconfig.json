@@ -12,15 +12,12 @@
 
     "forceConsistentCasingInFileNames": true,
 
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    "typeRoots": ["./src/types", "./node_modules/@types"]
   },
 
-  "include": [
-    "src"
-  ],
+  "include": ["src/**/*"],
 
-  "exclude": [
-    "node_modules",
-    "dist"
-  ]
+  "exclude": ["node_modules", "dist"]
 }

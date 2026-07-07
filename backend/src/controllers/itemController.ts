@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
 import { AuthRequest } from "../types/AuthRequest";
-import fs from "fs";
-import path from "path";
 
-/* import { messages } from "../utils/messages"; */
 import { handleControllerError } from "../utils/handleControllerErrors";
 
 import {
@@ -28,6 +25,8 @@ import {
 import { cancelOffersByDeletedItem } from "../services/tradeOffersService";
 import { createBookDetails, getBookByItemId, updateBookDetails } from "../services/bookService";
 import { createBoardgameDetails, getBoardgameByItemId, updateBoardgameDetails } from "../services/boardgameService";
+
+import { uploadImage, deleteImage } from "../utils/cloudinaryHelper";
 
 //! Create item
 export const createNewItem = async (
@@ -373,15 +372,20 @@ export const uploadImages = async (
         }
 
         for (let i = 0; i < files.length; i++) {
-            const file = files[i];
+
+            const uploaded = await uploadImage(
+                files[i],
+                "bb-xchange/items"
+            );
 
             await createItemImage(
                 item.id,
-                `items/${file.filename}`,
+                uploaded.secureUrl,
+                uploaded.publicId,
                 imageCount === 0 && i === 0
             );
-        }
 
+        }
 
         return res.status(201).json({
             message: "Images uploaded successfully"
@@ -498,14 +502,8 @@ export const deleteItemImage = async (
             });
         }
 
-        const imagePath = path.join(
-            __dirname,
-            "../../uploads",
-            image.image_url
-        );
-
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
+        if (image.cloudinary_public_id) {
+            await deleteImage(image.cloudinary_public_id);
         }
 
         await deleteItemImageById(image.id);
