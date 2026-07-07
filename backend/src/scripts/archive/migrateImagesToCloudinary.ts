@@ -3,9 +3,9 @@ dotenv.config();
 
 import fs from "fs";
 import path from "path";
-import { pool } from "../db/connections";
+import { pool } from "../../db/connections";
 import { RowDataPacket } from "mysql2";
-import cloudinary from "../config/cloudinary";
+import cloudinary from "../../config/cloudinary";
 
 interface MigrationImage extends RowDataPacket {
     id: number;
